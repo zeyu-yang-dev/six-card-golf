@@ -3,7 +3,7 @@ plugins {
     application
 }
 
-group = "io.github.zeyuyang.sixcardgolf"
+group = "io.github.zeyu.sixcardgolf"
 version = "1.0-SNAPSHOT"
 
 repositories {

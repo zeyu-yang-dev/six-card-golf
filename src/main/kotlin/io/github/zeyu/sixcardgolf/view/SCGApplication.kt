@@ -1,0 +1,95 @@
+package io.github.zeyu.sixcardgolf.view
+
+import io.github.zeyu.sixcardgolf.service.RootService
+import tools.aqua.bgw.core.BoardGameApplication
+import tools.aqua.bgw.event.KeyCode
+
+
+/**
+ * The view controller class, which inherits from [BoardGameApplication].
+ * This class implements the Refreshable interface.
+ * This class must implement all the methods defined in the Refreshable interface.
+ */
+class SCGApplication : BoardGameApplication("Six Card Golf"), Refreshable {
+
+    // Central service from which all others are created/accessed
+    // also holds the currently active game
+    private val rootService = RootService()
+
+
+
+
+
+    // Scenes:
+    // 1. New Game Menu Scene:
+    private val scgNewGameMenuScene = SCGNewGameMenuScene(rootService).apply {
+        exitButton.onMouseClicked = {
+            exit()
+        }
+    }
+
+    // 2. In-Game Scene:
+    private val scgGameScene = SCGGameScene(rootService).apply {
+        onKeyPressed = { event ->
+            if (event.keyCode in listOf(KeyCode.M, KeyCode.ENTER)) {
+                rootService.gameService.showMiracle()
+            }
+        }
+    }
+
+    // 3. End-Game Scene:
+    private val scgResultsScene = SCGResultsScene(rootService).apply {
+
+        restartButton.onMouseClicked = {
+
+            // remove all components in case restartButton is pressed,
+            // because when [refreshAfterStartNewGame] is called, proper number of components will be added
+            scgGameScene.clearComponents()
+            // remove all components in case restartButton is pressed,
+            // because when [refreshAfterGameEnd] is called, proper number of components will be added
+            this.clearComponents()
+
+            this@SCGApplication.showMenuScene(scgNewGameMenuScene)
+        }
+
+        exitButton.onMouseClicked = {
+            exit()
+        }
+    }
+
+
+
+
+
+
+
+
+    init {
+
+        // all scenes and the application itself need to react to changes done in the service layer
+        rootService.addRefreshables(
+            this,
+            scgNewGameMenuScene,
+            scgGameScene,
+            scgResultsScene
+        )
+
+        // This is just done so that the blurred background when showing the new game menu
+        // has content and looks nicer
+        // rootService.gameService.startNewGame(listOf("Martin", "Erich", "Paul", "Detlef"))
+
+        this.showGameScene(scgGameScene)
+        this.showMenuScene(scgNewGameMenuScene)
+    }
+
+
+    override fun refreshAfterStartNewGame() {
+        this.hideMenuScene()
+    }
+
+    override fun refreshAfterGameEnd() {
+        this.showMenuScene(scgResultsScene)
+    }
+
+}
+
