@@ -16,7 +16,7 @@ import javax.imageio.ImageIO
 /**
  * The End Menu.
  */
-class SCGResultsScene(private val rootService: RootService) : MenuScene(width = 500, height = 900), Refreshable {
+class ResultMenuScene(private val rootService: RootService) : MenuScene(width = 500, height = 900), Refreshable {
 
     private fun placePlayers(): List<Player> {
 

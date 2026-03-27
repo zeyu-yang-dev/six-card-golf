@@ -23,7 +23,7 @@ const val BUTTON_BACKGROUND_RADIUS = 10
 /**
  * The Start Menu.
  */
-class SCGNewGameMenuScene(private val rootService: RootService) : MenuScene(width = 500, height = 900), Refreshable {
+class MainMenuScene(private val rootService: RootService) : MenuScene(width = 500, height = 900), Refreshable {
 
 
     private fun shouldDisableButton(): Boolean {

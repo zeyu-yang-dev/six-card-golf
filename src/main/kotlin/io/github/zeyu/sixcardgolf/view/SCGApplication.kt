@@ -22,14 +22,14 @@ class SCGApplication : BoardGameApplication("Six Card Golf"), Refreshable {
 
     // Scenes:
     // 1. New Game Menu Scene:
-    private val scgNewGameMenuScene = SCGNewGameMenuScene(rootService).apply {
+    private val mainMenuScene = MainMenuScene(rootService).apply {
         exitButton.onMouseClicked = {
             exit()
         }
     }
 
     // 2. In-Game Scene:
-    private val scgGameScene = SCGGameScene(rootService).apply {
+    private val gameScene = GameScene(rootService).apply {
         onKeyPressed = { event ->
             if (event.keyCode in listOf(KeyCode.M, KeyCode.ENTER)) {
                 rootService.gameService.showMiracle()
@@ -38,18 +38,18 @@ class SCGApplication : BoardGameApplication("Six Card Golf"), Refreshable {
     }
 
     // 3. End-Game Scene:
-    private val scgResultsScene = SCGResultsScene(rootService).apply {
+    private val resultMenuScene = ResultMenuScene(rootService).apply {
 
         restartButton.onMouseClicked = {
 
             // remove all components in case restartButton is pressed,
             // because when [refreshAfterStartNewGame] is called, proper number of components will be added
-            scgGameScene.clearComponents()
+            gameScene.clearComponents()
             // remove all components in case restartButton is pressed,
             // because when [refreshAfterGameEnd] is called, proper number of components will be added
             this.clearComponents()
 
-            this@SCGApplication.showMenuScene(scgNewGameMenuScene)
+            this@SCGApplication.showMenuScene(mainMenuScene)
         }
 
         exitButton.onMouseClicked = {
@@ -69,17 +69,17 @@ class SCGApplication : BoardGameApplication("Six Card Golf"), Refreshable {
         // all scenes and the application itself need to react to changes done in the service layer
         rootService.addRefreshables(
             this,
-            scgNewGameMenuScene,
-            scgGameScene,
-            scgResultsScene
+            mainMenuScene,
+            gameScene,
+            resultMenuScene
         )
 
         // This is just done so that the blurred background when showing the new game menu
         // has content and looks nicer
         // rootService.gameService.startNewGame(listOf("Martin", "Erich", "Paul", "Detlef"))
 
-        this.showGameScene(scgGameScene)
-        this.showMenuScene(scgNewGameMenuScene)
+        this.showGameScene(gameScene)
+        this.showMenuScene(mainMenuScene)
     }
 
 
@@ -88,7 +88,7 @@ class SCGApplication : BoardGameApplication("Six Card Golf"), Refreshable {
     }
 
     override fun refreshAfterGameEnd() {
-        this.showMenuScene(scgResultsScene)
+        this.showMenuScene(resultMenuScene)
     }
 
 }
