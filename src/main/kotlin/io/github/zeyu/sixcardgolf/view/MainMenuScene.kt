@@ -20,10 +20,25 @@ import javax.imageio.ImageIO
 /** The background radius of the button in pixel. */
 const val BUTTON_BACKGROUND_RADIUS = 10
 
+const val MMS_PLAYER_LABEL_WIDTH = 150
+const val MMS_PLAYER_LABEL_HEIGHT = 50
+const val MMS_PLAYER_LABEL_POS_X = 0
+const val MMS_PLAYER_LABEL_POS_Y = 130
+
+const val MMS_POS_Y_STEP = 60
+
+const val MMS_TEXT_FIELD_POS_X = 150
+
+
+
 /**
  * The Start Menu.
  */
 class MainMenuScene(private val rootService: RootService) : MenuScene(width = 500, height = 900), Refreshable {
+
+    val playerLabels: MutableList<Label> = mutableListOf()
+
+
 
 
     private fun shouldDisableButton(): Boolean {
@@ -38,6 +53,19 @@ class MainMenuScene(private val rootService: RootService) : MenuScene(width = 50
     }
 
 
+    private fun createPlayerLabel(row: Int): Label {
+        val playerLabel = Label(
+            posX = MMS_PLAYER_LABEL_POS_X,
+            posY = MMS_PLAYER_LABEL_POS_Y + MMS_POS_Y_STEP * row,
+            width = MMS_PLAYER_LABEL_WIDTH,
+            height = MMS_PLAYER_LABEL_HEIGHT,
+            text = "PLAYER ${row + 1}:",
+            font = Font(size = 25)
+        )
+        return playerLabel
+    }
+
+
 
     //--------------------------------------------------------------------------------------------
     private val playerLabelWidth = 150
@@ -47,13 +75,13 @@ class MainMenuScene(private val rootService: RootService) : MenuScene(width = 50
     private val allComponentsOffsetY = 30
 
 
-    // Label and input field for player 1:
-    private val p1Label = Label(
-        width = playerLabelWidth, height = 50,
-        posX = 0, posY = 100 + allComponentsOffsetY,
-        text = "PLAYER 1:",
-        font = Font(size = 25)
-    )
+    // // Label and input field for player 1:
+    // private val p1Label = Label(
+    //     width = playerLabelWidth, height = 50,
+    //     posX = 0, posY = 100 + allComponentsOffsetY,
+    //     text = "PLAYER 1:",
+    //     font = Font(size = 25)
+    // )
 
     private val p1Input: TextField = TextField(
         width = 500 - playerLabelWidth - spacerOffset, height = 50,
@@ -66,13 +94,13 @@ class MainMenuScene(private val rootService: RootService) : MenuScene(width = 50
 
     //--------------------------------------------------------------------------------------------
 
-    // Label and input field for player 2:
-    private val p2Label = Label(
-        width = playerLabelWidth, height = 50,
-        posX = 0, posY = 100 + posYStep + allComponentsOffsetY,
-        text = "PLAYER 2:",
-        font = Font(size = 25)
-    )
+    // // Label and input field for player 2:
+    // private val p2Label = Label(
+    //     width = playerLabelWidth, height = 50,
+    //     posX = 0, posY = 100 + posYStep + allComponentsOffsetY,
+    //     text = "PLAYER 2:",
+    //     font = Font(size = 25)
+    // )
 
     private val p2Input: TextField = TextField(
         width = 500 - playerLabelWidth - spacerOffset, height = 50,
@@ -85,13 +113,13 @@ class MainMenuScene(private val rootService: RootService) : MenuScene(width = 50
 
     //--------------------------------------------------------------------------------------------
 
-    // Label and input field for player 3:
-    private val p3Label = Label(
-        width = playerLabelWidth, height = 50,
-        posX = 0, posY = 100 + 2 * posYStep + allComponentsOffsetY,
-        text = "PLAYER 3:",
-        font = Font(size = 25)
-    )
+    // // Label and input field for player 3:
+    // private val p3Label = Label(
+    //     width = playerLabelWidth, height = 50,
+    //     posX = 0, posY = 100 + 2 * posYStep + allComponentsOffsetY,
+    //     text = "PLAYER 3:",
+    //     font = Font(size = 25)
+    // )
 
     private val p3Input: TextField = TextField(
         width = 500 - playerLabelWidth - spacerOffset, height = 50,
@@ -104,13 +132,13 @@ class MainMenuScene(private val rootService: RootService) : MenuScene(width = 50
 
     //--------------------------------------------------------------------------------------------
 
-    // Label and input field for player 4:
-    private val p4Label = Label(
-        width = playerLabelWidth, height = 50,
-        posX = 0, posY = 100 + 3 * posYStep + allComponentsOffsetY,
-        text = "PLAYER 4:",
-        font = Font(size = 25)
-    )
+    // // Label and input field for player 4:
+    // private val p4Label = Label(
+    //     width = playerLabelWidth, height = 50,
+    //     posX = 0, posY = 100 + 3 * posYStep + allComponentsOffsetY,
+    //     text = "PLAYER 4:",
+    //     font = Font(size = 25)
+    // )
 
     private val p4Input: TextField = TextField(
         width = 500 - playerLabelWidth - spacerOffset, height = 50,
@@ -122,6 +150,15 @@ class MainMenuScene(private val rootService: RootService) : MenuScene(width = 50
     }
 
     //--------------------------------------------------------------------------------------------
+
+
+
+
+
+
+
+
+
 
 
 
@@ -138,17 +175,17 @@ class MainMenuScene(private val rootService: RootService) : MenuScene(width = 50
         componentStyle = "-fx-background-radius: $BUTTON_BACKGROUND_RADIUS;"
 
         onMouseClicked = {
-            if (!components.contains(p3Label)) {
+            if (!components.contains(playerLabels[2])) {
                 addComponents(
                     p3Input.apply { text = "Paul" },
-                    p3Label
+                    playerLabels[2]
                 )
                 removePlayer.isDisabled = false
                 startButton.isDisabled = shouldDisableButton()
             } else {
                 addComponents(
                     p4Input.apply { text = "Detlef" },
-                    p4Label
+                    playerLabels[3]
                 )
                 this.isDisabled = true
                 startButton.isDisabled = shouldDisableButton()
@@ -170,12 +207,12 @@ class MainMenuScene(private val rootService: RootService) : MenuScene(width = 50
 
         isDisabled = true
         onMouseClicked = {
-            if (components.contains(p4Label)) {
-                removeComponents(p4Input.apply { text = "Detlef" }, p4Label)
+            if (components.contains(playerLabels[3])) {
+                removeComponents(p4Input.apply { text = "Detlef" }, playerLabels[3])
                 addPlayer.isDisabled = shouldDisableButton()
                 startButton.isDisabled = shouldDisableButton()
             } else {
-                removeComponents(p3Input.apply { text = "Paul" }, p3Label)
+                removeComponents(p3Input.apply { text = "Paul" }, playerLabels[2])
                 addPlayer.isDisabled = shouldDisableButton()
                 startButton.isDisabled = shouldDisableButton()
                 this.isDisabled = true
@@ -273,16 +310,27 @@ class MainMenuScene(private val rootService: RootService) : MenuScene(width = 50
 
         opacity = 1.0
 
+        for(i in 0..3) {
+            playerLabels.add(createPlayerLabel(i))
+        }
+
+        addComponents(
+            playerLabels[0],
+            playerLabels[1],
+        )
+
         addComponents(
             checkBoxBackGround,
             randomizeCheckBox,
             testModeCheckBox,
 
-            p1Label, p1Input,
-            p2Label, p2Input,
+            p1Input,
+            p2Input,
+
             addPlayer, removePlayer,
             startButton,
             exitButton
         )
+
     }
 }
