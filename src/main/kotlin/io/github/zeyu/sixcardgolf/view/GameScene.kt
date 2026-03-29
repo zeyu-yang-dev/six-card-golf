@@ -4,7 +4,7 @@ import io.github.zeyu.sixcardgolf.entity.*
 
 import io.github.zeyu.sixcardgolf.service.RootService
 import io.github.zeyu.sixcardgolf.service.CardImageLoader
-import io.github.zeyu.sixcardgolf.view.panes.PPL_HEIGHT
+
 import io.github.zeyu.sixcardgolf.view.panes.PanePlayerLeft
 
 import tools.aqua.bgw.animation.DelayAnimation
