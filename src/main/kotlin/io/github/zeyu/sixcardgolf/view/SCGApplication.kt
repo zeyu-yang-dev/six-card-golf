@@ -87,6 +87,22 @@ class SCGApplication : BoardGameApplication("Six Card Golf"), Refreshable {
 
 
     override fun refreshAfterStartNewGame() {
+
+        gameScene.panePlayerLeft.isVisible = true
+        gameScene.panePlayerRight.isVisible = true
+
+        // If there are 2 players, hide the player panes on the left and right sides:
+        if(rootService.currentGame.players.size == 2) {
+            gameScene.panePlayerLeft.isVisible = false
+            gameScene.panePlayerRight.isVisible = false
+        }
+
+        // If there are 3 players, hide the player pane on the right side:
+        if(rootService.currentGame.players.size == 3) {
+            gameScene.panePlayerRight.isVisible = false
+        }
+
+
         this.hideMenuScene()
     }
 
