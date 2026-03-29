@@ -46,42 +46,7 @@ class MainMenuScene(private val rootService: RootService) : MenuScene(width = 50
 
 
 
-    private fun shouldDisableButton(): Boolean {
 
-        val inputs = textFields
-
-        val inputsHaveBlank = inputs.any { it.text.isBlank() }
-        val inputsAreTooLong = inputs.any { it.text.length > 20 }
-        val inputsHaveDuplicate = inputs.map { it.text }.toSet().size != inputs.size
-
-        return inputsHaveBlank || inputsAreTooLong || inputsHaveDuplicate
-    }
-
-    private fun createPlayerLabel(row: Int): Label {
-        val playerLabel = Label(
-            posX = MMS_PLAYER_LABEL_POS_X,
-            posY = MMS_PLAYER_LABEL_POS_Y + MMS_POS_Y_STEP * row,
-            width = MMS_PLAYER_LABEL_WIDTH,
-            height = MMS_PLAYER_LABEL_HEIGHT,
-            text = "PLAYER ${row + 1}:",
-            font = Font(size = 25)
-        )
-        return playerLabel
-    }
-
-    private fun createTextField(row: Int): TextField {
-        val textField = TextField(
-            posX = MMS_TEXT_FIELD_POS_X,
-            posY = MMS_PLAYER_LABEL_POS_Y + MMS_POS_Y_STEP * row,
-            width = MMS_TEXT_FIELD_WIDTH,
-            height = MMS_PLAYER_LABEL_HEIGHT,
-            text = listOf("Martin", "Erich", "Paul", "Detlef").getOrElse(row) { "" },
-            font = Font(size = 25)
-        ).apply {
-            onKeyReleased = { startButton.isDisabled = shouldDisableButton() }
-        }
-        return textField
-    }
 
 
 
@@ -95,7 +60,7 @@ class MainMenuScene(private val rootService: RootService) : MenuScene(width = 50
             style = "-fx-background-radius: $BUTTON_BACKGROUND_RADIUS;"
         }
     ).apply {
-        componentStyle = "-fx-background-radius: $BUTTON_BACKGROUND_RADIUS;"
+        // componentStyle = "-fx-background-radius: $BUTTON_BACKGROUND_RADIUS;"
 
         onMouseClicked = {
             if (!components.contains(playerLabels[2])) {
@@ -219,6 +184,47 @@ class MainMenuScene(private val rootService: RootService) : MenuScene(width = 50
 
 
 
+    //--------------------------------------------------------------------------------------------
+
+    private fun shouldDisableButton(): Boolean {
+
+        val inputs = textFields
+
+        val inputsHaveBlank = inputs.any { it.text.isBlank() }
+        val inputsAreTooLong = inputs.any { it.text.length > 20 }
+        val inputsHaveDuplicate = inputs.map { it.text }.toSet().size != inputs.size
+
+        return inputsHaveBlank || inputsAreTooLong || inputsHaveDuplicate
+    }
+
+    private fun createPlayerLabel(row: Int): Label {
+        val playerLabel = Label(
+            posX = MMS_PLAYER_LABEL_POS_X,
+            posY = MMS_PLAYER_LABEL_POS_Y + MMS_POS_Y_STEP * row,
+            width = MMS_PLAYER_LABEL_WIDTH,
+            height = MMS_PLAYER_LABEL_HEIGHT,
+            text = "PLAYER ${row + 1}:",
+            font = Font(size = 25)
+        )
+        return playerLabel
+    }
+
+    private fun createTextField(row: Int): TextField {
+        val textField = TextField(
+            posX = MMS_TEXT_FIELD_POS_X,
+            posY = MMS_PLAYER_LABEL_POS_Y + MMS_POS_Y_STEP * row,
+            width = MMS_TEXT_FIELD_WIDTH,
+            height = MMS_PLAYER_LABEL_HEIGHT,
+            text = listOf("Martin", "Erich", "Paul", "Detlef").getOrElse(row) { "" },
+            font = Font(size = 25)
+        ).apply {
+            onKeyReleased = { startButton.isDisabled = shouldDisableButton() }
+        }
+        return textField
+    }
+
+
+
 
 
 
@@ -228,6 +234,7 @@ class MainMenuScene(private val rootService: RootService) : MenuScene(width = 50
 
         val image : BufferedImage = ImageIO.read(CardImageLoader::class.java.getResource("/menu_background.png"))
         this.background = ImageVisual(image)
+
 
         opacity = 1.0
 

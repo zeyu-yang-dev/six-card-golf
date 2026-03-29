@@ -14,10 +14,9 @@ class RootService {
     val cardService = CardService(this)
 
     /**
-     * The currently active game. Can be `null`, if no game has started yet.
+     * The currently active game.
      */
-    var currentGame : SixCardGolf? = null
-    // lateinit var currentGame : SixCardGolf // 可避免null check
+    lateinit var currentGame : SixCardGolf
 
 
 
