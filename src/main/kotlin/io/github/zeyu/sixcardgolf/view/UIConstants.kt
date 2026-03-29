@@ -19,13 +19,18 @@ const val DIS_BTW_LABEL_AND_CARD = 37.75
 const val PLAYER_LABEL_WIDTH = 170
 const val PLAYER_LABEL_HEIGHT = 40
 
-// player pane at left side of the screen:
+// Constants for player panes:
+// PPL stands for PanePlayerLeft, etc.
+const val PPT_DIS_TO_TOP = 18
 const val PPL_DIS_TO_LEFT = 60
 const val PPL_WIDTH = PLAYER_LABEL_WIDTH + DIS_BTW_LABEL_AND_CARD + CARD_WIDTH * 3 + HORIZ_DIS_BTW_CARDS * 2
 const val PPL_HEIGHT = CARD_HEIGHT * 2 + VERT_DIS_BTW_CARDS
 const val PPL_POS_X = PPL_DIS_TO_LEFT
 const val PPL_POS_Y = (SCREEN_HEIGHT - PPL_HEIGHT) / 2
 const val PLAYER_LABEL_POS_Y = (PPL_HEIGHT - PLAYER_LABEL_HEIGHT * 4) / 2
+
+
+
 
 val PLAYER_COLORS = listOf(Color.CYAN, Color.YELLOW, Color.LIGHT_GRAY, Color.MAGENTA)
 val PLAYER_PANE_BG_VISUAL = ColorVisual(50, 50, 50, 90)

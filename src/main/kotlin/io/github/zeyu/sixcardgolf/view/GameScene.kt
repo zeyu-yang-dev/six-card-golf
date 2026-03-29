@@ -35,6 +35,7 @@ class GameScene(private val rootService: RootService) : BoardGameScene(1600, 900
 
     val panePlayerLeft = PanePlayerLeft(rootService, this)
     val panePlayerRight = PanePlayerRight(rootService, this)
+    val panePlayerTop = PanePlayerTop(rootService, this)
 
     //------------------------------------------------------------------------------------------------------------------
 
@@ -1240,13 +1241,14 @@ class GameScene(private val rootService: RootService) : BoardGameScene(1600, 900
         addComponents(
             panePlayerLeft,
             panePlayerRight,
+            panePlayerTop,
         )
 
 
         println(leftPlayerCard1.posX - (leftPlayerLabel.posX + leftPlayerLabel.width))
         println(leftPlayerLabel.actualPosY)
-        println(leftPlayerName.actualPosY)
-        println(PPL_HEIGHT)
+        println(topPlayerCard1.actualPosY)
+
 
     }
 }

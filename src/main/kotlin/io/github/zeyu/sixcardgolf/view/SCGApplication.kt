@@ -73,7 +73,8 @@ class SCGApplication : BoardGameApplication("Six Card Golf"), Refreshable {
             gameScene,
             resultMenuScene,
             gameScene.panePlayerLeft,
-            gameScene.panePlayerRight
+            gameScene.panePlayerRight,
+            gameScene.panePlayerTop
         )
 
         // This is just done so that the blurred background when showing the new game menu

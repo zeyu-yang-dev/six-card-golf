@@ -16,12 +16,12 @@ import java.awt.Color
 
 
 
-class PanePlayerRight(
+class PanePlayerTop(
     private val rootService: RootService,
     private val gameScene: GameScene
 ) : Pane<ComponentView>(
-    SCREEN_WIDTH - PPL_DIS_TO_LEFT - PPL_WIDTH,
-    PPL_POS_Y,
+    (SCREEN_WIDTH - CARD_WIDTH * 3 - HORIZ_DIS_BTW_CARDS * 2) / 2,
+    PPT_DIS_TO_TOP,
     PPL_WIDTH,
     PPL_HEIGHT,
     visual = PLAYER_PANE_BG_VISUAL
@@ -64,9 +64,13 @@ class PanePlayerRight(
         val currentPlayerIndex = currentGame.currentPlayerIndex
         val numOfPlayers = currentGame.players.size
 
-        // This pane is only shown, when there are 4 players.
-        // In this case, this pane always shows the deck of the next player.
-        val toPlayerOfThisPane = 1
+        // This pane is shown, when there are 2, 3 or 4 players.
+        // If there are 2 or 3 players, this pane shows the next player:
+        var toPlayerOfThisPane = 1
+        // If there are 4 players, this pane shows the player two positions ahead:
+        if (numOfPlayers == 4) {
+            toPlayerOfThisPane = 2
+        }
 
         val playerOfThisPane = currentGame.players[(currentPlayerIndex + toPlayerOfThisPane) % numOfPlayers]
         return playerOfThisPane
