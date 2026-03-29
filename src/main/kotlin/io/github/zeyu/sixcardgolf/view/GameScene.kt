@@ -4,6 +4,7 @@ import io.github.zeyu.sixcardgolf.entity.*
 
 import io.github.zeyu.sixcardgolf.service.RootService
 import io.github.zeyu.sixcardgolf.service.CardImageLoader
+import io.github.zeyu.sixcardgolf.view.panes.PPL_HEIGHT
 import io.github.zeyu.sixcardgolf.view.panes.PanePlayerLeft
 
 import tools.aqua.bgw.animation.DelayAnimation
@@ -1238,8 +1239,9 @@ class GameScene(private val rootService: RootService) : BoardGameScene(1600, 900
         addComponents(panePlayerLeft)
 
         println(leftPlayerCard1.posX - (leftPlayerLabel.posX + leftPlayerLabel.width))
-        println(leftPlayerCard1.actualPosX)
-        println(leftPlayerLabel.actualPosX)
+        println(leftPlayerLabel.actualPosY)
+        println(leftPlayerName.actualPosY)
+        println(PPL_HEIGHT)
 
     }
 }
