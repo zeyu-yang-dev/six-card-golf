@@ -4,6 +4,7 @@ import io.github.zeyu.sixcardgolf.entity.*
 
 import io.github.zeyu.sixcardgolf.service.RootService
 import io.github.zeyu.sixcardgolf.service.CardImageLoader
+import io.github.zeyu.sixcardgolf.view.panes.PanePlayerLeft
 
 import tools.aqua.bgw.animation.DelayAnimation
 import tools.aqua.bgw.core.BoardGameScene
@@ -13,6 +14,7 @@ import tools.aqua.bgw.components.uicomponents.Label
 import tools.aqua.bgw.components.ComponentView
 import tools.aqua.bgw.core.Alignment
 import tools.aqua.bgw.util.Font
+import tools.aqua.bgw.visual.ColorVisual
 import java.awt.Color
 import java.awt.image.BufferedImage
 import javax.imageio.ImageIO
@@ -29,6 +31,8 @@ class GameScene(private val rootService: RootService) : BoardGameScene(1600, 900
     private val cardImageLoader = CardImageLoader()
 
     private val playerActionService = rootService.playerActionService
+
+    val panePlayerLeft = PanePlayerLeft(rootService, this)
 
     //------------------------------------------------------------------------------------------------------------------
 
@@ -110,7 +114,8 @@ class GameScene(private val rootService: RootService) : BoardGameScene(1600, 900
         posY = leftPlayerCenterY - playerLabelOffsetY,
         text = "Player Name:",
         font = Font(size = 25, color = unchangeableLabelColor, fontWeight = Font.FontWeight.SEMI_BOLD),
-        alignment = Alignment.CENTER_LEFT
+        alignment = Alignment.CENTER_LEFT,
+        visual = ColorVisual.BLUE
     )
 
     private val leftPlayerName: Label = Label(
@@ -1229,6 +1234,12 @@ class GameScene(private val rootService: RootService) : BoardGameScene(1600, 900
 
         val image : BufferedImage = ImageIO.read(CardImageLoader::class.java.getResource("/game_background.jpg"))
         this.background = ImageVisual(image)
+
+        addComponents(panePlayerLeft)
+
+        println(leftPlayerCard1.posX - (leftPlayerLabel.posX + leftPlayerLabel.width))
+        println(leftPlayerCard1.actualPosX)
+        println(leftPlayerLabel.actualPosX)
 
     }
 }
