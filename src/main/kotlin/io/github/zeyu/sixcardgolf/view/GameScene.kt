@@ -98,332 +98,10 @@ class GameScene(private val rootService: RootService) : BoardGameScene(1600, 900
     // 4 labels to show status, and
     // 6 deck-cards
     
-    // The coordinates of the center of the six-card-deck of the player on the left:
-    private val leftPlayerCenterX = 400
-    private val leftPlayerCenterY = 450
 
-    // There are 4 labels for player status:
-    // 1. leftPlayerLabel, which shows "Player Name:"
-    // 2. leftPlayerName
-    // 3. leftPlayerLable2, which shows "Visible Score:"
-    // 4. leftPlayerScore
-    // Of which 1 and 3 are fix, 2 and 4 are changeable and thus need to be refreshed
-
-    // leftPlayerLabel is the first label shown for the player status:
-    private val leftPlayerLabel: Label = Label(
-        height = playerLabelHeight,
-        width = playerLabelWidth,
-        posX = leftPlayerCenterX + playerLabelOffsetX - leftPlayerStatusOffsetX,
-        posY = leftPlayerCenterY - playerLabelOffsetY,
-        text = "Player Name:",
-        font = Font(size = 25, color = unchangeableLabelColor, fontWeight = Font.FontWeight.SEMI_BOLD),
-        alignment = Alignment.CENTER_LEFT,
-        visual = ColorVisual.BLUE
-    )
-
-    private val leftPlayerName: Label = Label(
-        height = playerLabelHeight,
-        width = playerLabelWidth,
-        posX = leftPlayerCenterX + playerLabelOffsetX - leftPlayerStatusOffsetX,
-        posY = leftPlayerCenterY - playerLabelOffsetY + offsetOneLine,
-        text = "Cold Sheep",
-        font = Font(size = 25, color = changeableLabelColor, fontWeight = Font.FontWeight.SEMI_BOLD),
-        alignment = Alignment.CENTER_LEFT
-    )
-
-    private val leftPlayerLabel2: Label = Label(
-        height = playerLabelHeight,
-        width = playerLabelWidth,
-        posX = leftPlayerCenterX + playerLabelOffsetX - leftPlayerStatusOffsetX,
-        posY = leftPlayerCenterY - playerLabelOffsetY + 3 * offsetOneLine,
-        text = "Visible Score:",
-        font = Font(size = 25, color = unchangeableLabelColor, fontWeight = Font.FontWeight.SEMI_BOLD),
-        alignment = Alignment.CENTER_LEFT
-    )
-
-    private val leftPlayerScore: Label = Label(
-        height = playerLabelHeight,
-        width = playerLabelWidth,
-        posX = leftPlayerCenterX + playerLabelOffsetX - leftPlayerStatusOffsetX,
-        posY = leftPlayerCenterY - playerLabelOffsetY + 4 * offsetOneLine,
-        text = "10000",
-        font = Font(size = 25, color = changeableLabelColor, fontWeight = Font.FontWeight.SEMI_BOLD),
-        alignment = Alignment.CENTER_LEFT
-    )
-
-    //-----------------------------------------------------
-    private val leftPlayerCard1 = CardView(
-        posX = leftPlayerCenterX - horizontalDistanceInDeck - cardWidth / 2 - scaleOffsetX,
-        posY = leftPlayerCenterY - verticalDistanceInDeck - cardHeight / 2 - scaleOffsetY,
-        front = ImageVisual(cardImageLoader.frontImageFor(CardSuit.HEARTS, CardValue.ACE)),
-        back = ImageVisual(cardImageLoader.backImage)
-    ).apply {
-        this.showFront()
-        this.scale(cardScale)
-    }
-
-    private val leftPlayerCard2 = CardView(
-        posX = leftPlayerCenterX - cardWidth / 2 - scaleOffsetX,
-        posY = leftPlayerCenterY - verticalDistanceInDeck - cardHeight / 2 - scaleOffsetY,
-        front = ImageVisual(cardImageLoader.frontImageFor(CardSuit.HEARTS, CardValue.TWO)),
-        back = ImageVisual(cardImageLoader.backImage)
-    ).apply {
-        this.showFront()
-        this.scale(cardScale)
-    }
-
-    private val leftPlayerCard3 = CardView(
-        posX = leftPlayerCenterX + horizontalDistanceInDeck - cardWidth / 2 - scaleOffsetX,
-        posY = leftPlayerCenterY - verticalDistanceInDeck - cardHeight / 2 - scaleOffsetY,
-        front = ImageVisual(cardImageLoader.frontImageFor(CardSuit.HEARTS, CardValue.THREE)),
-        back = ImageVisual(cardImageLoader.backImage)
-    ).apply {
-        this.showFront()
-        this.scale(cardScale)
-    }
-
-     private val leftPlayerCard4 = CardView(
-        posX = leftPlayerCenterX - horizontalDistanceInDeck - cardWidth / 2 - scaleOffsetX,
-        posY = leftPlayerCenterY + verticalDistanceInDeck - cardHeight / 2 - scaleOffsetY,
-        front = ImageVisual(cardImageLoader.frontImageFor(CardSuit.HEARTS, CardValue.FOUR)),
-        back = ImageVisual(cardImageLoader.backImage)
-    ).apply {
-        this.showFront()
-        this.scale(cardScale)
-    }
-
-    private val leftPlayerCard5 = CardView(
-        posX = leftPlayerCenterX - cardWidth / 2 - scaleOffsetX,
-        posY = leftPlayerCenterY + verticalDistanceInDeck - cardHeight / 2 - scaleOffsetY,
-        front = ImageVisual(cardImageLoader.frontImageFor(CardSuit.HEARTS, CardValue.FIVE)),
-        back = ImageVisual(cardImageLoader.backImage)
-    ).apply {
-        this.showFront()
-        this.scale(cardScale)
-    }
-
-    private val leftPlayerCard6 = CardView(
-        posX = leftPlayerCenterX + horizontalDistanceInDeck - cardWidth / 2 - scaleOffsetX,
-        posY = leftPlayerCenterY + verticalDistanceInDeck - cardHeight / 2 - scaleOffsetY,
-        front = ImageVisual(cardImageLoader.frontImageFor(CardSuit.HEARTS, CardValue.SIX)),
-        back = ImageVisual(cardImageLoader.backImage)
-    ).apply {
-        this.showFront()
-        this.scale(cardScale)
-    }
 
     //------------------------------------------------------------------------------------------------------------------
-    // The coordinates of the center of the six-card-deck of the player on the right:
-    private val rightPlayerCenterX = 1200
-    private val rightPlayerCenterY = 450
-    
-    private val rightPlayerLabel: Label = Label(
-        height = playerLabelHeight,
-        width = playerLabelWidth,
-        posX = rightPlayerCenterX - playerLabelOffsetX,
-        posY = rightPlayerCenterY - playerLabelOffsetY,
-        text = "Player Name:",
-        font = Font(size = 25, color = unchangeableLabelColor, fontWeight = Font.FontWeight.SEMI_BOLD),
-        alignment = Alignment.CENTER_LEFT
-    )
 
-    private val rightPlayerName: Label = Label(
-        height = playerLabelHeight,
-        width = playerLabelWidth,
-        posX = rightPlayerCenterX - playerLabelOffsetX,
-        posY = rightPlayerCenterY - playerLabelOffsetY + offsetOneLine,
-        text = "Alex",
-        font = Font(size = 25, color = changeableLabelColor, fontWeight = Font.FontWeight.SEMI_BOLD),
-        alignment = Alignment.CENTER_LEFT
-    )
-
-    private val rightPlayerLabel2: Label = Label(
-        height = playerLabelHeight,
-        width = playerLabelWidth,
-        posX = rightPlayerCenterX - playerLabelOffsetX,
-        posY = rightPlayerCenterY - playerLabelOffsetY + 3 * offsetOneLine,
-        text = "Visible Score:",
-        font = Font(size = 25, color = unchangeableLabelColor, fontWeight = Font.FontWeight.SEMI_BOLD),
-        alignment = Alignment.CENTER_LEFT
-    )
-
-    private val rightPlayerScore: Label = Label(
-        height = playerLabelHeight,
-        width = playerLabelWidth,
-        posX = rightPlayerCenterX - playerLabelOffsetX,
-        posY = rightPlayerCenterY - playerLabelOffsetY + 4 * offsetOneLine,
-        text = "10000",
-        font = Font(size = 25, color = changeableLabelColor, fontWeight = Font.FontWeight.SEMI_BOLD),
-        alignment = Alignment.CENTER_LEFT
-    )
-    
-    //-----------------------------------------------------
-    private val rightPlayerCard1 = CardView(
-        posX = rightPlayerCenterX - horizontalDistanceInDeck - cardWidth / 2 - scaleOffsetX,
-        posY = rightPlayerCenterY - verticalDistanceInDeck - cardHeight / 2 - scaleOffsetY,
-        front = ImageVisual(cardImageLoader.frontImageFor(CardSuit.HEARTS, CardValue.ACE)),
-        back = ImageVisual(cardImageLoader.backImage)
-    ).apply {
-        this.showFront()
-        this.scale(cardScale)
-    }
-
-    private val rightPlayerCard2 = CardView(
-        posX = rightPlayerCenterX - cardWidth / 2 - scaleOffsetX,
-        posY = rightPlayerCenterY - verticalDistanceInDeck - cardHeight / 2 - scaleOffsetY,
-        front = ImageVisual(cardImageLoader.frontImageFor(CardSuit.HEARTS, CardValue.TWO)),
-        back = ImageVisual(cardImageLoader.backImage)
-    ).apply {
-        this.showFront()
-        this.scale(cardScale)
-    }
-
-    private val rightPlayerCard3 = CardView(
-        posX = rightPlayerCenterX + horizontalDistanceInDeck - cardWidth / 2 - scaleOffsetX,
-        posY = rightPlayerCenterY - verticalDistanceInDeck - cardHeight / 2 - scaleOffsetY,
-        front = ImageVisual(cardImageLoader.frontImageFor(CardSuit.HEARTS, CardValue.THREE)),
-        back = ImageVisual(cardImageLoader.backImage)
-    ).apply {
-        this.showFront()
-        this.scale(cardScale)
-    }
-
-     private val rightPlayerCard4 = CardView(
-        posX = rightPlayerCenterX - horizontalDistanceInDeck - cardWidth / 2 - scaleOffsetX,
-        posY = rightPlayerCenterY + verticalDistanceInDeck - cardHeight / 2 - scaleOffsetY,
-        front = ImageVisual(cardImageLoader.frontImageFor(CardSuit.HEARTS, CardValue.FOUR)),
-        back = ImageVisual(cardImageLoader.backImage)
-    ).apply {
-        this.showFront()
-        this.scale(cardScale)
-    }
-
-    private val rightPlayerCard5 = CardView(
-        posX = rightPlayerCenterX - cardWidth / 2 - scaleOffsetX,
-        posY = rightPlayerCenterY + verticalDistanceInDeck - cardHeight / 2 - scaleOffsetY,
-        front = ImageVisual(cardImageLoader.frontImageFor(CardSuit.HEARTS, CardValue.FIVE)),
-        back = ImageVisual(cardImageLoader.backImage)
-    ).apply {
-        this.showFront()
-        this.scale(cardScale)
-    }
-
-    private val rightPlayerCard6 = CardView(
-        posX = rightPlayerCenterX + horizontalDistanceInDeck - cardWidth / 2 - scaleOffsetX,
-        posY = rightPlayerCenterY + verticalDistanceInDeck - cardHeight / 2 - scaleOffsetY,
-        front = ImageVisual(cardImageLoader.frontImageFor(CardSuit.HEARTS, CardValue.SIX)),
-        back = ImageVisual(cardImageLoader.backImage)
-    ).apply {
-        this.showFront()
-        this.scale(cardScale)
-    }
-    
-    //------------------------------------------------------------------------------------------------------------------
-    // The coordinates of the center of the six-card-deck of the player on the top:
-    private val topPlayerCenterX = 800
-    private val topPlayerCenterY = 150
-
-    private val topPlayerLabel: Label = Label(
-        height = playerLabelHeight,
-        width = playerLabelWidth,
-        posX = topPlayerCenterX - playerLabelOffsetX,
-        posY = topPlayerCenterY - playerLabelOffsetY,
-        text = "Player Name:",
-        font = Font(size = 25, color = unchangeableLabelColor, fontWeight = Font.FontWeight.SEMI_BOLD),
-        alignment = Alignment.CENTER_LEFT
-    )
-
-    private val topPlayerName: Label = Label(
-        height = playerLabelHeight,
-        width = playerLabelWidth,
-        posX = topPlayerCenterX - playerLabelOffsetX,
-        posY = topPlayerCenterY - playerLabelOffsetY + offsetOneLine,
-        text = "Alex",
-        font = Font(size = 25, color = changeableLabelColor, fontWeight = Font.FontWeight.SEMI_BOLD),
-        alignment = Alignment.CENTER_LEFT
-    )
-
-    private val topPlayerLabel2: Label = Label(
-        height = playerLabelHeight,
-        width = playerLabelWidth,
-        posX = topPlayerCenterX - playerLabelOffsetX,
-        posY = topPlayerCenterY - playerLabelOffsetY + 3 * offsetOneLine,
-        text = "Visible Score:",
-        font = Font(size = 25, color = unchangeableLabelColor, fontWeight = Font.FontWeight.SEMI_BOLD),
-        alignment = Alignment.CENTER_LEFT
-    )
-
-    private val topPlayerScore: Label = Label(
-        height = playerLabelHeight,
-        width = playerLabelWidth,
-        posX = topPlayerCenterX - playerLabelOffsetX,
-        posY = topPlayerCenterY - playerLabelOffsetY + 4 * offsetOneLine,
-        text = "10000",
-        font = Font(size = 25, color = changeableLabelColor, fontWeight = Font.FontWeight.SEMI_BOLD),
-        alignment = Alignment.CENTER_LEFT
-    )
-
-
-    //-----------------------------------------------------
-    private val topPlayerCard1 = CardView(
-        posX = topPlayerCenterX - horizontalDistanceInDeck - cardWidth / 2 - scaleOffsetX,
-        posY = topPlayerCenterY - verticalDistanceInDeck - cardHeight / 2 - scaleOffsetY,
-        front = ImageVisual(cardImageLoader.frontImageFor(CardSuit.HEARTS, CardValue.ACE)),
-        back = ImageVisual(cardImageLoader.backImage)
-    ).apply {
-        this.showFront()
-        this.scale(cardScale)
-    }
-
-    private val topPlayerCard2 = CardView(
-        posX = topPlayerCenterX - cardWidth / 2 - scaleOffsetX,
-        posY = topPlayerCenterY - verticalDistanceInDeck - cardHeight / 2 - scaleOffsetY,
-        front = ImageVisual(cardImageLoader.frontImageFor(CardSuit.HEARTS, CardValue.TWO)),
-        back = ImageVisual(cardImageLoader.backImage)
-    ).apply {
-        this.showFront()
-        this.scale(cardScale)
-    }
-
-    private val topPlayerCard3 = CardView(
-        posX = topPlayerCenterX + horizontalDistanceInDeck - cardWidth / 2 - scaleOffsetX,
-        posY = topPlayerCenterY - verticalDistanceInDeck - cardHeight / 2 - scaleOffsetY,
-        front = ImageVisual(cardImageLoader.frontImageFor(CardSuit.HEARTS, CardValue.THREE)),
-        back = ImageVisual(cardImageLoader.backImage)
-    ).apply {
-        this.showFront()
-        this.scale(cardScale)
-    }
-
-     private val topPlayerCard4 = CardView(
-        posX = topPlayerCenterX - horizontalDistanceInDeck - cardWidth / 2 - scaleOffsetX,
-        posY = topPlayerCenterY + verticalDistanceInDeck - cardHeight / 2 - scaleOffsetY,
-        front = ImageVisual(cardImageLoader.frontImageFor(CardSuit.HEARTS, CardValue.FOUR)),
-        back = ImageVisual(cardImageLoader.backImage)
-    ).apply {
-        this.showFront()
-        this.scale(cardScale)
-    }
-
-    private val topPlayerCard5 = CardView(
-        posX = topPlayerCenterX - cardWidth / 2 - scaleOffsetX,
-        posY = topPlayerCenterY + verticalDistanceInDeck - cardHeight / 2 - scaleOffsetY,
-        front = ImageVisual(cardImageLoader.frontImageFor(CardSuit.HEARTS, CardValue.FIVE)),
-        back = ImageVisual(cardImageLoader.backImage)
-    ).apply {
-        this.showFront()
-        this.scale(cardScale)
-    }
-
-    private val topPlayerCard6 = CardView(
-        posX = topPlayerCenterX + horizontalDistanceInDeck - cardWidth / 2 - scaleOffsetX,
-        posY = topPlayerCenterY + verticalDistanceInDeck - cardHeight / 2 - scaleOffsetY,
-        front = ImageVisual(cardImageLoader.frontImageFor(CardSuit.HEARTS, CardValue.SIX)),
-        back = ImageVisual(cardImageLoader.backImage)
-    ).apply {
-        this.showFront()
-        this.scale(cardScale)
-    }
 
     //------------------------------------------------------------------------------------------------------------------
     // The coordinates of the center of the six-card-deck of the player on the bottom:
@@ -629,23 +307,12 @@ class GameScene(private val rootService: RootService) : BoardGameScene(1600, 900
     )
     //------------------------------------------------------------------------------------------------------------------
 
-    private val leftPlayerCards: List<CardView> =
-        listOf(leftPlayerCard1, leftPlayerCard2, leftPlayerCard3, leftPlayerCard4, leftPlayerCard5, leftPlayerCard6)
-    private val rightPlayerCards: List<CardView> =
-        listOf(rightPlayerCard1, rightPlayerCard2, rightPlayerCard3,
-            rightPlayerCard4, rightPlayerCard5, rightPlayerCard6)
-    private val topPlayerCards: List<CardView> =
-        listOf(topPlayerCard1, topPlayerCard2, topPlayerCard3, topPlayerCard4, topPlayerCard5, topPlayerCard6)
+
     private val bottomPlayerCards: List<CardView> =
         listOf(bottomPlayerCard1, bottomPlayerCard2, bottomPlayerCard3,
             bottomPlayerCard4, bottomPlayerCard5, bottomPlayerCard6)
 
-    private val leftPlayerLabels: List<Label> =
-        listOf(leftPlayerName, leftPlayerScore, leftPlayerLabel, leftPlayerLabel2)
-    private val rightPlayerLabels: List<Label> =
-        listOf(rightPlayerName, rightPlayerScore, rightPlayerLabel, rightPlayerLabel2)
-    private val topPlayerLabels: List<Label> =
-        listOf(topPlayerName, topPlayerScore, topPlayerLabel, topPlayerLabel2)
+
     private val bottomPlayerLabels: List<Label> =
         listOf(bottomPlayerName, bottomPlayerScore, bottomPlayerLabel, bottomPlayerLabel2)
 
@@ -704,32 +371,26 @@ class GameScene(private val rootService: RootService) : BoardGameScene(1600, 900
 
             2 -> {
                 val bottomPlayer = players[currentPlayerIndex]
-                val topPlayer = players[(currentPlayerIndex + 1) % 2]
+
 
                 refreshOnePlayer(bottomPlayer, bottomPlayerCards, bottomPlayerName, bottomPlayerScore)
-                refreshOnePlayer(topPlayer, topPlayerCards, topPlayerName, topPlayerScore)
+
             }
 
             3 -> {
                 val bottomPlayer = players[currentPlayerIndex]
-                val rightPlayer = players[(currentPlayerIndex + 1) % 3]
-                val topPlayer = players[(currentPlayerIndex + 2) % 3]
+
 
                 refreshOnePlayer(bottomPlayer, bottomPlayerCards, bottomPlayerName, bottomPlayerScore)
-                refreshOnePlayer(topPlayer, topPlayerCards, topPlayerName, topPlayerScore)
-                refreshOnePlayer(rightPlayer, rightPlayerCards, rightPlayerName, rightPlayerScore)
+
             }
 
             4 -> {
                 val bottomPlayer = players[currentPlayerIndex]
-                val rightPlayer = players[(currentPlayerIndex + 1) % 4]
-                val topPlayer = players[(currentPlayerIndex + 2) % 4]
-                val leftPlayer = players[(currentPlayerIndex + 3) % 4]
+
 
                 refreshOnePlayer(bottomPlayer, bottomPlayerCards, bottomPlayerName, bottomPlayerScore)
-                refreshOnePlayer(leftPlayer, leftPlayerCards, leftPlayerName, leftPlayerScore)
-                refreshOnePlayer(topPlayer, topPlayerCards, topPlayerName, topPlayerScore)
-                refreshOnePlayer(rightPlayer, rightPlayerCards, rightPlayerName, rightPlayerScore)
+
             }
 
         }
@@ -1049,8 +710,7 @@ class GameScene(private val rootService: RootService) : BoardGameScene(1600, 900
         val components = mutableListOf<ComponentView>()
 
         // Add common Components
-        components.addAll(topPlayerLabels)
-        components.addAll(topPlayerCards)
+
         components.addAll(bottomPlayerLabels)
         components.addAll(bottomPlayerCards)
         components.addAll(middleCards)
@@ -1066,18 +726,14 @@ class GameScene(private val rootService: RootService) : BoardGameScene(1600, 900
             }
             3 -> {
                 // 3 Players:
-                components.addAll(rightPlayerLabels)
-                components.addAll(rightPlayerCards)
+
                 for (i in components.indices) {
                     addComponents(components[i])
                 }
             }
             4 -> {
                 // 4 Players:
-                components.addAll(rightPlayerLabels)
-                components.addAll(rightPlayerCards)
-                components.addAll(leftPlayerLabels)
-                components.addAll(leftPlayerCards)
+
                 for (i in components.indices) {
                     addComponents(components[i])
                 }
@@ -1245,9 +901,7 @@ class GameScene(private val rootService: RootService) : BoardGameScene(1600, 900
         )
 
 
-        println(leftPlayerCard1.posX - (leftPlayerLabel.posX + leftPlayerLabel.width))
-        println(leftPlayerLabel.actualPosY)
-        println(topPlayerCard1.actualPosY)
+
 
 
     }

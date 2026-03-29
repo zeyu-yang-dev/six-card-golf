@@ -42,9 +42,10 @@ class SCGApplication : BoardGameApplication("Six Card Golf"), Refreshable {
 
         restartButton.onMouseClicked = {
 
+            // TODO: UNIFY visibility logic for the bottom pane
             // remove all components in case restartButton is pressed,
             // because when [refreshAfterStartNewGame] is called, proper number of components will be added
-            gameScene.clearComponents()
+            gameScene.clearComponents() // HAS TO BE REPLACED WITH VISIBILITY CONTROL LATER
             // remove all components in case restartButton is pressed,
             // because when [refreshAfterGameEnd] is called, proper number of components will be added
             this.clearComponents()
