@@ -70,12 +70,15 @@ class SCGApplication : BoardGameApplication("Six Card Golf"), Refreshable {
         // all scenes and the application itself need to react to changes done in the service layer
         rootService.addRefreshables(
             this,
+
             mainMenuScene,
             gameScene,
             resultMenuScene,
+
             gameScene.panePlayerLeft,
             gameScene.panePlayerRight,
-            gameScene.panePlayerTop
+            gameScene.panePlayerTop,
+            gameScene.panePlayerBottom
         )
 
         // This is just done so that the blurred background when showing the new game menu
