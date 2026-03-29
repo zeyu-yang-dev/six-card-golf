@@ -5,7 +5,7 @@ import io.github.zeyu.sixcardgolf.entity.*
 import io.github.zeyu.sixcardgolf.service.RootService
 import io.github.zeyu.sixcardgolf.service.CardImageLoader
 
-import io.github.zeyu.sixcardgolf.view.panes.PanePlayerLeft
+import io.github.zeyu.sixcardgolf.view.panes.*
 
 import tools.aqua.bgw.animation.DelayAnimation
 import tools.aqua.bgw.core.BoardGameScene
@@ -34,6 +34,7 @@ class GameScene(private val rootService: RootService) : BoardGameScene(1600, 900
     private val playerActionService = rootService.playerActionService
 
     val panePlayerLeft = PanePlayerLeft(rootService, this)
+    val panePlayerRight = PanePlayerRight(rootService, this)
 
     //------------------------------------------------------------------------------------------------------------------
 
@@ -1236,7 +1237,11 @@ class GameScene(private val rootService: RootService) : BoardGameScene(1600, 900
         val image : BufferedImage = ImageIO.read(CardImageLoader::class.java.getResource("/game_background.jpg"))
         this.background = ImageVisual(image)
 
-        addComponents(panePlayerLeft)
+        addComponents(
+            panePlayerLeft,
+            panePlayerRight,
+        )
+
 
         println(leftPlayerCard1.posX - (leftPlayerLabel.posX + leftPlayerLabel.width))
         println(leftPlayerLabel.actualPosY)

@@ -18,11 +18,11 @@ import java.awt.Color
 
 
 
-class PanePlayerLeft(
+class PanePlayerRight(
     private val rootService: RootService,
     private val gameScene: GameScene
 ) : Pane<ComponentView>(
-    PPL_POS_X,
+    SCREEN_WIDTH - PPL_DIS_TO_LEFT - PPL_WIDTH,
     PPL_POS_Y,
     PPL_WIDTH,
     PPL_HEIGHT,
@@ -36,7 +36,7 @@ class PanePlayerLeft(
 
     private fun createCardView(row: Int, col: Int): CardView {
         val cardView = CardView(
-            posX = PLAYER_LABEL_WIDTH + DIS_BTW_LABEL_AND_CARD + (CARD_WIDTH + HORIZ_DIS_BTW_CARDS) * col,
+            posX = (CARD_WIDTH + HORIZ_DIS_BTW_CARDS) * col,
             posY = (CARD_HEIGHT + VERT_DIS_BTW_CARDS) * row,
             width = CARD_WIDTH,
             height = CARD_HEIGHT,
@@ -50,7 +50,7 @@ class PanePlayerLeft(
 
     private fun createLabel(row: Int): Label {
         val label = Label(
-            posX = 0,
+            posX = CARD_WIDTH * 3 + HORIZ_DIS_BTW_CARDS * 2 + DIS_BTW_LABEL_AND_CARD,
             posY = PLAYER_LABEL_POS_Y + PLAYER_LABEL_HEIGHT * row,
             width = PLAYER_LABEL_WIDTH,
             height = PLAYER_LABEL_HEIGHT,
@@ -66,13 +66,9 @@ class PanePlayerLeft(
         val currentPlayerIndex = currentGame.currentPlayerIndex
         val numOfPlayers = currentGame.players.size
 
-        // This pane is only shown, when there are 3 or 4 players.
-        // When there are 3 players:
-        var toPlayerOfThisPane = 2
-        // When there are 4 players:
-        if (numOfPlayers == 4) {
-            toPlayerOfThisPane = 3
-        }
+        // This pane is only shown, when there are 4 players.
+        // In this case, this pane always shows the deck of the next player.
+        val toPlayerOfThisPane = 1
 
         val playerOfThisPane = currentGame.players[(currentPlayerIndex + toPlayerOfThisPane) % numOfPlayers]
         return playerOfThisPane
