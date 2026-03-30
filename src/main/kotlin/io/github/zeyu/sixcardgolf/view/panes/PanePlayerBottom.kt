@@ -21,7 +21,7 @@ class PanePlayerBottom(
     private val rootService: RootService,
     private val gameScene: GameScene
 ) : Pane<ComponentView>(
-    400 + (SCREEN_WIDTH - CARD_WIDTH * 3 - HORIZ_DIS_BTW_CARDS * 2) / 2,
+    (SCREEN_WIDTH - CARD_WIDTH * 3 - HORIZ_DIS_BTW_CARDS * 2) / 2,
     SCREEN_HEIGHT - PPL_HEIGHT - PPT_DIS_TO_TOP,
     PPL_WIDTH,
     PPL_HEIGHT,
@@ -118,8 +118,65 @@ class PanePlayerBottom(
     }
 
 
-    // TODO
+
+    private fun disableCardView(cardView: ComponentView) {
+        cardView.isDisabled = true
+        cardView.opacity = 0.5
+    }
+
+    private fun disableAllCardViews() {
+        cardViews.forEach { disableCardView(it) }
+    }
+
+    private fun enableCardView(cardView: ComponentView) {
+        cardView.isDisabled = false
+        cardView.opacity = 1.0
+    }
+
+    private fun enableAllCardViews() {
+        cardViews.forEach { enableCardView(it) }
+    }
+
+    private fun disableRevealedCardViews() {
+        val currentGame = rootService.currentGame
+        requireNotNull(currentGame) {"Current game not available!"}
+        val currentPlayer = currentGame.players[currentGame.currentPlayerIndex]
+        val cards = currentPlayer.topRow + currentPlayer.bottomRow
+
+        // disable cardViews for all revealed cards
+        for (i in cardViews.indices) {
+            if (cards[i]?.isRevealed == true) {
+                disableCardView(cardViews[i])
+            }
+        }
+    }
+
+
+
     private fun updateInteractivity() {
+
+        val currentGame = rootService.currentGame
+        requireNotNull(currentGame) {"Current game not available!"}
+        val currentPlayer = currentGame.players[currentGame.currentPlayerIndex]
+        val cards = currentPlayer.topRow + currentPlayer.bottomRow
+
+        enableAllCardViews()
+
+        // Condition 1: In the first round
+        if (currentGame.isFirstRound) disableRevealedCardViews()
+
+        when (gameScene.state) {
+            // Condition 2: A turn just started
+            StateOfUI.TURN_START -> disableRevealedCardViews()
+            // Condition 3: Just drawn from draw-stack
+            StateOfUI.HAS_DRAWN -> {}
+            // Condition 4: Just drawn from discard-stack
+            StateOfUI.HAS_DRAWN_DISCARDED -> {}
+            // Condition 5: Just discarded the hand card, which was drawn from draw-stack
+            StateOfUI.HAS_DISCARDED -> disableRevealedCardViews()
+            // Condition 6: When game ends, disable all components
+            StateOfUI.GAME_END -> disableAllCardViews()
+        }
 
     }
 
@@ -158,55 +215,73 @@ class PanePlayerBottom(
 
 
     override fun refreshAfterStartNewGame() {
+        gameScene.state = StateOfUI.TURN_START
         refreshThisPane()
+        updateInteractivity()
     }
 
     override fun refreshAfterFirstReveal() {
         refreshThisPane()
+        updateInteractivity()
     }
 
     override fun refreshAfterReveal() {
         refreshThisPane()
-    }
-
-    override fun refreshOnLastRound() {
-        refreshThisPane()
+        updateInteractivity()
     }
 
     override fun refreshAfterDrawCard() {
+        gameScene.state = StateOfUI.HAS_DRAWN
         refreshThisPane()
+        updateInteractivity()
     }
 
     override fun refreshAfterDrawDiscardedCard() {
+        gameScene.state = StateOfUI.HAS_DRAWN_DISCARDED
         refreshThisPane()
+        updateInteractivity()
     }
 
     override fun refreshAfterSwap() {
         refreshThisPane()
+        updateInteractivity()
     }
 
 
     override fun refreshAfterDiscard() {
+        gameScene.state = StateOfUI.HAS_DISCARDED
         refreshThisPane()
+        updateInteractivity()
     }
 
     override fun refreshAfterNextTurn() {
+        disableAllCardViews()
         gameScene.playAnimation(
-
             DelayAnimation(duration = DELAY_BTW_TURNS).apply {
                 onFinished = {
+                    gameScene.state = StateOfUI.TURN_START
                     refreshThisPane()
+                    enableAllCardViews()
+                    updateInteractivity()
                 }
             }
         )
     }
 
-    override fun refreshBeforeGameEnd() {
+    override fun refreshOnLastRound() {
         refreshThisPane()
+        updateInteractivity()
+    }
+
+    override fun refreshBeforeGameEnd() {
+        gameScene.state = StateOfUI.GAME_END
+        refreshThisPane()
+        updateInteractivity()
     }
 
     override fun refreshAfterGameEnd() {
         refreshThisPane()
+        updateInteractivity()
     }
 
 

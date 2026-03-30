@@ -258,13 +258,7 @@ class GameScene(private val rootService: RootService) : BoardGameScene(1600, 900
         val currentPlayer = players[currentPlayerIndex]
         val cards = currentPlayer.topRow + currentPlayer.bottomRow
 
-        for (i in 0..5) {
-            // enable all deck-cards that are not null
-            if (cards[i] != null) {
-                bottomPlayerCards[i].isDisabled = false
-                bottomPlayerCards[i].opacity = 1.0
-            }
-        }
+
 
         drawStackCard.isDisabled = false
         drawStackCard.opacity = 1.0
@@ -298,28 +292,25 @@ class GameScene(private val rootService: RootService) : BoardGameScene(1600, 900
             discardStackCard.opacity = 0.5
 
 
-            for (i in 0..5) {
-                // enable all deck-cards that are not null
-                if (cards[i]?.isRevealed == true) {
-                    bottomPlayerCards[i].isDisabled = true
-                    bottomPlayerCards[i].opacity = 0.5
-                }
-            }
+
 
             statusLabel.text = "First Round: Please reveal 2 cards."
             statusLabel.font = Font(size = 15, color = Color.GREEN, fontWeight = Font.FontWeight.SEMI_BOLD)
         }
 
+
+
+
         // Condition 2: Not in the first round and a turn just started
-        if (state == StateOfUI.TURN_START) {
-            for (i in 0..5) {
-                // enable all deck-cards that are not null
-                if (cards[i]?.isRevealed == true) {
-                    bottomPlayerCards[i].isDisabled = true
-                    bottomPlayerCards[i].opacity = 0.5
-                }
-            }
-        }
+        // if (state == StateOfUI.TURN_START) {
+        //     for (i in 0..5) {
+        //         // enable all deck-cards that are not null
+        //         if (cards[i]?.isRevealed == true) {
+        //             bottomPlayerCards[i].isDisabled = true
+        //             bottomPlayerCards[i].opacity = 0.5
+        //         }
+        //     }
+        // }
 
         // Condition 3: Just drawn from draw-stack
         if (state == StateOfUI.HAS_DRAWN) {
@@ -342,13 +333,13 @@ class GameScene(private val rootService: RootService) : BoardGameScene(1600, 900
             discardStackCard.isDisabled = true
             discardStackCard.opacity = 0.5
 
-            for (i in 0..5) {
-                // enable all deck-cards that are not null
-                if (cards[i]?.isRevealed == true) {
-                    bottomPlayerCards[i].isDisabled = true
-                    bottomPlayerCards[i].opacity = 0.5
-                }
-            }
+            // for (i in 0..5) {
+            //     // enable all deck-cards that are not null
+            //     if (cards[i]?.isRevealed == true) {
+            //         bottomPlayerCards[i].isDisabled = true
+            //         bottomPlayerCards[i].opacity = 0.5
+            //     }
+            // }
         }
 
         // Condition 6: When game ends, disable all components:
@@ -358,10 +349,10 @@ class GameScene(private val rootService: RootService) : BoardGameScene(1600, 900
             discardStackCard.isDisabled = true
             discardStackCard.opacity = 0.5
 
-            for (i in 0..5) {
-                bottomPlayerCards[i].isDisabled = true
-                bottomPlayerCards[i].opacity = 0.5
-            }
+            // for (i in 0..5) {
+            //     bottomPlayerCards[i].isDisabled = true
+            //     bottomPlayerCards[i].opacity = 0.5
+            // }
         }
 
         // Condition 7: During the last round, show a reminder via status bar:
@@ -502,8 +493,7 @@ class GameScene(private val rootService: RootService) : BoardGameScene(1600, 900
 
         // Add common Components
 
-        components.addAll(bottomPlayerLabels)
-        components.addAll(bottomPlayerCards)
+
         components.addAll(middleCards)
         components.add(middleLabel)
         components.add(statusLabel)
@@ -535,7 +525,7 @@ class GameScene(private val rootService: RootService) : BoardGameScene(1600, 900
 
         state = StateOfUI.TURN_START
 
-        refreshPlayers()
+
         refreshMiddle()
         guideUserBehavior()
 
@@ -545,7 +535,7 @@ class GameScene(private val rootService: RootService) : BoardGameScene(1600, 900
 
     override fun refreshAfterReveal() {
         // super.refreshAfterReveal()
-        refreshPlayers()
+
         refreshMiddle()
         guideUserBehavior()
     }
@@ -568,7 +558,7 @@ class GameScene(private val rootService: RootService) : BoardGameScene(1600, 900
                     state = StateOfUI.TURN_START
 
                     // super.refreshAfterNextTurn()
-                    refreshPlayers()
+
                     refreshMiddle()
                     guideUserBehavior()
                 }
@@ -580,7 +570,7 @@ class GameScene(private val rootService: RootService) : BoardGameScene(1600, 900
 
     override fun refreshOnLastRound() {
         // super.refreshOnLastRound()
-        refreshPlayers()
+
         refreshMiddle()
         guideUserBehavior()
     }
@@ -589,7 +579,7 @@ class GameScene(private val rootService: RootService) : BoardGameScene(1600, 900
         state = StateOfUI.HAS_DRAWN
 
         // super.refreshAfterDrawCard()
-        refreshPlayers()
+
         refreshMiddle()
         guideUserBehavior()
 
@@ -601,7 +591,7 @@ class GameScene(private val rootService: RootService) : BoardGameScene(1600, 900
         state = StateOfUI.HAS_DRAWN_DISCARDED
 
         // super.refreshAfterDrawDiscardedCard()
-        refreshPlayers()
+
         refreshMiddle()
         guideUserBehavior()
 
@@ -616,21 +606,21 @@ class GameScene(private val rootService: RootService) : BoardGameScene(1600, 900
         state = StateOfUI.HAS_DISCARDED
 
         // super.refreshAfterDiscard()
-        refreshPlayers()
+
         refreshMiddle()
         guideUserBehavior()
     }
 
     override fun refreshAfterSwap() {
         // super.refreshAfterSwap()
-        refreshPlayers()
+
         refreshMiddle()
         guideUserBehavior()
     }
 
     override fun refreshAfterFirstReveal() {
         // super.refreshAfterFirstReveal()
-        refreshPlayers()
+
         refreshMiddle()
         guideUserBehavior()
 
@@ -656,7 +646,7 @@ class GameScene(private val rootService: RootService) : BoardGameScene(1600, 900
                     revealAllCards()
                     removeIdenticalRow()
 
-                    refreshPlayers()
+                    // refreshPlayers()
                     refreshMiddle()
 
                     statusLabel.text = "Show result in 5 seconds."
@@ -665,7 +655,7 @@ class GameScene(private val rootService: RootService) : BoardGameScene(1600, 900
                         DelayAnimation(duration = 5000).apply {
                             onFinished = {
 
-                                refreshPlayers()
+                                // refreshPlayers()
                                 refreshMiddle()
 
                                 rootService.gameService.endGame()
