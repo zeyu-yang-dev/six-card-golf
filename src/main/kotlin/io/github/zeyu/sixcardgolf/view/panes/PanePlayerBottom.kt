@@ -29,10 +29,11 @@ class PanePlayerBottom(
 ), Refreshable {
 
     private val cardImageLoader = CardImageLoader()
+    private val playerActionService = rootService.playerActionService
 
     private val cardViews: MutableList<CardView> = mutableListOf()
     private val labels: MutableList<Label> = mutableListOf()
-    private val playerActionService = rootService.playerActionService
+
 
     private fun createCardView(row: Int, col: Int): CardView {
         val cardView = CardView(

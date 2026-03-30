@@ -561,7 +561,7 @@ class GameScene(private val rootService: RootService) : BoardGameScene(1600, 900
                     statusLabel.font = Font(size = 15, color = Color.GREEN, fontWeight = Font.FontWeight.SEMI_BOLD)
 
 
-
+                    setUIState(StateOfUI.TURN_START) // 这里是必要的，从bottom中改变状态可能不及时
                     // super.refreshAfterNextTurn()
 
                     refreshMiddle()
