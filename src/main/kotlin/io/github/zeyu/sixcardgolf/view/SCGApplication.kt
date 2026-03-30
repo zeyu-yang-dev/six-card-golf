@@ -42,15 +42,7 @@ class SCGApplication : BoardGameApplication("Six Card Golf"), Refreshable {
 
         restartButton.onMouseClicked = {
 
-            // TODO: UNIFY visibility logic for the bottom pane
-            // remove all components in case restartButton is pressed,
-            // because when [refreshAfterStartNewGame] is called, proper number of components will be added
-            gameScene.clearComponents() // HAS TO BE REPLACED WITH VISIBILITY CONTROL LATER
-            // remove all components in case restartButton is pressed,
-            // because when [refreshAfterGameEnd] is called, proper number of components will be added
-            this.clearComponents()
-
-            this@SCGApplication.showMenuScene(mainMenuScene)
+            showMenuScene(mainMenuScene)
         }
 
         exitButton.onMouseClicked = {
@@ -70,12 +62,15 @@ class SCGApplication : BoardGameApplication("Six Card Golf"), Refreshable {
         // all scenes and the application itself need to react to changes done in the service layer
         rootService.addRefreshables(
             this,
+
             mainMenuScene,
             gameScene,
             resultMenuScene,
+
             gameScene.panePlayerLeft,
             gameScene.panePlayerRight,
-            gameScene.panePlayerTop
+            gameScene.panePlayerTop,
+            gameScene.panePlayerBottom
         )
 
         // This is just done so that the blurred background when showing the new game menu

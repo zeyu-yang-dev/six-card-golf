@@ -3,6 +3,7 @@ package io.github.zeyu.sixcardgolf.view.panes
 import io.github.zeyu.sixcardgolf.entity.*
 import io.github.zeyu.sixcardgolf.service.*
 import io.github.zeyu.sixcardgolf.view.*
+import io.github.zeyu.sixcardgolf.view.GameScene.StateOfUI
 
 import tools.aqua.bgw.animation.DelayAnimation
 import tools.aqua.bgw.components.ComponentView
@@ -16,12 +17,12 @@ import java.awt.Color
 
 
 
-class PanePlayerTop(
+class PanePlayerBottom(
     private val rootService: RootService,
     private val gameScene: GameScene
 ) : Pane<ComponentView>(
     (SCREEN_WIDTH - CARD_WIDTH * 3 - HORIZ_DIS_BTW_CARDS * 2) / 2,
-    PPT_DIS_TO_TOP,
+    SCREEN_HEIGHT - PPL_HEIGHT - PPT_DIS_TO_TOP,
     PPL_WIDTH,
     PPL_HEIGHT,
     visual = PLAYER_PANE_BG_VISUAL
@@ -31,6 +32,7 @@ class PanePlayerTop(
 
     private val cardViews: MutableList<CardView> = mutableListOf()
     private val labels: MutableList<Label> = mutableListOf()
+    private val playerActionService = rootService.playerActionService
 
     private fun createCardView(row: Int, col: Int): CardView {
         val cardView = CardView(
@@ -64,13 +66,8 @@ class PanePlayerTop(
         val currentPlayerIndex = currentGame.currentPlayerIndex
         val numOfPlayers = currentGame.players.size
 
-        // This pane is shown, when there are 2, 3 or 4 players.
-        // If there are 2 or 3 players, this pane shows the next player:
-        var toPlayerOfThisPane = 1
-        // If there are 4 players, this pane shows the player two positions ahead:
-        if (numOfPlayers == 4) {
-            toPlayerOfThisPane = 2
-        }
+        // This pane always shows the deck of the current player.
+        val toPlayerOfThisPane = 0
 
         val playerOfThisPane = currentGame.players[(currentPlayerIndex + toPlayerOfThisPane) % numOfPlayers]
         return playerOfThisPane
@@ -122,6 +119,66 @@ class PanePlayerTop(
 
 
 
+    private fun disableCardView(cardView: ComponentView) {
+        cardView.isDisabled = true
+        cardView.opacity = 0.5
+    }
+
+    private fun disableAllCardViews() {
+        cardViews.forEach { disableCardView(it) }
+    }
+
+    private fun enableCardView(cardView: ComponentView) {
+        cardView.isDisabled = false
+        cardView.opacity = 1.0
+    }
+
+    private fun enableAllCardViews() {
+        cardViews.forEach { enableCardView(it) }
+    }
+
+    private fun disableRevealedCardViews() {
+        val currentGame = rootService.currentGame
+        requireNotNull(currentGame) {"Current game not available!"}
+        val currentPlayer = currentGame.players[currentGame.currentPlayerIndex]
+        val cards = currentPlayer.topRow + currentPlayer.bottomRow
+
+        // disable cardViews for all revealed cards
+        for (i in cardViews.indices) {
+            if (cards[i]?.isRevealed == true) {
+                disableCardView(cardViews[i])
+            }
+        }
+    }
+
+
+
+    private fun updateInteractivity() {
+
+        val currentGame = rootService.currentGame
+
+        enableAllCardViews()
+
+        // Condition 1: In the first round
+        if (currentGame.isFirstRound) disableRevealedCardViews()
+
+        when (gameScene.state) {
+            // Condition 2: A turn just started
+            StateOfUI.TURN_START -> disableRevealedCardViews()
+            // Condition 3: Just drawn from draw-stack
+            StateOfUI.HAS_DRAWN -> {}
+            // Condition 4: Just drawn from discard-stack
+            StateOfUI.HAS_DRAWN_DISCARDED -> {}
+            // Condition 5: Just discarded the hand card, which was drawn from draw-stack
+            StateOfUI.HAS_DISCARDED -> disableRevealedCardViews()
+            // Condition 6: When game ends, disable all components
+            StateOfUI.GAME_END -> disableAllCardViews()
+        }
+
+    }
+
+
+
     init {
         for (row in 0..1) {
             for (col in 0..2) {
@@ -133,6 +190,21 @@ class PanePlayerTop(
             labels.add(createLabel(row))
         }
 
+        // define the behavior of each cardView upon click
+        for (i in 0..5) {
+            cardViews[i].apply {
+                onMouseClicked = {
+                    if (gameScene.state == StateOfUI.TURN_START) {
+                        playerActionService.revealAction(i)
+                    }
+                    if (gameScene.state in setOf(StateOfUI.HAS_DRAWN, StateOfUI.HAS_DRAWN_DISCARDED)) {
+                        playerActionService.swap(i)
+                    }
+                }
+            }
+
+        }
+
         addAll(cardViews)
         addAll(labels)
     }
@@ -140,61 +212,87 @@ class PanePlayerTop(
 
 
     override fun refreshAfterStartNewGame() {
+        gameScene.setUIState(StateOfUI.TURN_START)
+
         refreshThisPane()
+        updateInteractivity()
     }
 
     override fun refreshAfterFirstReveal() {
         refreshThisPane()
+        updateInteractivity()
     }
 
     override fun refreshAfterReveal() {
         refreshThisPane()
-    }
-
-    override fun refreshOnLastRound() {
-        refreshThisPane()
+        updateInteractivity()
     }
 
     override fun refreshAfterDrawCard() {
+        gameScene.setUIState(StateOfUI.HAS_DRAWN)
+
         refreshThisPane()
+        updateInteractivity()
     }
 
     override fun refreshAfterDrawDiscardedCard() {
+        gameScene.setUIState(StateOfUI.HAS_DRAWN_DISCARDED)
+
         refreshThisPane()
+        updateInteractivity()
     }
 
     override fun refreshAfterSwap() {
         refreshThisPane()
+        updateInteractivity()
     }
 
 
     override fun refreshAfterDiscard() {
+        gameScene.setUIState(StateOfUI.HAS_DISCARDED)
+
         refreshThisPane()
+        updateInteractivity()
     }
 
     override fun refreshAfterNextTurn() {
+        disableAllCardViews()
         gameScene.playAnimation(
-
             DelayAnimation(duration = DELAY_BTW_TURNS).apply {
                 onFinished = {
+                    gameScene.setUIState(StateOfUI.TURN_START)
+
                     refreshThisPane()
+                    enableAllCardViews()
+                    updateInteractivity()
                 }
             }
         )
     }
 
+    override fun refreshOnLastRound() {
+        refreshThisPane()
+        updateInteractivity()
+    }
+
     override fun refreshBeforeGameEnd() {
+        gameScene.setUIState(StateOfUI.GAME_END)
+
         gameScene.playAnimation(
             DelayAnimation(duration = DELAY_BEFORE_REVEAL_ALL).apply {
                 onFinished = {
                     refreshThisPane()
+                    updateInteractivity()
                 }
             }
         )
+
+
     }
 
     override fun refreshAfterGameEnd() {
         refreshThisPane()
+        updateInteractivity()
     }
 
 

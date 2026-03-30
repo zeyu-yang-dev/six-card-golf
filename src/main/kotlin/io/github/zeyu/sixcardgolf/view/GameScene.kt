@@ -36,11 +36,14 @@ class GameScene(private val rootService: RootService) : BoardGameScene(1600, 900
     val panePlayerLeft = PanePlayerLeft(rootService, this)
     val panePlayerRight = PanePlayerRight(rootService, this)
     val panePlayerTop = PanePlayerTop(rootService, this)
+    val panePlayerBottom = PanePlayerBottom(rootService, this)
+
+    var state = StateOfUI.TURN_START
 
     //------------------------------------------------------------------------------------------------------------------
 
     /**
-     * Represents the state of a turn, mainly for UI.
+     * Represents the state of UI, mainly to control interactivity of components.
      */
     enum class StateOfUI {
         TURN_START, // the turn just started or a reveal-action was made
@@ -50,7 +53,9 @@ class GameScene(private val rootService: RootService) : BoardGameScene(1600, 900
         GAME_END
     }
 
-    private var state = StateOfUI.TURN_START
+    fun setUIState(newState: StateOfUI) {
+        this.state = newState
+    }
 
 
 
@@ -74,7 +79,7 @@ class GameScene(private val rootService: RootService) : BoardGameScene(1600, 900
     // Offset for positioning due to the scaling of a card:
     private val scaleOffsetX = 22.75
     private val scaleOffsetY = 35
-    
+
     // Offset for positioning for player name label:
     private val playerLabelOffsetX = -180
     private val playerLabelOffsetY = 85
@@ -97,143 +102,13 @@ class GameScene(private val rootService: RootService) : BoardGameScene(1600, 900
     // The components for one player, including:
     // 4 labels to show status, and
     // 6 deck-cards
-    
+
 
 
     //------------------------------------------------------------------------------------------------------------------
 
 
-    //------------------------------------------------------------------------------------------------------------------
-    // The coordinates of the center of the six-card-deck of the player on the bottom:
-    private val bottomPlayerCenterX = 800
-    private val bottomPlayerCenterY = 750
 
-    private val bottomPlayerLabel: Label = Label(
-        height = playerLabelHeight,
-        width = playerLabelWidth,
-        posX = bottomPlayerCenterX - playerLabelOffsetX,
-        posY = bottomPlayerCenterY - playerLabelOffsetY,
-        text = "Current Player:",
-        font = Font(size = 25, color = unchangeableLabelColor, fontWeight = Font.FontWeight.SEMI_BOLD),
-        alignment = Alignment.CENTER_LEFT
-    )
-
-    private val bottomPlayerName: Label = Label(
-        height = playerLabelHeight,
-        width = playerLabelWidth,
-        posX = bottomPlayerCenterX - playerLabelOffsetX,
-        posY = bottomPlayerCenterY - playerLabelOffsetY + offsetOneLine,
-        text = "Alex",
-        font = Font(size = 25, color = changeableLabelColor, fontWeight = Font.FontWeight.SEMI_BOLD),
-        alignment = Alignment.CENTER_LEFT
-    )
-
-    private val bottomPlayerLabel2: Label = Label(
-        height = playerLabelHeight,
-        width = playerLabelWidth,
-        posX = bottomPlayerCenterX - playerLabelOffsetX,
-        posY = bottomPlayerCenterY - playerLabelOffsetY + 3 * offsetOneLine,
-        text = "Visible Score:",
-        font = Font(size = 25, color = unchangeableLabelColor, fontWeight = Font.FontWeight.SEMI_BOLD),
-        alignment = Alignment.CENTER_LEFT
-    )
-
-    private val bottomPlayerScore: Label = Label(
-        height = playerLabelHeight,
-        width = playerLabelWidth,
-        posX = bottomPlayerCenterX - playerLabelOffsetX,
-        posY = bottomPlayerCenterY - playerLabelOffsetY + 4 * offsetOneLine,
-        text = "10000",
-        font = Font(size = 25, color = changeableLabelColor, fontWeight = Font.FontWeight.SEMI_BOLD),
-        alignment = Alignment.CENTER_LEFT
-    )
-
-
-
-    //-----------------------------------------------------
-    private val bottomPlayerCard1 = CardView(
-        posX = bottomPlayerCenterX - horizontalDistanceInDeck - cardWidth / 2 - scaleOffsetX,
-        posY = bottomPlayerCenterY - verticalDistanceInDeck - cardHeight / 2 - scaleOffsetY,
-        front = ImageVisual(cardImageLoader.frontImageFor(CardSuit.HEARTS, CardValue.ACE)),
-        back = ImageVisual(cardImageLoader.backImage)
-    ).apply {
-        this.showFront()
-        this.scale(cardScale)
-        onMouseClicked = {
-            if (state == StateOfUI.TURN_START) playerActionService.revealAction(0)
-            if (state == StateOfUI.HAS_DRAWN || state == StateOfUI.HAS_DRAWN_DISCARDED) playerActionService.swap(0)
-        }
-    }
-
-    private val bottomPlayerCard2 = CardView(
-        posX = bottomPlayerCenterX - cardWidth / 2 - scaleOffsetX,
-        posY = bottomPlayerCenterY - verticalDistanceInDeck - cardHeight / 2 - scaleOffsetY,
-        front = ImageVisual(cardImageLoader.frontImageFor(CardSuit.HEARTS, CardValue.TWO)),
-        back = ImageVisual(cardImageLoader.backImage)
-    ).apply {
-        this.showFront()
-        this.scale(cardScale)
-        onMouseClicked = {
-            if (state == StateOfUI.TURN_START) playerActionService.revealAction(1)
-            if (state == StateOfUI.HAS_DRAWN || state == StateOfUI.HAS_DRAWN_DISCARDED) playerActionService.swap(1)
-        }
-    }
-
-    private val bottomPlayerCard3 = CardView(
-        posX = bottomPlayerCenterX + horizontalDistanceInDeck - cardWidth / 2 - scaleOffsetX,
-        posY = bottomPlayerCenterY - verticalDistanceInDeck - cardHeight / 2 - scaleOffsetY,
-        front = ImageVisual(cardImageLoader.frontImageFor(CardSuit.HEARTS, CardValue.THREE)),
-        back = ImageVisual(cardImageLoader.backImage)
-    ).apply {
-        this.showFront()
-        this.scale(cardScale)
-        onMouseClicked = {
-            if (state == StateOfUI.TURN_START) playerActionService.revealAction(2)
-            if (state == StateOfUI.HAS_DRAWN || state == StateOfUI.HAS_DRAWN_DISCARDED) playerActionService.swap(2)
-        }
-    }
-
-     private val bottomPlayerCard4 = CardView(
-        posX = bottomPlayerCenterX - horizontalDistanceInDeck - cardWidth / 2 - scaleOffsetX,
-        posY = bottomPlayerCenterY + verticalDistanceInDeck - cardHeight / 2 - scaleOffsetY,
-        front = ImageVisual(cardImageLoader.frontImageFor(CardSuit.HEARTS, CardValue.FOUR)),
-        back = ImageVisual(cardImageLoader.backImage)
-    ).apply {
-        this.showFront()
-        this.scale(cardScale)
-        onMouseClicked = {
-            if (state == StateOfUI.TURN_START) playerActionService.revealAction(3)
-            if (state == StateOfUI.HAS_DRAWN || state == StateOfUI.HAS_DRAWN_DISCARDED) playerActionService.swap(3)
-        }
-    }
-
-    private val bottomPlayerCard5 = CardView(
-        posX = bottomPlayerCenterX - cardWidth / 2 - scaleOffsetX,
-        posY = bottomPlayerCenterY + verticalDistanceInDeck - cardHeight / 2 - scaleOffsetY,
-        front = ImageVisual(cardImageLoader.frontImageFor(CardSuit.HEARTS, CardValue.FIVE)),
-        back = ImageVisual(cardImageLoader.backImage)
-    ).apply {
-        this.showFront()
-        this.scale(cardScale)
-        onMouseClicked = {
-            if (state == StateOfUI.TURN_START) playerActionService.revealAction(4)
-            if (state == StateOfUI.HAS_DRAWN || state == StateOfUI.HAS_DRAWN_DISCARDED) playerActionService.swap(4)
-        }
-    }
-
-    private val bottomPlayerCard6 = CardView(
-        posX = bottomPlayerCenterX + horizontalDistanceInDeck - cardWidth / 2 - scaleOffsetX,
-        posY = bottomPlayerCenterY + verticalDistanceInDeck - cardHeight / 2 - scaleOffsetY,
-        front = ImageVisual(cardImageLoader.frontImageFor(CardSuit.HEARTS, CardValue.SIX)),
-        back = ImageVisual(cardImageLoader.backImage)
-    ).apply {
-        this.showFront()
-        this.scale(cardScale)
-        onMouseClicked = {
-            if (state == StateOfUI.TURN_START) playerActionService.revealAction(5)
-            if (state == StateOfUI.HAS_DRAWN || state == StateOfUI.HAS_DRAWN_DISCARDED) playerActionService.swap(5)
-        }
-    }
     //------------------------------------------------------------------------------------------------------------------
     //-------- Define the components for the Handcard, Drawstack and Discardstack --------------------------------------
     //------------------------------------------------------------------------------------------------------------------
@@ -308,95 +183,15 @@ class GameScene(private val rootService: RootService) : BoardGameScene(1600, 900
     //------------------------------------------------------------------------------------------------------------------
 
 
-    private val bottomPlayerCards: List<CardView> =
-        listOf(bottomPlayerCard1, bottomPlayerCard2, bottomPlayerCard3,
-            bottomPlayerCard4, bottomPlayerCard5, bottomPlayerCard6)
 
-
-    private val bottomPlayerLabels: List<Label> =
-        listOf(bottomPlayerName, bottomPlayerScore, bottomPlayerLabel, bottomPlayerLabel2)
 
     private val middleCards: List<CardView> = listOf(handCard, drawStackCard, discardStackCard)
     //------------------------------------------------------------------------------------------------------------------
 
 
-    private fun refreshOnePlayer(playerObject: Player, playerCards: List<CardView>, playerName: Label, playerScore: Label) {
-        // for tracking players with color:
-        val currentGame = rootService.currentGame
-        requireNotNull(currentGame) {"Current game not available!"}
-        val players = currentGame.players
-        val colors = listOf(Color.CYAN, Color.YELLOW, Color.LIGHT_GRAY, Color.MAGENTA)
 
 
-        val cards = playerObject.topRow + playerObject.bottomRow
 
-        for (i in 0..5) {
-            // refresh the six deck-cards:
-            // refresh the six card-components one by one according to actual player deck-card:
-            playerCards[i].apply {
-                cards[i]?.let { card ->
-                    // if cards[i] is not null:
-                    frontVisual = ImageVisual(cardImageLoader.frontImageFor(card.cardSuit, card.cardValue))
-                    if (card.isRevealed) this.showFront() else this.showBack()
-                    isVisible = true
-                } ?: run {
-                    // if cards[i] is null:
-                    isVisible = false
-                }
-            }
-            // refresh player name:
-            playerName.text = playerObject.playerName
-            playerName.font =
-                Font(size = 25, color = colors[players.indexOf(playerObject)], fontWeight = Font.FontWeight.SEMI_BOLD)
-            // refresh player score:
-            playerScore.text = "${playerObject.deckScore}"
-            playerScore.font =
-                Font(size = 25, color = colors[players.indexOf(playerObject)], fontWeight = Font.FontWeight.SEMI_BOLD)
-        }
-
-    }
-
-    /**
-     * Refreshes six cards, name and score for players on every position.
-     */
-    private fun refreshPlayers() {
-
-        val currentGame = rootService.currentGame
-        requireNotNull(currentGame) {"Current game not available!"}
-
-        val players = currentGame.players
-        val currentPlayerIndex = currentGame.currentPlayerIndex
-
-        when(currentGame.players.size) {
-
-            2 -> {
-                val bottomPlayer = players[currentPlayerIndex]
-
-
-                refreshOnePlayer(bottomPlayer, bottomPlayerCards, bottomPlayerName, bottomPlayerScore)
-
-            }
-
-            3 -> {
-                val bottomPlayer = players[currentPlayerIndex]
-
-
-                refreshOnePlayer(bottomPlayer, bottomPlayerCards, bottomPlayerName, bottomPlayerScore)
-
-            }
-
-            4 -> {
-                val bottomPlayer = players[currentPlayerIndex]
-
-
-                refreshOnePlayer(bottomPlayer, bottomPlayerCards, bottomPlayerName, bottomPlayerScore)
-
-            }
-
-        }
-
-
-    }
 
     private fun refreshMiddle() {
 
@@ -467,13 +262,7 @@ class GameScene(private val rootService: RootService) : BoardGameScene(1600, 900
         val currentPlayer = players[currentPlayerIndex]
         val cards = currentPlayer.topRow + currentPlayer.bottomRow
 
-        for (i in 0..5) {
-            // enable all deck-cards that are not null
-            if (cards[i] != null) {
-                bottomPlayerCards[i].isDisabled = false
-                bottomPlayerCards[i].opacity = 1.0
-            }
-        }
+
 
         drawStackCard.isDisabled = false
         drawStackCard.opacity = 1.0
@@ -507,28 +296,25 @@ class GameScene(private val rootService: RootService) : BoardGameScene(1600, 900
             discardStackCard.opacity = 0.5
 
 
-            for (i in 0..5) {
-                // enable all deck-cards that are not null
-                if (cards[i]?.isRevealed == true) {
-                    bottomPlayerCards[i].isDisabled = true
-                    bottomPlayerCards[i].opacity = 0.5
-                }
-            }
+
 
             statusLabel.text = "First Round: Please reveal 2 cards."
             statusLabel.font = Font(size = 15, color = Color.GREEN, fontWeight = Font.FontWeight.SEMI_BOLD)
         }
 
+
+
+
         // Condition 2: Not in the first round and a turn just started
-        if (state == StateOfUI.TURN_START) {
-            for (i in 0..5) {
-                // enable all deck-cards that are not null
-                if (cards[i]?.isRevealed == true) {
-                    bottomPlayerCards[i].isDisabled = true
-                    bottomPlayerCards[i].opacity = 0.5
-                }
-            }
-        }
+        // if (state == StateOfUI.TURN_START) {
+        //     for (i in 0..5) {
+        //         // enable all deck-cards that are not null
+        //         if (cards[i]?.isRevealed == true) {
+        //             bottomPlayerCards[i].isDisabled = true
+        //             bottomPlayerCards[i].opacity = 0.5
+        //         }
+        //     }
+        // }
 
         // Condition 3: Just drawn from draw-stack
         if (state == StateOfUI.HAS_DRAWN) {
@@ -551,13 +337,13 @@ class GameScene(private val rootService: RootService) : BoardGameScene(1600, 900
             discardStackCard.isDisabled = true
             discardStackCard.opacity = 0.5
 
-            for (i in 0..5) {
-                // enable all deck-cards that are not null
-                if (cards[i]?.isRevealed == true) {
-                    bottomPlayerCards[i].isDisabled = true
-                    bottomPlayerCards[i].opacity = 0.5
-                }
-            }
+            // for (i in 0..5) {
+            //     // enable all deck-cards that are not null
+            //     if (cards[i]?.isRevealed == true) {
+            //         bottomPlayerCards[i].isDisabled = true
+            //         bottomPlayerCards[i].opacity = 0.5
+            //     }
+            // }
         }
 
         // Condition 6: When game ends, disable all components:
@@ -567,10 +353,10 @@ class GameScene(private val rootService: RootService) : BoardGameScene(1600, 900
             discardStackCard.isDisabled = true
             discardStackCard.opacity = 0.5
 
-            for (i in 0..5) {
-                bottomPlayerCards[i].isDisabled = true
-                bottomPlayerCards[i].opacity = 0.5
-            }
+            // for (i in 0..5) {
+            //     bottomPlayerCards[i].isDisabled = true
+            //     bottomPlayerCards[i].opacity = 0.5
+            // }
         }
 
         // Condition 7: During the last round, show a reminder via status bar:
@@ -711,8 +497,7 @@ class GameScene(private val rootService: RootService) : BoardGameScene(1600, 900
 
         // Add common Components
 
-        components.addAll(bottomPlayerLabels)
-        components.addAll(bottomPlayerCards)
+
         components.addAll(middleCards)
         components.add(middleLabel)
         components.add(statusLabel)
@@ -744,7 +529,7 @@ class GameScene(private val rootService: RootService) : BoardGameScene(1600, 900
 
         state = StateOfUI.TURN_START
 
-        refreshPlayers()
+
         refreshMiddle()
         guideUserBehavior()
 
@@ -754,7 +539,7 @@ class GameScene(private val rootService: RootService) : BoardGameScene(1600, 900
 
     override fun refreshAfterReveal() {
         // super.refreshAfterReveal()
-        refreshPlayers()
+
         refreshMiddle()
         guideUserBehavior()
     }
@@ -774,10 +559,10 @@ class GameScene(private val rootService: RootService) : BoardGameScene(1600, 900
                     statusLabel.text = "Your turn: Draw a card or reveal one."
                     statusLabel.font = Font(size = 15, color = Color.GREEN, fontWeight = Font.FontWeight.SEMI_BOLD)
 
-                    state = StateOfUI.TURN_START
+
 
                     // super.refreshAfterNextTurn()
-                    refreshPlayers()
+
                     refreshMiddle()
                     guideUserBehavior()
                 }
@@ -789,16 +574,16 @@ class GameScene(private val rootService: RootService) : BoardGameScene(1600, 900
 
     override fun refreshOnLastRound() {
         // super.refreshOnLastRound()
-        refreshPlayers()
+
         refreshMiddle()
         guideUserBehavior()
     }
 
     override fun refreshAfterDrawCard() {
-        state = StateOfUI.HAS_DRAWN
+
 
         // super.refreshAfterDrawCard()
-        refreshPlayers()
+
         refreshMiddle()
         guideUserBehavior()
 
@@ -807,10 +592,10 @@ class GameScene(private val rootService: RootService) : BoardGameScene(1600, 900
     }
 
     override fun refreshAfterDrawDiscardedCard() {
-        state = StateOfUI.HAS_DRAWN_DISCARDED
+
 
         // super.refreshAfterDrawDiscardedCard()
-        refreshPlayers()
+
         refreshMiddle()
         guideUserBehavior()
 
@@ -822,24 +607,24 @@ class GameScene(private val rootService: RootService) : BoardGameScene(1600, 900
         statusLabel.text = "You have to reveal a card to continue."
         statusLabel.font = Font(size = 15, color = Color.WHITE, fontWeight = Font.FontWeight.SEMI_BOLD)
 
-        state = StateOfUI.HAS_DISCARDED
+
 
         // super.refreshAfterDiscard()
-        refreshPlayers()
+
         refreshMiddle()
         guideUserBehavior()
     }
 
     override fun refreshAfterSwap() {
         // super.refreshAfterSwap()
-        refreshPlayers()
+
         refreshMiddle()
         guideUserBehavior()
     }
 
     override fun refreshAfterFirstReveal() {
         // super.refreshAfterFirstReveal()
-        refreshPlayers()
+
         refreshMiddle()
         guideUserBehavior()
 
@@ -851,7 +636,7 @@ class GameScene(private val rootService: RootService) : BoardGameScene(1600, 900
 
 
     override fun refreshBeforeGameEnd() {
-        state = StateOfUI.GAME_END
+
         guideUserBehavior()
 
         // before the delay animation, show a reminder via status bar:
@@ -859,22 +644,23 @@ class GameScene(private val rootService: RootService) : BoardGameScene(1600, 900
         statusLabel.font = Font(size = 15, color = Color.PINK, fontWeight = Font.FontWeight.SEMI_BOLD)
 
         this.playAnimation(
-            DelayAnimation(duration = 3000).apply {
+            DelayAnimation(duration = DELAY_BEFORE_REVEAL_ALL).apply {
                 onFinished = {
 
                     revealAllCards()
                     removeIdenticalRow()
 
-                    refreshPlayers()
+                    // refreshPlayers()
                     refreshMiddle()
 
                     statusLabel.text = "Show result in 5 seconds."
                     statusLabel.font = Font(size = 15, color = Color.PINK, fontWeight = Font.FontWeight.SEMI_BOLD)
+
                     playAnimation(
                         DelayAnimation(duration = 5000).apply {
                             onFinished = {
 
-                                refreshPlayers()
+                                // refreshPlayers()
                                 refreshMiddle()
 
                                 rootService.gameService.endGame()
@@ -898,6 +684,7 @@ class GameScene(private val rootService: RootService) : BoardGameScene(1600, 900
             panePlayerLeft,
             panePlayerRight,
             panePlayerTop,
+            panePlayerBottom
         )
 
 

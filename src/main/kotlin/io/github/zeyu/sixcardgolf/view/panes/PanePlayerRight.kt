@@ -180,7 +180,13 @@ class PanePlayerRight(
     }
 
     override fun refreshBeforeGameEnd() {
-        refreshThisPane()
+        gameScene.playAnimation(
+            DelayAnimation(duration = DELAY_BEFORE_REVEAL_ALL).apply {
+                onFinished = {
+                    refreshThisPane()
+                }
+            }
+        )
     }
 
     override fun refreshAfterGameEnd() {
