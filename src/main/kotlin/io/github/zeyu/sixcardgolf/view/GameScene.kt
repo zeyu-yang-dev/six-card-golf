@@ -37,6 +37,7 @@ class GameScene(private val rootService: RootService) : BoardGameScene(1600, 900
     val panePlayerRight = PanePlayerRight(rootService, this)
     val panePlayerTop = PanePlayerTop(rootService, this)
     val panePlayerBottom = PanePlayerBottom(rootService, this)
+    val paneMiddleCards = PaneMiddleCards(rootService, this)
 
     var state = StateOfUI.TURN_START
 
@@ -684,7 +685,8 @@ class GameScene(private val rootService: RootService) : BoardGameScene(1600, 900
             panePlayerLeft,
             panePlayerRight,
             panePlayerTop,
-            panePlayerBottom
+            panePlayerBottom,
+            paneMiddleCards
         )
 
 
