@@ -278,11 +278,7 @@ class GameScene(private val rootService: RootService) : BoardGameScene(1600, 900
      */
     private fun guideUserBehavior() {
         val currentGame = rootService.currentGame
-        requireNotNull(currentGame) {"Current game not available!"}
-        val players = currentGame.players
-        val currentPlayerIndex = currentGame.currentPlayerIndex
-        val currentPlayer = players[currentPlayerIndex]
-        val cards = currentPlayer.topRow + currentPlayer.bottomRow
+
 
         // Firstly turn on all components:
         enableAllComponents()

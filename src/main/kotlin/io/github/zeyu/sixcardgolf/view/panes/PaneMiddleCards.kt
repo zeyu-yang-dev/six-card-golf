@@ -57,11 +57,8 @@ class PaneMiddleCards(
         }
     }
 
-    private val cardViews: List<CardView> = listOf(handCardView, drawStackCardView, discardStackCardView)
-
-
-
-
+    // handCardView is always disabled, no need to update interactivity for handCardView
+    private val cardViews: List<CardView> = listOf(drawStackCardView, discardStackCardView)
 
     private fun createCardView(col: Int): CardView {
         val cardView = CardView(
@@ -125,6 +122,27 @@ class PaneMiddleCards(
 
     private fun updateInteractivity() {
 
+        val currentGame = rootService.currentGame
+
+        // Firstly enable all cardViews (except for handCardView, which is always disabled)
+        enableAllCardViews()
+
+        // Condition 1: In the first round
+        if (currentGame.isFirstRound) disableAllCardViews()
+
+        when (gameScene.state) {
+            // Condition 2: A turn just started
+            StateOfUI.TURN_START -> {}
+            // Condition 3: Just drawn from draw-stack
+            StateOfUI.HAS_DRAWN -> disableCardView(drawStackCardView)
+            // Condition 4: Just drawn from discard-stack
+            StateOfUI.HAS_DRAWN_DISCARDED -> disableAllCardViews()
+            // Condition 5: Just discarded the hand card, which was drawn from draw-stack
+            StateOfUI.HAS_DISCARDED -> disableAllCardViews()
+            // Condition 6: When game ends, disable all components
+            StateOfUI.GAME_END -> disableAllCardViews()
+        }
+
     }
 
 
@@ -132,6 +150,7 @@ class PaneMiddleCards(
 
     init {
 
+        addAll(handCardView)
         addAll(cardViews)
 
     }

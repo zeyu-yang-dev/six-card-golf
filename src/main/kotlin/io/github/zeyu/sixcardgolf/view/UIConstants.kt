@@ -36,7 +36,8 @@ const val PMC_POS_Y = (SCREEN_HEIGHT - PMC_HEIGHT) / 2
 
 
 val PLAYER_COLORS = listOf(Color.CYAN, Color.YELLOW, Color.LIGHT_GRAY, Color.MAGENTA)
-val PLAYER_PANE_BG_VISUAL = ColorVisual(50, 50, 50, 90)
+// val PLAYER_PANE_BG_VISUAL = ColorVisual(50, 50, 50, 90)
+val PLAYER_PANE_BG_VISUAL = ColorVisual.TRANSPARENT
 
 const val DELAY_BTW_TURNS = 2000
 const val DELAY_BEFORE_REVEAL_ALL = 3000
