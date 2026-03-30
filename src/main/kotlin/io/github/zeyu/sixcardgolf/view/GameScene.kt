@@ -38,10 +38,12 @@ class GameScene(private val rootService: RootService) : BoardGameScene(1600, 900
     val panePlayerTop = PanePlayerTop(rootService, this)
     val panePlayerBottom = PanePlayerBottom(rootService, this)
 
+    var state = StateOfUI.TURN_START
+
     //------------------------------------------------------------------------------------------------------------------
 
     /**
-     * Represents the state of a turn, mainly for UI.
+     * Represents the state of UI, mainly to control interactivity of components.
      */
     enum class StateOfUI {
         TURN_START, // the turn just started or a reveal-action was made
@@ -51,7 +53,9 @@ class GameScene(private val rootService: RootService) : BoardGameScene(1600, 900
         GAME_END
     }
 
-    var state = StateOfUI.TURN_START
+    fun setUIState(newState: StateOfUI) {
+        this.state = newState
+    }
 
 
 
@@ -555,7 +559,7 @@ class GameScene(private val rootService: RootService) : BoardGameScene(1600, 900
                     statusLabel.text = "Your turn: Draw a card or reveal one."
                     statusLabel.font = Font(size = 15, color = Color.GREEN, fontWeight = Font.FontWeight.SEMI_BOLD)
 
-                    state = StateOfUI.TURN_START
+
 
                     // super.refreshAfterNextTurn()
 
@@ -576,7 +580,7 @@ class GameScene(private val rootService: RootService) : BoardGameScene(1600, 900
     }
 
     override fun refreshAfterDrawCard() {
-        state = StateOfUI.HAS_DRAWN
+
 
         // super.refreshAfterDrawCard()
 
@@ -588,7 +592,7 @@ class GameScene(private val rootService: RootService) : BoardGameScene(1600, 900
     }
 
     override fun refreshAfterDrawDiscardedCard() {
-        state = StateOfUI.HAS_DRAWN_DISCARDED
+
 
         // super.refreshAfterDrawDiscardedCard()
 
@@ -603,7 +607,7 @@ class GameScene(private val rootService: RootService) : BoardGameScene(1600, 900
         statusLabel.text = "You have to reveal a card to continue."
         statusLabel.font = Font(size = 15, color = Color.WHITE, fontWeight = Font.FontWeight.SEMI_BOLD)
 
-        state = StateOfUI.HAS_DISCARDED
+
 
         // super.refreshAfterDiscard()
 
@@ -632,7 +636,7 @@ class GameScene(private val rootService: RootService) : BoardGameScene(1600, 900
 
 
     override fun refreshBeforeGameEnd() {
-        state = StateOfUI.GAME_END
+
         guideUserBehavior()
 
         // before the delay animation, show a reminder via status bar:
@@ -640,7 +644,7 @@ class GameScene(private val rootService: RootService) : BoardGameScene(1600, 900
         statusLabel.font = Font(size = 15, color = Color.PINK, fontWeight = Font.FontWeight.SEMI_BOLD)
 
         this.playAnimation(
-            DelayAnimation(duration = 3000).apply {
+            DelayAnimation(duration = DELAY_BEFORE_REVEAL_ALL).apply {
                 onFinished = {
 
                     revealAllCards()
@@ -651,6 +655,7 @@ class GameScene(private val rootService: RootService) : BoardGameScene(1600, 900
 
                     statusLabel.text = "Show result in 5 seconds."
                     statusLabel.font = Font(size = 15, color = Color.PINK, fontWeight = Font.FontWeight.SEMI_BOLD)
+
                     playAnimation(
                         DelayAnimation(duration = 5000).apply {
                             onFinished = {

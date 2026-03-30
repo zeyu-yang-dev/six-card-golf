@@ -156,9 +156,6 @@ class PanePlayerBottom(
     private fun updateInteractivity() {
 
         val currentGame = rootService.currentGame
-        requireNotNull(currentGame) {"Current game not available!"}
-        val currentPlayer = currentGame.players[currentGame.currentPlayerIndex]
-        val cards = currentPlayer.topRow + currentPlayer.bottomRow
 
         enableAllCardViews()
 
@@ -215,7 +212,8 @@ class PanePlayerBottom(
 
 
     override fun refreshAfterStartNewGame() {
-        gameScene.state = StateOfUI.TURN_START
+        gameScene.setUIState(StateOfUI.TURN_START)
+
         refreshThisPane()
         updateInteractivity()
     }
@@ -231,13 +229,15 @@ class PanePlayerBottom(
     }
 
     override fun refreshAfterDrawCard() {
-        gameScene.state = StateOfUI.HAS_DRAWN
+        gameScene.setUIState(StateOfUI.HAS_DRAWN)
+
         refreshThisPane()
         updateInteractivity()
     }
 
     override fun refreshAfterDrawDiscardedCard() {
-        gameScene.state = StateOfUI.HAS_DRAWN_DISCARDED
+        gameScene.setUIState(StateOfUI.HAS_DRAWN_DISCARDED)
+
         refreshThisPane()
         updateInteractivity()
     }
@@ -249,7 +249,8 @@ class PanePlayerBottom(
 
 
     override fun refreshAfterDiscard() {
-        gameScene.state = StateOfUI.HAS_DISCARDED
+        gameScene.setUIState(StateOfUI.HAS_DISCARDED)
+
         refreshThisPane()
         updateInteractivity()
     }
@@ -259,7 +260,8 @@ class PanePlayerBottom(
         gameScene.playAnimation(
             DelayAnimation(duration = DELAY_BTW_TURNS).apply {
                 onFinished = {
-                    gameScene.state = StateOfUI.TURN_START
+                    gameScene.setUIState(StateOfUI.TURN_START)
+
                     refreshThisPane()
                     enableAllCardViews()
                     updateInteractivity()
@@ -274,9 +276,18 @@ class PanePlayerBottom(
     }
 
     override fun refreshBeforeGameEnd() {
-        gameScene.state = StateOfUI.GAME_END
-        refreshThisPane()
-        updateInteractivity()
+        gameScene.setUIState(StateOfUI.GAME_END)
+
+        gameScene.playAnimation(
+            DelayAnimation(duration = DELAY_BEFORE_REVEAL_ALL).apply {
+                onFinished = {
+                    refreshThisPane()
+                    updateInteractivity()
+                }
+            }
+        )
+
+
     }
 
     override fun refreshAfterGameEnd() {
