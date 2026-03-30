@@ -19,7 +19,7 @@ class PaneMiddleCards(
     private val rootService: RootService,
     private val gameScene: GameScene
 ) : Pane<ComponentView>(
-    500 + PMC_POS_X,
+    PMC_POS_X,
     PMC_POS_Y,
     PMC_WIDTH,
     PMC_HEIGHT,
@@ -59,6 +59,16 @@ class PaneMiddleCards(
 
     // handCardView is always disabled, no need to update interactivity for handCardView
     private val cardViews: List<CardView> = listOf(drawStackCardView, discardStackCardView)
+
+    private val stacksLabel: Label = Label(
+        posX = 12.25,
+        posY = 117,
+        width = MIDDLE_LABEL_WIDTH,
+        height = MIDDLE_LABEL_HEIGHT,
+        text = "   Hand             Draw          Discard",
+        font = Font(size = 15, color = Color.WHITE, fontWeight = Font.FontWeight.SEMI_BOLD),
+        alignment = Alignment.CENTER_LEFT
+    )
 
     private fun createCardView(col: Int): CardView {
         val cardView = CardView(
@@ -152,6 +162,7 @@ class PaneMiddleCards(
 
         addAll(handCardView)
         addAll(cardViews)
+        addAll(stacksLabel)
 
     }
 
