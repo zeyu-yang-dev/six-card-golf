@@ -25,6 +25,36 @@ class PaneMiddleCards(
     visual = PLAYER_PANE_BG_VISUAL
 ), Refreshable {
 
+    private val cardImageLoader = CardImageLoader()
+
+    private val cardViews: MutableList<CardView> = mutableListOf()
+
+    private fun createCardView(col: Int): CardView {
+        val cardView = CardView(
+            posX = (CARD_WIDTH + HORIZ_DIS_BTW_CARDS) * col,
+            posY = 0,
+            width = CARD_WIDTH,
+            height = CARD_HEIGHT,
+            front = ImageVisual(cardImageLoader.frontImageFor(CardSuit.HEARTS, CardValue.ACE)),
+            back = ImageVisual(cardImageLoader.backImage)
+        ).apply {
+            this.showFront()
+        }
+        return cardView
+    }
+
+
+
+
+    init {
+        for (col in 0..2) {
+            cardViews.add(createCardView(col))
+        }
+
+        addAll(cardViews)
+
+    }
+
 
 
 
