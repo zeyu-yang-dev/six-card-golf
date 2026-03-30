@@ -1,6 +1,5 @@
 package io.github.zeyu.sixcardgolf.view.panes
 
-import io.github.zeyu.sixcardgolf.entity.*
 import io.github.zeyu.sixcardgolf.service.*
 import io.github.zeyu.sixcardgolf.view.*
 import io.github.zeyu.sixcardgolf.view.GameScene.StateOfUI
@@ -104,7 +103,9 @@ class PaneMiddleCards(
 
         // refresh discardStackCardView:
         val discardStack = currentGame.discardStack
-        val topCardImage = discardStack.peek()?.let {
+        val topCard = if (discardStack.empty()) null else discardStack.peek()
+
+        val topCardImage = topCard?.let {
             cardImageLoader.frontImageFor(it.cardSuit, it.cardValue)
         } ?: cardImageLoader.blankImage
 

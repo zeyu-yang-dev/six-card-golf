@@ -1,21 +1,15 @@
 package io.github.zeyu.sixcardgolf.view
 
-import io.github.zeyu.sixcardgolf.entity.*
-
 import io.github.zeyu.sixcardgolf.service.RootService
 import io.github.zeyu.sixcardgolf.service.CardImageLoader
-
 import io.github.zeyu.sixcardgolf.view.panes.*
 
 import tools.aqua.bgw.animation.DelayAnimation
 import tools.aqua.bgw.core.BoardGameScene
 import tools.aqua.bgw.visual.ImageVisual
-import tools.aqua.bgw.components.gamecomponentviews.CardView
 import tools.aqua.bgw.components.uicomponents.Label
-import tools.aqua.bgw.components.ComponentView
 import tools.aqua.bgw.core.Alignment
 import tools.aqua.bgw.util.Font
-import tools.aqua.bgw.visual.ColorVisual
 import java.awt.Color
 import java.awt.image.BufferedImage
 import javax.imageio.ImageIO
@@ -28,24 +22,26 @@ import javax.imageio.ImageIO
 class GameScene(private val rootService: RootService) : BoardGameScene(1600, 900), Refreshable {
 
 
-
-    private val cardImageLoader = CardImageLoader()
-
-    private val playerActionService = rootService.playerActionService
-
     val panePlayerLeft = PanePlayerLeft(rootService, this)
     val panePlayerRight = PanePlayerRight(rootService, this)
     val panePlayerTop = PanePlayerTop(rootService, this)
     val panePlayerBottom = PanePlayerBottom(rootService, this)
     val paneMiddleCards = PaneMiddleCards(rootService, this)
 
-    var state = StateOfUI.TURN_START
+    private val instructionLabel: Label = Label(
+        posX = PMC_POS_X - 17.75,
+        posY = PMC_POS_Y - 40,
+        width = MIDDLE_LABEL_WIDTH,
+        height = MIDDLE_LABEL_HEIGHT,
+        text = "This is an instruction bar.",
+        font = Font(size = 15, color = Color.WHITE, fontWeight = Font.FontWeight.SEMI_BOLD),
+        alignment = Alignment.CENTER
+    )
 
     //------------------------------------------------------------------------------------------------------------------
+    var state = StateOfUI.TURN_START
 
-    /**
-     * Represents the state of UI, mainly to control interactivity of components.
-     */
+    // Represents the state of UI, mainly to control interactivity of components.
     enum class StateOfUI {
         TURN_START, // the turn just started or a reveal-action was made
         HAS_DRAWN,
@@ -57,75 +53,65 @@ class GameScene(private val rootService: RootService) : BoardGameScene(1600, 900
     fun setUIState(newState: StateOfUI) {
         this.state = newState
     }
-
-
-
     //------------------------------------------------------------------------------------------------------------------
-    //-------- Define the components for status and deck-cards for players on every position ---------------------------
-    //------------------------------------------------------------------------------------------------------------------
-    // The parameters for positioning deck-cards and status-lines for all players:
+    enum class InstructionType {
+        FIRST_ROUND_BEFORE_REVEAL,
+        FIRST_ROUND_REVEALED_ONE,
+        LAST_ROUND,
+        AFTER_DRAW,
+        AFTER_DRAW_DISCARDED,
+        AFTER_DISCARD,
+        ROTATING_SEAT,
+        TURN_START,
+        BEFORE_REVEAL_ALL,
+        AFTER_REVEAL_ALL
+    }
 
-    // Positioning setup for deck-cards of all players:
-    private val cardScale = 0.65
+    private fun updateInstruction(type: InstructionType) {
+        when (type) {
+            InstructionType.FIRST_ROUND_BEFORE_REVEAL -> {
+                instructionLabel.text = "First Round: Please reveal 2 cards."
+                instructionLabel.font = Font(size = 15, color = Color.GREEN, fontWeight = Font.FontWeight.SEMI_BOLD)
+            }
+            InstructionType.FIRST_ROUND_REVEALED_ONE -> {
+                instructionLabel.text = "Reveal one more card to continue."
+                instructionLabel.font = DEFAULT_INSTRUCTION_FONT
+            }
+            InstructionType.LAST_ROUND -> {
+                instructionLabel.text = "Last Round!"
+                instructionLabel.font = Font(size = 15, color = Color.RED, fontWeight = Font.FontWeight.SEMI_BOLD)
+            }
+            InstructionType.AFTER_DRAW -> {
+                instructionLabel.text = "Choose a card to swap or discard hand."
+                instructionLabel.font = DEFAULT_INSTRUCTION_FONT
+            }
+            InstructionType.AFTER_DRAW_DISCARDED -> {
+                instructionLabel.text = "Choose a card to swap."
+                instructionLabel.font = DEFAULT_INSTRUCTION_FONT
+            }
+            InstructionType.AFTER_DISCARD -> {
+                instructionLabel.text = "You have to reveal a card to continue."
+                instructionLabel.font = DEFAULT_INSTRUCTION_FONT
+            }
+            InstructionType.ROTATING_SEAT -> {
+                instructionLabel.text = "The seats will rotate in 2 seconds."
+                instructionLabel.font = PINK_INSTRUCTION_FONT
+            }
+            InstructionType.TURN_START -> {
+                instructionLabel.text = "Your turn: Draw a card or reveal one."
+                instructionLabel.font = Font(size = 15, color = Color.GREEN, fontWeight = Font.FontWeight.SEMI_BOLD)
+            }
+            InstructionType.BEFORE_REVEAL_ALL -> {
+                instructionLabel.text = "All cards will be revealed in 3 seconds."
+                instructionLabel.font = PINK_INSTRUCTION_FONT
+            }
+            InstructionType.AFTER_REVEAL_ALL -> {
+                instructionLabel.text = "Show result in 5 seconds."
+                instructionLabel.font = PINK_INSTRUCTION_FONT
+            }
 
-    // The distance from the deck-center and the center of a card:
-    private val horizontalDistanceInDeck = 90
-    private val verticalDistanceInDeck = 67
-
-    // The actual card size
-    // The 4 parameters below are for [cardScale] = 0.65
-    // The actual size of a card:
-    private val cardWidth = 130 * cardScale
-    private val cardHeight = 200 * cardScale
-    // Offset for positioning due to the scaling of a card:
-    private val scaleOffsetX = 22.75
-    private val scaleOffsetY = 35
-
-    // Offset for positioning for player name label:
-    private val playerLabelOffsetX = -180
-    private val playerLabelOffsetY = 85
-    // Size of player status labels:
-    private val playerLabelHeight = 50
-    private val playerLabelWidth = 300
-
-    // The distance between lines in player status display:
-    private val offsetOneLine = 30
-
-    // Offset for positioning the status labels of the left player:
-    // Increase this value will move the status labels to left.
-    private val leftPlayerStatusOffsetX = 140
-
-    // Colors for status labels:
-    private val unchangeableLabelColor = Color.WHITE
-    private val changeableLabelColor = Color.CYAN
-
-    //------------------------------------------------------------------------------------------------------------------
-    // The components for one player, including:
-    // 4 labels to show status, and
-    // 6 deck-cards
-
-
-
-    //------------------------------------------------------------------------------------------------------------------
-
-
-
-
-
-    private val statusLabel: Label = Label(
-        posX = 650,
-        posY = 345,
-        width = playerLabelWidth,
-        height = playerLabelHeight,
-
-
-        text = "This is a status bar.",
-        font = Font(size = 15, color = unchangeableLabelColor, fontWeight = Font.FontWeight.SEMI_BOLD),
-        alignment = Alignment.CENTER
-    )
-    //------------------------------------------------------------------------------------------------------------------
-
-
+        }
+    }
 
 
 
@@ -135,9 +121,7 @@ class GameScene(private val rootService: RootService) : BoardGameScene(1600, 900
 
 
 
-
-
-
+    //------------------------------------------------------------------------------------------------------------------
 
 
 
@@ -149,23 +133,15 @@ class GameScene(private val rootService: RootService) : BoardGameScene(1600, 900
     private fun guideUserBehavior() {
         val currentGame = rootService.currentGame
 
-
-
-
         // Condition 1: In the first round
         if (currentGame.isFirstRound) {
-
-            statusLabel.text = "First Round: Please reveal 2 cards."
-            statusLabel.font = Font(size = 15, color = Color.GREEN, fontWeight = Font.FontWeight.SEMI_BOLD)
+            updateInstruction(InstructionType.FIRST_ROUND_BEFORE_REVEAL)
         }
-
 
         // Condition 7: During the last round, show a reminder via status bar:
         if (currentGame.isLastRound && state == StateOfUI.TURN_START) {
-            statusLabel.text = "Last Round!"
-            statusLabel.font = Font(size = 15, color = Color.RED, fontWeight = Font.FontWeight.SEMI_BOLD)
+            updateInstruction(InstructionType.LAST_ROUND)
         }
-
     }
 
 
@@ -243,8 +219,7 @@ class GameScene(private val rootService: RootService) : BoardGameScene(1600, 900
 
         guideUserBehavior()
 
-        statusLabel.text = "Reveal one more card to continue."
-        statusLabel.font = Font(size = 15, color = Color.WHITE, fontWeight = Font.FontWeight.SEMI_BOLD)
+        updateInstruction(InstructionType.FIRST_ROUND_REVEALED_ONE)
     }
 
 
@@ -257,8 +232,7 @@ class GameScene(private val rootService: RootService) : BoardGameScene(1600, 900
 
         guideUserBehavior()
 
-        statusLabel.text = "Choose a card to swap or discard hand."
-        statusLabel.font = Font(size = 15, color = Color.WHITE, fontWeight = Font.FontWeight.SEMI_BOLD)
+        updateInstruction(InstructionType.AFTER_DRAW)
     }
 
     override fun refreshAfterDrawDiscardedCard() {
@@ -266,8 +240,7 @@ class GameScene(private val rootService: RootService) : BoardGameScene(1600, 900
 
         guideUserBehavior()
 
-        statusLabel.text = "Choose a card to swap."
-        statusLabel.font = Font(size = 15, color = Color.WHITE, fontWeight = Font.FontWeight.SEMI_BOLD)
+        updateInstruction(InstructionType.AFTER_DRAW_DISCARDED)
     }
 
     override fun refreshAfterSwap() {
@@ -276,8 +249,8 @@ class GameScene(private val rootService: RootService) : BoardGameScene(1600, 900
     }
 
     override fun refreshAfterDiscard() {
-        statusLabel.text = "You have to reveal a card to continue."
-        statusLabel.font = Font(size = 15, color = Color.WHITE, fontWeight = Font.FontWeight.SEMI_BOLD)
+
+        updateInstruction(InstructionType.AFTER_DISCARD)
 
 
         guideUserBehavior()
@@ -286,8 +259,7 @@ class GameScene(private val rootService: RootService) : BoardGameScene(1600, 900
     override fun refreshAfterNextTurn() {
 
         // before the delay animation, show a reminder via status bar:
-        statusLabel.text = "The seats will rotate in 2 seconds."
-        statusLabel.font = Font(size = 15, color = Color.PINK, fontWeight = Font.FontWeight.SEMI_BOLD)
+        updateInstruction(InstructionType.ROTATING_SEAT)
 
         // before refresh for the next turn, play a delay animation
         this.playAnimation(
@@ -295,8 +267,7 @@ class GameScene(private val rootService: RootService) : BoardGameScene(1600, 900
                 onFinished = {
 
                     // clear the status bar before next turn begins:
-                    statusLabel.text = "Your turn: Draw a card or reveal one."
-                    statusLabel.font = Font(size = 15, color = Color.GREEN, fontWeight = Font.FontWeight.SEMI_BOLD)
+                    updateInstruction(InstructionType.TURN_START)
 
 
                     setUIState(StateOfUI.TURN_START) // 这里是必要的，从bottom中改变状态可能不及时
@@ -324,8 +295,7 @@ class GameScene(private val rootService: RootService) : BoardGameScene(1600, 900
         guideUserBehavior()
 
         // before the delay animation, show a reminder via status bar:
-        statusLabel.text = "All cards will be revealed in 3 seconds."
-        statusLabel.font = Font(size = 15, color = Color.PINK, fontWeight = Font.FontWeight.SEMI_BOLD)
+        updateInstruction(InstructionType.BEFORE_REVEAL_ALL)
 
         this.playAnimation(
             DelayAnimation(duration = DELAY_BEFORE_REVEAL_ALL).apply {
@@ -337,8 +307,7 @@ class GameScene(private val rootService: RootService) : BoardGameScene(1600, 900
                     // refreshPlayers()
                     // refreshMiddle()
 
-                    statusLabel.text = "Show result in 5 seconds."
-                    statusLabel.font = Font(size = 15, color = Color.PINK, fontWeight = Font.FontWeight.SEMI_BOLD)
+                    updateInstruction(InstructionType.AFTER_REVEAL_ALL)
 
                     playAnimation(
                         DelayAnimation(duration = 5000).apply {
@@ -370,7 +339,7 @@ class GameScene(private val rootService: RootService) : BoardGameScene(1600, 900
             panePlayerTop,
             panePlayerBottom,
             paneMiddleCards,
-            statusLabel
+            instructionLabel
         )
 
 
