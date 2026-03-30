@@ -37,6 +37,7 @@ class GameScene(private val rootService: RootService) : BoardGameScene(1600, 900
     val panePlayerRight = PanePlayerRight(rootService, this)
     val panePlayerTop = PanePlayerTop(rootService, this)
     val panePlayerBottom = PanePlayerBottom(rootService, this)
+    val paneMiddleCards = PaneMiddleCards(rootService, this)
 
     var state = StateOfUI.TURN_START
 
@@ -109,73 +110,15 @@ class GameScene(private val rootService: RootService) : BoardGameScene(1600, 900
 
 
 
-    //------------------------------------------------------------------------------------------------------------------
-    //-------- Define the components for the Handcard, Drawstack and Discardstack --------------------------------------
-    //------------------------------------------------------------------------------------------------------------------
 
-    private val handCard = CardView(
-        posX = 800 - horizontalDistanceInDeck - cardWidth / 2 - scaleOffsetX,
-        posY = 450 - cardHeight / 2 - scaleOffsetY,
-        front = ImageVisual(cardImageLoader.frontImageFor(CardSuit.HEARTS, CardValue.ACE)),
-        back = ImageVisual(cardImageLoader.backImage)
-    ).apply {
-        this.showFront()
-        this.scale(cardScale)
-        this.isDisabled = true
-        this.opacity = 0.5
-    }
-
-    private val drawStackCard = CardView(
-        posX = 800 - cardWidth / 2 - scaleOffsetX,
-        posY = 450 - cardHeight / 2 - scaleOffsetY,
-        front = ImageVisual(cardImageLoader.frontImageFor(CardSuit.HEARTS, CardValue.ACE)),
-        back = ImageVisual(cardImageLoader.backImage)
-    ).apply {
-        this.showFront()
-        this.scale(cardScale)
-        onMouseClicked = {
-            if (state == StateOfUI.TURN_START) {
-                playerActionService.drawCardAction()
-                state = StateOfUI.HAS_DRAWN
-            }
-        }
-    }
-
-    private val discardStackCard = CardView(
-        posX = 800 + horizontalDistanceInDeck - cardWidth / 2 - scaleOffsetX,
-        posY = 450 - cardHeight / 2 - scaleOffsetY,
-        front = ImageVisual(cardImageLoader.frontImageFor(CardSuit.HEARTS, CardValue.ACE)),
-        back = ImageVisual(cardImageLoader.backImage)
-    ).apply {
-        this.showFront()
-        this.scale(cardScale)
-        onMouseClicked = {
-            if (state == StateOfUI.TURN_START) {
-                playerActionService.drawDiscardedCardAction()
-                state = StateOfUI.HAS_DRAWN_DISCARDED
-            }
-            if (state == StateOfUI.HAS_DRAWN) {
-                playerActionService.discard(true)
-                state = StateOfUI.TURN_START
-            }
-        }
-    }
-
-    private val middleLabel: Label = Label(
-        height = playerLabelHeight,
-        width = playerLabelWidth,
-        posX = 680,
-        posY = 502,
-        text = "   Hand             Draw          Discard",
-        font = Font(size = 15, color = unchangeableLabelColor, fontWeight = Font.FontWeight.SEMI_BOLD),
-        alignment = Alignment.CENTER_LEFT
-    )
 
     private val statusLabel: Label = Label(
-        height = playerLabelHeight,
-        width = playerLabelWidth,
         posX = 650,
         posY = 345,
+        width = playerLabelWidth,
+        height = playerLabelHeight,
+
+
         text = "This is a status bar.",
         font = Font(size = 15, color = unchangeableLabelColor, fontWeight = Font.FontWeight.SEMI_BOLD),
         alignment = Alignment.CENTER
@@ -185,7 +128,7 @@ class GameScene(private val rootService: RootService) : BoardGameScene(1600, 900
 
 
 
-    private val middleCards: List<CardView> = listOf(handCard, drawStackCard, discardStackCard)
+
     //------------------------------------------------------------------------------------------------------------------
 
 
@@ -193,82 +136,10 @@ class GameScene(private val rootService: RootService) : BoardGameScene(1600, 900
 
 
 
-    private fun refreshMiddle() {
-
-        val currentGame = rootService.currentGame
-        requireNotNull(currentGame) {"Current game not available!"}
-        val players = currentGame.players
-        val currentPlayerIndex = currentGame.currentPlayerIndex
-        val currentPlayer = players[currentPlayerIndex]
-
-        // refresh handcard:
-        if (currentPlayer.handCard != null) {
-            val currentHandCard = currentPlayer.handCard
-            handCard.apply {
-                frontVisual =
-                    ImageVisual(cardImageLoader.frontImageFor(currentHandCard!!.cardSuit, currentHandCard.cardValue))
-                this.showFront()
-            }
-        } else {
-            handCard.apply {
-                frontVisual = ImageVisual(cardImageLoader.blankImage)
-                this.showFront()
-            }
-        }
-
-        // refresh the card representing draw-stack:
-        val drawStack = currentGame.drawStack
-        if (!drawStack.isEmpty()) {
-            drawStackCard.apply {
-                frontVisual = ImageVisual(cardImageLoader.backImage)
-                this.showFront()
-            }
-        } else {
-            drawStackCard.apply {
-                frontVisual = ImageVisual(cardImageLoader.blankImage)
-                this.showFront()
-            }
-        }
-
-        // refresh the card representing discard-stack:
-        val discardStack = currentGame.discardStack
-        if (!discardStack.isEmpty()) {
-            val cardOnTopOfDiscardStack = discardStack.peek()
-            discardStackCard.apply {
-                frontVisual = ImageVisual(cardImageLoader.frontImageFor(cardOnTopOfDiscardStack!!.cardSuit,
-                                                                        cardOnTopOfDiscardStack.cardValue))
-                this.showFront()
-            }
-        } else {
-            discardStackCard.apply {
-                frontVisual = ImageVisual(cardImageLoader.blankImage)
-                this.showFront()
-            }
-        }
-    }
-
-
-    /**
-     * Enables draw-stack, discard-stack and deck-cards, except the null deck-cards.
-     * When a component is enabled, its opacity will be set to 1.0, which means totally not transparent, to indicate
-     * that this component is interactive.
-     */
-    private fun enableAllComponents() {
-        val currentGame = rootService.currentGame
-        requireNotNull(currentGame) {"Current game not available!"}
-
-        val players = currentGame.players
-        val currentPlayerIndex = currentGame.currentPlayerIndex
-        val currentPlayer = players[currentPlayerIndex]
-        val cards = currentPlayer.topRow + currentPlayer.bottomRow
 
 
 
-        drawStackCard.isDisabled = false
-        drawStackCard.opacity = 1.0
-        discardStackCard.isDisabled = false
-        discardStackCard.opacity = 1.0
-    }
+
 
     /**
      * Disables all components that are not supposed to be interactive in a specific phase of a turn.
@@ -277,87 +148,17 @@ class GameScene(private val rootService: RootService) : BoardGameScene(1600, 900
      */
     private fun guideUserBehavior() {
         val currentGame = rootService.currentGame
-        requireNotNull(currentGame) {"Current game not available!"}
-        val players = currentGame.players
-        val currentPlayerIndex = currentGame.currentPlayerIndex
-        val currentPlayer = players[currentPlayerIndex]
-        val cards = currentPlayer.topRow + currentPlayer.bottomRow
 
-        // Firstly turn on all components:
-        enableAllComponents()
 
-        // Then disable components, which are not supposed to be interactive:
+
 
         // Condition 1: In the first round
         if (currentGame.isFirstRound) {
-            drawStackCard.isDisabled = true
-            drawStackCard.opacity = 0.5
-            discardStackCard.isDisabled = true
-            discardStackCard.opacity = 0.5
-
-
-
 
             statusLabel.text = "First Round: Please reveal 2 cards."
             statusLabel.font = Font(size = 15, color = Color.GREEN, fontWeight = Font.FontWeight.SEMI_BOLD)
         }
 
-
-
-
-        // Condition 2: Not in the first round and a turn just started
-        // if (state == StateOfUI.TURN_START) {
-        //     for (i in 0..5) {
-        //         // enable all deck-cards that are not null
-        //         if (cards[i]?.isRevealed == true) {
-        //             bottomPlayerCards[i].isDisabled = true
-        //             bottomPlayerCards[i].opacity = 0.5
-        //         }
-        //     }
-        // }
-
-        // Condition 3: Just drawn from draw-stack
-        if (state == StateOfUI.HAS_DRAWN) {
-            drawStackCard.isDisabled = true
-            drawStackCard.opacity = 0.5
-        }
-
-        // Condition 4: Just drawn from discard-stack
-        if (state == StateOfUI.HAS_DRAWN_DISCARDED) {
-            discardStackCard.isDisabled = true
-            discardStackCard.opacity = 0.5
-            drawStackCard.isDisabled = true
-            drawStackCard.opacity = 0.5
-        }
-
-        // Condition 5: Just discarded the handcard, which was drawn from draw-stack
-        if (state == StateOfUI.HAS_DISCARDED) {
-            drawStackCard.isDisabled = true
-            drawStackCard.opacity = 0.5
-            discardStackCard.isDisabled = true
-            discardStackCard.opacity = 0.5
-
-            // for (i in 0..5) {
-            //     // enable all deck-cards that are not null
-            //     if (cards[i]?.isRevealed == true) {
-            //         bottomPlayerCards[i].isDisabled = true
-            //         bottomPlayerCards[i].opacity = 0.5
-            //     }
-            // }
-        }
-
-        // Condition 6: When game ends, disable all components:
-        if (state == StateOfUI.GAME_END) {
-            drawStackCard.isDisabled = true
-            drawStackCard.opacity = 0.5
-            discardStackCard.isDisabled = true
-            discardStackCard.opacity = 0.5
-
-            // for (i in 0..5) {
-            //     bottomPlayerCards[i].isDisabled = true
-            //     bottomPlayerCards[i].opacity = 0.5
-            // }
-        }
 
         // Condition 7: During the last round, show a reminder via status bar:
         if (currentGame.isLastRound && state == StateOfUI.TURN_START) {
@@ -422,8 +223,6 @@ class GameScene(private val rootService: RootService) : BoardGameScene(1600, 900
             
         }
 
-
-        
     } 
 
 
@@ -433,114 +232,54 @@ class GameScene(private val rootService: RootService) : BoardGameScene(1600, 900
 
 
     override fun refreshAfterStartNewGame() {
-        // super.refreshAfterStartNewGame()
-
-        val currentGame = rootService.currentGame
-        requireNotNull(currentGame) {"Current game not available!"}
-
-        // Add Components according to the number of players:
-        // Notice that if restartButton is pressed, this action will be taken once more,
-        // to avoid exceptions, all components have to be removed after game ends
-
-        //--------------------------------------------------------------------------------------------------------------
-        
-        // // The performance of this way is better compared with the following when.
-        // when(currentGame.players.size) {
-        //
-        //     2 -> {
-        //         addComponents(
-        //             *topPlayerLabels.toTypedArray(),
-        //             *topPlayerCards.toTypedArray(),
-        //             *bottomPlayerLabels.toTypedArray(),
-        //             *bottomPlayerCards.toTypedArray(),
-        //             *middleCards.toTypedArray(),
-        //             middleLabel,
-        //             statusLabel
-        //         )
-        //     }
-        //
-        //     3 -> {
-        //         addComponents(
-        //             *topPlayerLabels.toTypedArray(),
-        //             *topPlayerCards.toTypedArray(),
-        //             *bottomPlayerLabels.toTypedArray(),
-        //             *bottomPlayerCards.toTypedArray(),
-        //             *rightPlayerLabels.toTypedArray(),
-        //             *rightPlayerCards.toTypedArray(),
-        //             *middleCards.toTypedArray(),
-        //             middleLabel,
-        //             statusLabel
-        //         )
-        //     }
-        //
-        //     4 -> {
-        //         addComponents(
-        //             *topPlayerLabels.toTypedArray(),
-        //             *topPlayerCards.toTypedArray(),
-        //             *bottomPlayerLabels.toTypedArray(),
-        //             *bottomPlayerCards.toTypedArray(),
-        //             *rightPlayerLabels.toTypedArray(),
-        //             *rightPlayerCards.toTypedArray(),
-        //             *leftPlayerLabels.toTypedArray(),
-        //             *leftPlayerCards.toTypedArray(),
-        //             *middleCards.toTypedArray(),
-        //             middleLabel,
-        //             statusLabel
-        //         )
-        //     }
-        // }
-
-        //--------------------------------------------------------------------------------------------------------------
-
-        // Create a list to store components to add to this scene
-        val components = mutableListOf<ComponentView>()
-
-        // Add common Components
-
-
-        components.addAll(middleCards)
-        components.add(middleLabel)
-        components.add(statusLabel)
-
-        when (currentGame.players.size) {
-            2 -> {
-                // 2 Players: Only use common components
-                for (i in components.indices) {
-                    addComponents(components[i])
-                }
-            }
-            3 -> {
-                // 3 Players:
-
-                for (i in components.indices) {
-                    addComponents(components[i])
-                }
-            }
-            4 -> {
-                // 4 Players:
-
-                for (i in components.indices) {
-                    addComponents(components[i])
-                }
-            }
-        }
-
-        //--------------------------------------------------------------------------------------------------------------
 
         state = StateOfUI.TURN_START
 
-
-        refreshMiddle()
         guideUserBehavior()
 
+    }
 
+    override fun refreshAfterFirstReveal() {
+
+        guideUserBehavior()
+
+        statusLabel.text = "Reveal one more card to continue."
+        statusLabel.font = Font(size = 15, color = Color.WHITE, fontWeight = Font.FontWeight.SEMI_BOLD)
     }
 
 
     override fun refreshAfterReveal() {
-        // super.refreshAfterReveal()
 
-        refreshMiddle()
+        guideUserBehavior()
+    }
+
+    override fun refreshAfterDrawCard() {
+
+        guideUserBehavior()
+
+        statusLabel.text = "Choose a card to swap or discard hand."
+        statusLabel.font = Font(size = 15, color = Color.WHITE, fontWeight = Font.FontWeight.SEMI_BOLD)
+    }
+
+    override fun refreshAfterDrawDiscardedCard() {
+
+
+        guideUserBehavior()
+
+        statusLabel.text = "Choose a card to swap."
+        statusLabel.font = Font(size = 15, color = Color.WHITE, fontWeight = Font.FontWeight.SEMI_BOLD)
+    }
+
+    override fun refreshAfterSwap() {
+
+        guideUserBehavior()
+    }
+
+    override fun refreshAfterDiscard() {
+        statusLabel.text = "You have to reveal a card to continue."
+        statusLabel.font = Font(size = 15, color = Color.WHITE, fontWeight = Font.FontWeight.SEMI_BOLD)
+
+
         guideUserBehavior()
     }
 
@@ -552,7 +291,7 @@ class GameScene(private val rootService: RootService) : BoardGameScene(1600, 900
 
         // before refresh for the next turn, play a delay animation
         this.playAnimation(
-            DelayAnimation(duration = 2000).apply {
+            DelayAnimation(duration = DELAY_BTW_TURNS).apply {
                 onFinished = {
 
                     // clear the status bar before next turn begins:
@@ -560,10 +299,10 @@ class GameScene(private val rootService: RootService) : BoardGameScene(1600, 900
                     statusLabel.font = Font(size = 15, color = Color.GREEN, fontWeight = Font.FontWeight.SEMI_BOLD)
 
 
-
+                    setUIState(StateOfUI.TURN_START) // 这里是必要的，从bottom中改变状态可能不及时
                     // super.refreshAfterNextTurn()
 
-                    refreshMiddle()
+
                     guideUserBehavior()
                 }
             }
@@ -573,63 +312,8 @@ class GameScene(private val rootService: RootService) : BoardGameScene(1600, 900
     }
 
     override fun refreshOnLastRound() {
-        // super.refreshOnLastRound()
 
-        refreshMiddle()
         guideUserBehavior()
-    }
-
-    override fun refreshAfterDrawCard() {
-
-
-        // super.refreshAfterDrawCard()
-
-        refreshMiddle()
-        guideUserBehavior()
-
-        statusLabel.text = "Choose a card to swap or discard hand."
-        statusLabel.font = Font(size = 15, color = Color.WHITE, fontWeight = Font.FontWeight.SEMI_BOLD)
-    }
-
-    override fun refreshAfterDrawDiscardedCard() {
-
-
-        // super.refreshAfterDrawDiscardedCard()
-
-        refreshMiddle()
-        guideUserBehavior()
-
-        statusLabel.text = "Choose a card to swap."
-        statusLabel.font = Font(size = 15, color = Color.WHITE, fontWeight = Font.FontWeight.SEMI_BOLD)
-    }
-
-    override fun refreshAfterDiscard() {
-        statusLabel.text = "You have to reveal a card to continue."
-        statusLabel.font = Font(size = 15, color = Color.WHITE, fontWeight = Font.FontWeight.SEMI_BOLD)
-
-
-
-        // super.refreshAfterDiscard()
-
-        refreshMiddle()
-        guideUserBehavior()
-    }
-
-    override fun refreshAfterSwap() {
-        // super.refreshAfterSwap()
-
-        refreshMiddle()
-        guideUserBehavior()
-    }
-
-    override fun refreshAfterFirstReveal() {
-        // super.refreshAfterFirstReveal()
-
-        refreshMiddle()
-        guideUserBehavior()
-
-        statusLabel.text = "Reveal one more card to continue."
-        statusLabel.font = Font(size = 15, color = Color.WHITE, fontWeight = Font.FontWeight.SEMI_BOLD)
     }
 
 
@@ -651,7 +335,7 @@ class GameScene(private val rootService: RootService) : BoardGameScene(1600, 900
                     removeIdenticalRow()
 
                     // refreshPlayers()
-                    refreshMiddle()
+                    // refreshMiddle()
 
                     statusLabel.text = "Show result in 5 seconds."
                     statusLabel.font = Font(size = 15, color = Color.PINK, fontWeight = Font.FontWeight.SEMI_BOLD)
@@ -661,7 +345,7 @@ class GameScene(private val rootService: RootService) : BoardGameScene(1600, 900
                             onFinished = {
 
                                 // refreshPlayers()
-                                refreshMiddle()
+                                // refreshMiddle()
 
                                 rootService.gameService.endGame()
                             }
@@ -684,11 +368,10 @@ class GameScene(private val rootService: RootService) : BoardGameScene(1600, 900
             panePlayerLeft,
             panePlayerRight,
             panePlayerTop,
-            panePlayerBottom
+            panePlayerBottom,
+            paneMiddleCards,
+            statusLabel
         )
-
-
-
 
 
     }
