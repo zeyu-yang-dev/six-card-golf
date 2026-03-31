@@ -2,8 +2,6 @@ package io.github.zeyu.sixcardgolf.service
 
 import io.github.zeyu.sixcardgolf.entity.*
 
-
-
 /**
  * Service layer class that provides the logic for actions not directly related to a single player.
  */
@@ -48,7 +46,6 @@ class GameService(private val rootService: RootService): AbstractRefreshingServi
         onAllRefreshables { refreshAfterStartNewGame() }
     }
 
-
     /**
      * Calls the last round.
      * This methode is called, when:
@@ -77,8 +74,6 @@ class GameService(private val rootService: RootService): AbstractRefreshingServi
         // rootService.gameService.nextTurn()
     }
 
-
-
     /**
      * Prepares for the next turn, including:
      * 1. Checks whether a row of the current player can be removed.
@@ -93,28 +88,9 @@ class GameService(private val rootService: RootService): AbstractRefreshingServi
         val players = currentGame.players
         val currentPlayerIndex = currentGame.currentPlayerIndex
         val currentPlayer = players[currentPlayerIndex]
-        val discardStack = currentGame.discardStack
 
         // 1. Checks whether a row of the current player can be removed.
-
-        // Check top row for identical card value, the cards must all be revealed.
-        if (currentPlayer.topRow.all { it != null && it.isRevealed && it.cardValue == currentPlayer.topRow[0]?.cardValue }) {
-            // Set all cards to null and give them to discard-stack if they have identical values
-            for (i in 0..2) {
-                discardStack.push(currentPlayer.topRow[i])
-                currentPlayer.topRow[i] = null
-            }
-        }
-
-        // Check bottom row for identical card value, the cards must all be revealed.
-        if (currentPlayer.bottomRow.all { it != null && it.isRevealed &&
-                    it.cardValue == currentPlayer.bottomRow[0]?.cardValue }) {
-            // Set all cards to null and give them to discard-stack if they have identical values
-            for (i in 0..2) {
-                discardStack.push(currentPlayer.bottomRow[i])
-                currentPlayer.bottomRow[i] = null
-            }
-        }
+        removeIdenticalRows(currentPlayer)
 
         // 2. Checks whether both rows of the current player are removed, if so, mark the winning player and call last round.
         if (currentPlayer.topRow[0] == null && currentPlayer.bottomRow[0] == null && currentGame.winningPlayer == null) {
@@ -148,14 +124,70 @@ class GameService(private val rootService: RootService): AbstractRefreshingServi
         // 6. Gives the command to the next player.
         currentGame.currentPlayerIndex = (currentGame.currentPlayerIndex + 1) % players.size
 
-
-
         onAllRefreshables { refreshAfterNextTurn() }
     }
 
+    /**
+     * Check whether a player has identical rows,
+     * if so, move the cards from the row to the discard stack.
+     *
+     * @param player The player to be checked.
+     */
+    private fun removeIdenticalRows(player: Player) {
+        val discardStack = rootService.currentGame.discardStack
+
+        // Check both rows for identical card value, the cards in one row must all be revealed.
+        listOf(player.topRow, player.bottomRow).forEach { row ->
+
+            if (row.all { it != null && it.isRevealed && it.cardValue == row[0]?.cardValue }) {
+                // Set all cards to null and send them to discard-stack if they have identical values
+                for (i in row.indices) {
+                    discardStack.push(row[i])
+                    row[i] = null
+                }
+            }
+        }
+    }
 
     /**
-     *
+     * Check for every player, whether he has identical rows,
+     * if so, move the cards from the row to the discard stack.
+     */
+    fun removeIdenticalRows() {
+        val players = rootService.currentGame.players
+
+        for (player in players) {
+            removeIdenticalRows(player)
+        }
+    }
+
+    /**
+     * Reveals all cards of the given player.
+     *  @param player The player whose cards should be revealed
+     */
+    private fun revealAllCards(player: Player) {
+        listOf(player.topRow, player.bottomRow).forEach { row ->
+            for (i in row.indices) {
+                row[i]?.isRevealed = true
+            }
+        }
+    }
+
+    /**
+     * Reveal all cards of all players.
+     * Called before check for identical rows at the end of the game.
+     * Called 5s before switching to result menu scene.
+     */
+    fun revealAllCards() {
+        val players = rootService.currentGame.players
+
+        for (player in players) {
+            revealAllCards(player)
+        }
+    }
+
+    /**
+     * Only refreshes UI.
      */
     internal fun endGame() {
         onAllRefreshables { refreshAfterGameEnd() }

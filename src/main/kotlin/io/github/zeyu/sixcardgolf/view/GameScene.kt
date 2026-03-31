@@ -13,10 +13,8 @@ import tools.aqua.bgw.core.Alignment
 import java.awt.image.BufferedImage
 import javax.imageio.ImageIO
 
-
 /**
  * The game scene for the six card golf game, which inherits from [BoardGameScene].
- *
  */
 class GameScene(private val rootService: RootService) : BoardGameScene(1600, 900), Refreshable {
 
@@ -110,73 +108,6 @@ class GameScene(private val rootService: RootService) : BoardGameScene(1600, 900
         }
     }
     //------------------------------------------------------------------------------------------------------------------
-
-
-    /**
-     * Reveal all cards of all players.
-     * Called 5s before switching to result menu scene.
-     */
-    private fun revealAllCards() {
-        val currentGame = rootService.currentGame
-        val players = currentGame.players
-        
-        for (player in players) {
-            for (i in 0..2) {
-                player.topRow[i]?.isRevealed = true
-                player.bottomRow[i]?.isRevealed = true
-            }
-        }
-    }
-
-    /**
-     * The function nextTurn will check for identical rows and remove them.
-     * However, after all cards are revealed automatically before switching to result scene,
-     * nextTurn will not be called anymore.
-     *
-     * It's possible that one row of a player is identical after all cards revealed automatically.
-     * So it's necessary to check for identical rows here.
-     * Optionally, after automatic reveal of all cards, if both rows of a player are removed,
-     * the player can be assigned as the winner, which is DISABLED here.
-     *
-     */
-    private fun removeIdenticalRow() {
-        val currentGame = rootService.currentGame
-        val players = currentGame.players
-        
-        for (player in players) {
-            
-            // Check top row for identical card value, the cards must all be revealed.
-            if (player.topRow.all { it != null && it.isRevealed && it.cardValue == player.topRow[0]?.cardValue }) {
-                // Set all cards to null and send them to discard-stack if they have identical values
-                for (i in 0..2) {
-                    currentGame.discardStack.push(player.topRow[i])
-                    player.topRow[i] = null
-                }
-            }
-    
-            // Check bottom row for identical card value, the cards must all be revealed.
-            if (player.bottomRow.all { it != null && it.isRevealed && it.cardValue == player.bottomRow[0]?.cardValue }) {
-                // Set all cards to null and give them to discard-stack if they have identical values
-                for (i in 0..2) {
-                    currentGame.discardStack.push(player.bottomRow[i])
-                    player.bottomRow[i] = null
-                }
-            }
-
-            // // DISABLED:
-            // // Checks whether both rows of the current player are removed,
-            // // if so, mark the winning player and call last round.
-            // if (player.topRow[0] == null && player.bottomRow[0] == null && currentGame.winningPlayer == null) {
-            //     currentGame.winningPlayer = player
-            //     // But this time, no need to call last round anymore:
-            //     // callLastRound()
-            // }
-        }
-
-    } 
-
-
-    //------------------------------------------------------------------------------------------------------------------
     init {
         val image : BufferedImage = ImageIO.read(CardImageLoader::class.java.getResource("/game_background.jpg"))
         this.background = ImageVisual(image)
@@ -190,7 +121,7 @@ class GameScene(private val rootService: RootService) : BoardGameScene(1600, 900
             instructionLabel
         )
     }
-
+    //------------------------------------------------------------------------------------------------------------------
     override fun refreshAfterStartNewGame() {
         state = StateOfUI.TURN_START
         updateInstruction(InstructionType.FIRST_ROUND_BEFORE_REVEAL)
@@ -253,9 +184,18 @@ class GameScene(private val rootService: RootService) : BoardGameScene(1600, 900
         this.playAnimation(
             DelayAnimation(duration = DELAY_BEFORE_REVEAL_ALL).apply {
                 onFinished = {
-
-                    revealAllCards()
-                    removeIdenticalRow()
+                    /**
+                     * The function nextTurn will check for identical rows and remove them.
+                     * However, after all cards are revealed automatically before switching to result scene,
+                     * nextTurn will not be called anymore.
+                     *
+                     * It's possible that one row of a player is identical after all cards revealed automatically.
+                     * So it's necessary to check for identical rows here.
+                     * Optionally, after automatic reveal of all cards, if both rows of a player are removed,
+                     * the player can be assigned as the winner, which is DISABLED here.
+                     */
+                    rootService.gameService.revealAllCards()
+                    rootService.gameService.removeIdenticalRows()
 
                     updateInstruction(InstructionType.AFTER_REVEAL_ALL)
 

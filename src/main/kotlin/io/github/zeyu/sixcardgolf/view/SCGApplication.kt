@@ -17,10 +17,6 @@ class SCGApplication : BoardGameApplication("Six Card Golf"), Refreshable {
     // also holds the currently active game
     private val rootService = RootService()
 
-
-
-
-
     // Scenes:
     // 1. New Game Menu Scene:
     private val mainMenuScene = MainMenuScene(rootService).apply {
@@ -42,7 +38,6 @@ class SCGApplication : BoardGameApplication("Six Card Golf"), Refreshable {
     private val resultMenuScene = ResultMenuScene(rootService).apply {
 
         restartButton.onMouseClicked = {
-
             showMenuScene(mainMenuScene)
         }
 
@@ -50,13 +45,6 @@ class SCGApplication : BoardGameApplication("Six Card Golf"), Refreshable {
             exit()
         }
     }
-
-
-
-
-
-
-
 
     init {
 
@@ -99,7 +87,6 @@ class SCGApplication : BoardGameApplication("Six Card Golf"), Refreshable {
         if(rootService.currentGame.players.size == 3) {
             gameScene.panePlayerRight.isVisible = false
         }
-
 
         this.hideMenuScene()
     }

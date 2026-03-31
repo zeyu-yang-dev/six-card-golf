@@ -278,17 +278,17 @@ class PanePlayerBottom(
 
     override fun refreshBeforeGameEnd() {
         gameScene.setUIState(StateOfUI.GAME_END)
+        updateInteractivity()
 
         gameScene.playAnimation(
             DelayAnimation(duration = DELAY_BEFORE_REVEAL_ALL).apply {
                 onFinished = {
+                    rootService.gameService.revealAllCards()
+                    rootService.gameService.removeIdenticalRows()
                     refreshThisPane()
-                    updateInteractivity()
                 }
             }
         )
-
-
     }
 
     override fun refreshAfterGameEnd() {

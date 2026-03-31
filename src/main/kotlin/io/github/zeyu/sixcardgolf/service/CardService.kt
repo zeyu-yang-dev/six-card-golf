@@ -49,8 +49,6 @@ class CardService(private val rootService: RootService) : AbstractRefreshingServ
                 }
             }
 
-
-
         } else {
             // Generate a standard draw-stack of 52 cards
             for (suit in CardSuit.entries) {
@@ -63,13 +61,8 @@ class CardService(private val rootService: RootService) : AbstractRefreshingServ
         // Shuffle the deck
         deck.shuffle()
 
-        //-------------------------------------------------------------------------
         // Pass the created stack to the property "drawStack" to the instance of SixCardGolf (currentGame).
-        // Throws an exception if currentGame is null.
-        rootService.currentGame?.let { currentGame ->
-            currentGame.drawStack = deck
-        } ?: throw IllegalStateException("currentGame is null.")
-        //-------------------------------------------------------------------------
+        rootService.currentGame.drawStack = deck
 
         return deck
     }
@@ -82,9 +75,9 @@ class CardService(private val rootService: RootService) : AbstractRefreshingServ
     internal fun initializeDiscardStack() {
         // This func will only be called if the game is already initialized
         // Remove the card at the top of draw-stack:
-        val topCard = rootService.currentGame!!.drawStack.pop()
+        val topCard = rootService.currentGame.drawStack.pop()
         // Add the card on the top of the discard-stack
-        rootService.currentGame!!.discardStack.push(topCard)
+        rootService.currentGame.discardStack.push(topCard)
         // Reveal the card:
         topCard.isRevealed = true
     }
