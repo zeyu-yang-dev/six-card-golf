@@ -1,7 +1,6 @@
 package io.github.zeyu.sixcardgolf.view
 
 import io.github.zeyu.sixcardgolf.service.RootService
-import io.github.zeyu.sixcardgolf.service.CardImageLoader
 import io.github.zeyu.sixcardgolf.service.Refreshable
 import io.github.zeyu.sixcardgolf.view.panes.*
 
@@ -114,7 +113,7 @@ class GameScene(
     }
     //------------------------------------------------------------------------------------------------------------------
     init {
-        val image : BufferedImage = ImageIO.read(CardImageLoader::class.java.getResource("/game_background.jpg"))
+        val image : BufferedImage = ImageIO.read(javaClass.getResource("/game_background.jpg"))
         this.background = ImageVisual(image)
 
         addComponents(

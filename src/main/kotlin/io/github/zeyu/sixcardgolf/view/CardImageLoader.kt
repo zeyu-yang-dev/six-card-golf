@@ -1,4 +1,4 @@
-package io.github.zeyu.sixcardgolf.service
+package io.github.zeyu.sixcardgolf.view
 
 import io.github.zeyu.sixcardgolf.entity.CardSuit
 import io.github.zeyu.sixcardgolf.entity.CardValue
