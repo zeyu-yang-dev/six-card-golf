@@ -1,5 +1,6 @@
 package io.github.zeyu.sixcardgolf.view
 
+import tools.aqua.bgw.util.Font
 import tools.aqua.bgw.visual.ColorVisual
 import java.awt.Color
 
@@ -34,10 +35,14 @@ const val PMC_HEIGHT = CARD_HEIGHT
 const val PMC_POS_X = (SCREEN_WIDTH - PMC_WIDTH) / 2
 const val PMC_POS_Y = (SCREEN_HEIGHT - PMC_HEIGHT) / 2
 
-
 val PLAYER_COLORS = listOf(Color.CYAN, Color.YELLOW, Color.LIGHT_GRAY, Color.MAGENTA)
 // val PLAYER_PANE_BG_VISUAL = ColorVisual(50, 50, 50, 90)
 val PLAYER_PANE_BG_VISUAL = ColorVisual.TRANSPARENT
+
+val DEFAULT_INSTRUCTION_FONT = Font(size = 15, color = Color.WHITE, fontWeight = Font.FontWeight.SEMI_BOLD)
+val PINK_INSTRUCTION_FONT = Font(size = 15, color = Color.PINK, fontWeight = Font.FontWeight.SEMI_BOLD)
+val GREEN_INSTRUCTION_FONT = Font(size = 15, color = Color.GREEN, fontWeight = Font.FontWeight.SEMI_BOLD)
+val RED_INSTRUCTION_FONT = Font(size = 15, color = Color.RED, fontWeight = Font.FontWeight.SEMI_BOLD)
 
 const val DELAY_BTW_TURNS = 2000
 const val DELAY_BEFORE_REVEAL_ALL = 3000

@@ -1,7 +1,5 @@
 package io.github.zeyu.sixcardgolf.service
 
-import io.github.zeyu.sixcardgolf.view.Refreshable
-
 /**
  * Abstract service class that handles multiples [Refreshable]s
  * (usually UI elements, such as specialized [tools.aqua.bgw.core.BoardGameScene] classes/instances)

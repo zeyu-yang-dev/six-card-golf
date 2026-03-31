@@ -1,5 +1,6 @@
 package io.github.zeyu.sixcardgolf.view
 
+import io.github.zeyu.sixcardgolf.service.Refreshable
 import io.github.zeyu.sixcardgolf.service.RootService
 import tools.aqua.bgw.core.BoardGameApplication
 import tools.aqua.bgw.event.KeyCode
@@ -15,10 +16,6 @@ class SCGApplication : BoardGameApplication("Six Card Golf"), Refreshable {
     // Central service from which all others are created/accessed
     // also holds the currently active game
     private val rootService = RootService()
-
-
-
-
 
     // Scenes:
     // 1. New Game Menu Scene:
@@ -41,7 +38,6 @@ class SCGApplication : BoardGameApplication("Six Card Golf"), Refreshable {
     private val resultMenuScene = ResultMenuScene(rootService).apply {
 
         restartButton.onMouseClicked = {
-
             showMenuScene(mainMenuScene)
         }
 
@@ -49,13 +45,6 @@ class SCGApplication : BoardGameApplication("Six Card Golf"), Refreshable {
             exit()
         }
     }
-
-
-
-
-
-
-
 
     init {
 
@@ -98,7 +87,6 @@ class SCGApplication : BoardGameApplication("Six Card Golf"), Refreshable {
         if(rootService.currentGame.players.size == 3) {
             gameScene.panePlayerRight.isVisible = false
         }
-
 
         this.hideMenuScene()
     }

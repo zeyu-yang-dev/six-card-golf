@@ -1,7 +1,6 @@
 package io.github.zeyu.sixcardgolf.service
 
 import io.github.zeyu.sixcardgolf.entity.SixCardGolf // this class represents the game status
-import io.github.zeyu.sixcardgolf.view.Refreshable
 
 /**
  * Main class of the service layer for theSixCardGolf game.

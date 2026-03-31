@@ -15,7 +15,7 @@ class PlayerActionService(private val rootService: RootService) : AbstractRefres
     fun drawCardAction() {
         //-------------------------------------------------------------------------
         val currentGame = rootService.currentGame
-        val currentPlayer = currentGame!!.players[currentGame.currentPlayerIndex]
+        val currentPlayer = currentGame.players[currentGame.currentPlayerIndex]
         val drawStack = currentGame.drawStack
         //-------------------------------------------------------------------------
 
@@ -44,7 +44,7 @@ class PlayerActionService(private val rootService: RootService) : AbstractRefres
     fun drawDiscardedCardAction() {
         //-------------------------------------------------------------------------
         val currentGame = rootService.currentGame
-        val currentPlayer = currentGame!!.players[currentGame.currentPlayerIndex]
+        val currentPlayer = currentGame.players[currentGame.currentPlayerIndex]
         val discardStack = currentGame.discardStack
         //-------------------------------------------------------------------------
 
@@ -75,7 +75,7 @@ class PlayerActionService(private val rootService: RootService) : AbstractRefres
     fun revealAction(deckIndex: Int) {
         //-------------------------------------------------------------------------
         val currentGame = rootService.currentGame
-        val currentPlayer = currentGame!!.players[currentGame.currentPlayerIndex]
+        val currentPlayer = currentGame.players[currentGame.currentPlayerIndex]
         //-------------------------------------------------------------------------
 
         // Get the card object to reveal:
@@ -132,7 +132,7 @@ class PlayerActionService(private val rootService: RootService) : AbstractRefres
     fun discard(rejectedDrawCard: Boolean) {
         //-------------------------------------------------------------------------
         val currentGame = rootService.currentGame
-        val currentPlayer = currentGame!!.players[currentGame.currentPlayerIndex]
+        val currentPlayer = currentGame.players[currentGame.currentPlayerIndex]
         val discardStack = currentGame.discardStack
         //-------------------------------------------------------------------------
 
@@ -162,7 +162,7 @@ class PlayerActionService(private val rootService: RootService) : AbstractRefres
     fun swap(deckIndex: Int) {
         //-------------------------------------------------------------------------
         val currentGame = rootService.currentGame
-        val currentPlayer = currentGame!!.players[currentGame.currentPlayerIndex]
+        val currentPlayer = currentGame.players[currentGame.currentPlayerIndex]
         //-------------------------------------------------------------------------
 
         // Get the card object from deck-cards to swap:

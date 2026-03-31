@@ -2,6 +2,7 @@ package io.github.zeyu.sixcardgolf.view
 
 import io.github.zeyu.sixcardgolf.entity.Player
 import io.github.zeyu.sixcardgolf.service.CardImageLoader
+import io.github.zeyu.sixcardgolf.service.Refreshable
 import io.github.zeyu.sixcardgolf.service.RootService
 import tools.aqua.bgw.components.uicomponents.*
 import tools.aqua.bgw.core.MenuScene

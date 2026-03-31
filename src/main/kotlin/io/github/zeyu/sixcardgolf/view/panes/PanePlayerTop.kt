@@ -187,6 +187,8 @@ class PanePlayerTop(
         gameScene.playAnimation(
             DelayAnimation(duration = DELAY_BEFORE_REVEAL_ALL).apply {
                 onFinished = {
+                    rootService.gameService.revealAllCards()
+                    rootService.gameService.removeIdenticalRows()
                     refreshThisPane()
                 }
             }
