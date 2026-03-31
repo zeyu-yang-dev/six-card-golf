@@ -1,6 +1,4 @@
-package io.github.zeyu.sixcardgolf.view
-
-import io.github.zeyu.sixcardgolf.service.AbstractRefreshingService
+package io.github.zeyu.sixcardgolf.service
 
 /**
  * This interface provides a mechanism for the service layer classes to communicate

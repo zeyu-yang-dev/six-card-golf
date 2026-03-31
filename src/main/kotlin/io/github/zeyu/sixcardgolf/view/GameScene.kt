@@ -2,6 +2,7 @@ package io.github.zeyu.sixcardgolf.view
 
 import io.github.zeyu.sixcardgolf.service.RootService
 import io.github.zeyu.sixcardgolf.service.CardImageLoader
+import io.github.zeyu.sixcardgolf.service.Refreshable
 import io.github.zeyu.sixcardgolf.view.panes.*
 
 import tools.aqua.bgw.animation.DelayAnimation
@@ -9,8 +10,6 @@ import tools.aqua.bgw.core.BoardGameScene
 import tools.aqua.bgw.visual.ImageVisual
 import tools.aqua.bgw.components.uicomponents.Label
 import tools.aqua.bgw.core.Alignment
-import tools.aqua.bgw.util.Font
-import java.awt.Color
 import java.awt.image.BufferedImage
 import javax.imageio.ImageIO
 
@@ -113,20 +112,12 @@ class GameScene(private val rootService: RootService) : BoardGameScene(1600, 900
     //------------------------------------------------------------------------------------------------------------------
 
 
-
-
-
-
-
-
-
-
-
-
-
+    /**
+     * Reveal all cards of all players.
+     * Called 5s before switching to result menu scene.
+     */
     private fun revealAllCards() {
         val currentGame = rootService.currentGame
-        requireNotNull(currentGame) {"Current game not available!"}
         val players = currentGame.players
         
         for (player in players) {
@@ -138,19 +129,25 @@ class GameScene(private val rootService: RootService) : BoardGameScene(1600, 900
     }
 
     /**
-     * By the time this function is called, nextTurn will not be called anymore,
-     * so the winning player must be checked in this function.
+     * The function nextTurn will check for identical rows and remove them.
+     * However, after all cards are revealed automatically before switching to result scene,
+     * nextTurn will not be called anymore.
+     *
+     * It's possible that one row of a player is identical after all cards revealed automatically.
+     * So it's necessary to check for identical rows here.
+     * Optionally, after automatic reveal of all cards, if both rows of a player are removed,
+     * the player can be assigned as the winner, which is DISABLED here.
+     *
      */
     private fun removeIdenticalRow() {
         val currentGame = rootService.currentGame
-        requireNotNull(currentGame) {"Current game not available!"}
         val players = currentGame.players
         
         for (player in players) {
             
             // Check top row for identical card value, the cards must all be revealed.
             if (player.topRow.all { it != null && it.isRevealed && it.cardValue == player.topRow[0]?.cardValue }) {
-                // Set all cards to null and give them to discard-stack if they have identical values
+                // Set all cards to null and send them to discard-stack if they have identical values
                 for (i in 0..2) {
                     currentGame.discardStack.push(player.topRow[i])
                     player.topRow[i] = null
@@ -166,7 +163,7 @@ class GameScene(private val rootService: RootService) : BoardGameScene(1600, 900
                 }
             }
 
-            // DISABLED:
+            // // DISABLED:
             // // Checks whether both rows of the current player are removed,
             // // if so, mark the winning player and call last round.
             // if (player.topRow[0] == null && player.bottomRow[0] == null && currentGame.winningPlayer == null) {
@@ -174,7 +171,6 @@ class GameScene(private val rootService: RootService) : BoardGameScene(1600, 900
             //     // But this time, no need to call last round anymore:
             //     // callLastRound()
             // }
-            
         }
 
     } 

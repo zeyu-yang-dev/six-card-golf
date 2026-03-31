@@ -38,7 +38,7 @@ class GameService(private val rootService: RootService): AbstractRefreshingServi
 
         // 5. Distribute the initial deck-cards for every player.
         val currentGame = rootService.currentGame
-        for (player in currentGame!!.players) {
+        for (player in currentGame.players) {
             for (i in 0..2) {
                 player.topRow[i] = currentGame.drawStack.pop()
                 player.bottomRow[i] = currentGame.drawStack.pop()
@@ -57,7 +57,7 @@ class GameService(private val rootService: RootService): AbstractRefreshingServi
      */
     private fun callLastRound() {
         val currentGame = rootService.currentGame
-        val players = currentGame!!.players
+        val players = currentGame.players
 
         val currentPlayerIndex = currentGame.currentPlayerIndex
         val nextPlayerIndex = (currentPlayerIndex + 1) % players.size
@@ -90,7 +90,7 @@ class GameService(private val rootService: RootService): AbstractRefreshingServi
      */
     internal fun nextTurn() {
         val currentGame = rootService.currentGame
-        val players = currentGame!!.players
+        val players = currentGame.players
         val currentPlayerIndex = currentGame.currentPlayerIndex
         val currentPlayer = players[currentPlayerIndex]
         val discardStack = currentGame.discardStack
@@ -140,8 +140,6 @@ class GameService(private val rootService: RootService): AbstractRefreshingServi
             onAllRefreshables { refreshBeforeGameEnd() }
             return
         }
-
-
 
         // 5. Ends the first round if all players have made their turn in the first round.
         if (currentGame.isFirstRound && currentPlayerIndex == players.size - 1)
