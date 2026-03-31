@@ -16,7 +16,12 @@ import javax.imageio.ImageIO
 /**
  * The game scene for the six card golf game, which inherits from [BoardGameScene].
  */
-class GameScene(private val rootService: RootService) : BoardGameScene(1600, 900), Refreshable {
+class GameScene(
+    private val rootService: RootService
+) : BoardGameScene(
+    width = SCREEN_WIDTH,
+    height = SCREEN_HEIGHT
+), Refreshable {
 
     val panePlayerLeft = PanePlayerLeft(rootService, this)
     val panePlayerRight = PanePlayerRight(rootService, this)

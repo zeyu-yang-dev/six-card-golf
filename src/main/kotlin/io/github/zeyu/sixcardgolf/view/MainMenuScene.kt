@@ -40,7 +40,12 @@ const val MMS_TEXT_FIELD_WIDTH = 500 - MMS_PLAYER_LABEL_WIDTH - MMS_TEXT_FIELD_T
 /**
  * The Start Menu.
  */
-class MainMenuScene(private val rootService: RootService) : MenuScene(width = 500, height = 900), Refreshable {
+class MainMenuScene(
+    private val rootService: RootService
+) : MenuScene(
+    width = MENU_SCENE_WIDTH,
+    height = MENU_SCENE_HEIGHT
+), Refreshable {
 
     val playerLabels: MutableList<Label> = mutableListOf()
     val textFields: MutableList<TextField> = mutableListOf()

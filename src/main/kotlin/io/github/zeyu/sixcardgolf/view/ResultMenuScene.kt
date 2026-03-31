@@ -17,7 +17,12 @@ import javax.imageio.ImageIO
 /**
  * The End Menu.
  */
-class ResultMenuScene(private val rootService: RootService) : MenuScene(width = 500, height = 900), Refreshable {
+class ResultMenuScene(
+    private val rootService: RootService
+) : MenuScene(
+    width = MENU_SCENE_WIDTH,
+    height = MENU_SCENE_HEIGHT
+), Refreshable {
 
     private fun placePlayers(): List<Player> {
 

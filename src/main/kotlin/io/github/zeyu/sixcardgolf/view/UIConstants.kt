@@ -5,8 +5,11 @@ import tools.aqua.bgw.visual.ColorVisual
 import java.awt.Color
 
 
-const val SCREEN_WIDTH = 1600
-const val SCREEN_HEIGHT = 900
+const val SCREEN_WIDTH = 1920
+const val SCREEN_HEIGHT = 1080
+
+const val MENU_SCENE_WIDTH = 600
+const val MENU_SCENE_HEIGHT = SCREEN_HEIGHT
 
 // components in a player pane:
 const val CARDS_SCALE = 0.65
@@ -35,6 +38,7 @@ const val PMC_HEIGHT = CARD_HEIGHT
 const val PMC_POS_X = (SCREEN_WIDTH - PMC_WIDTH) / 2
 const val PMC_POS_Y = (SCREEN_HEIGHT - PMC_HEIGHT) / 2
 
+// Colors, fonts, delays:
 val PLAYER_COLORS = listOf(Color.CYAN, Color.YELLOW, Color.LIGHT_GRAY, Color.MAGENTA)
 // val PLAYER_PANE_BG_VISUAL = ColorVisual(50, 50, 50, 90)
 val PLAYER_PANE_BG_VISUAL = ColorVisual.TRANSPARENT
