@@ -21,7 +21,6 @@ import javax.imageio.ImageIO
  */
 class GameScene(private val rootService: RootService) : BoardGameScene(1600, 900), Refreshable {
 
-
     val panePlayerLeft = PanePlayerLeft(rootService, this)
     val panePlayerRight = PanePlayerRight(rootService, this)
     val panePlayerTop = PanePlayerTop(rootService, this)
@@ -34,7 +33,7 @@ class GameScene(private val rootService: RootService) : BoardGameScene(1600, 900
         width = MIDDLE_LABEL_WIDTH,
         height = MIDDLE_LABEL_HEIGHT,
         text = "This is an instruction bar.",
-        font = Font(size = 15, color = Color.WHITE, fontWeight = Font.FontWeight.SEMI_BOLD),
+        font = DEFAULT_INSTRUCTION_FONT,
         alignment = Alignment.CENTER
     )
 
@@ -71,7 +70,7 @@ class GameScene(private val rootService: RootService) : BoardGameScene(1600, 900
         when (type) {
             InstructionType.FIRST_ROUND_BEFORE_REVEAL -> {
                 instructionLabel.text = "First Round: Please reveal 2 cards."
-                instructionLabel.font = Font(size = 15, color = Color.GREEN, fontWeight = Font.FontWeight.SEMI_BOLD)
+                instructionLabel.font = GREEN_INSTRUCTION_FONT
             }
             InstructionType.FIRST_ROUND_REVEALED_ONE -> {
                 instructionLabel.text = "Reveal one more card to continue."
@@ -79,7 +78,7 @@ class GameScene(private val rootService: RootService) : BoardGameScene(1600, 900
             }
             InstructionType.LAST_ROUND -> {
                 instructionLabel.text = "Last Round!"
-                instructionLabel.font = Font(size = 15, color = Color.RED, fontWeight = Font.FontWeight.SEMI_BOLD)
+                instructionLabel.font = RED_INSTRUCTION_FONT
             }
             InstructionType.AFTER_DRAW -> {
                 instructionLabel.text = "Choose a card to swap or discard hand."
@@ -99,7 +98,7 @@ class GameScene(private val rootService: RootService) : BoardGameScene(1600, 900
             }
             InstructionType.TURN_START -> {
                 instructionLabel.text = "Your turn: Draw a card or reveal one."
-                instructionLabel.font = Font(size = 15, color = Color.GREEN, fontWeight = Font.FontWeight.SEMI_BOLD)
+                instructionLabel.font = GREEN_INSTRUCTION_FONT
             }
             InstructionType.BEFORE_REVEAL_ALL -> {
                 instructionLabel.text = "All cards will be revealed in 3 seconds."
@@ -109,40 +108,19 @@ class GameScene(private val rootService: RootService) : BoardGameScene(1600, 900
                 instructionLabel.text = "Show result in 5 seconds."
                 instructionLabel.font = PINK_INSTRUCTION_FONT
             }
-
         }
     }
-
-
-
     //------------------------------------------------------------------------------------------------------------------
 
 
 
 
 
-    //------------------------------------------------------------------------------------------------------------------
 
 
 
-    /**
-     * Disables all components that are not supposed to be interactive in a specific phase of a turn.
-     * Uses an opacity of 0.5 to show the components that are not supposed to be clicked upon.
-     * Displays reminder for player via status bar.
-     */
-    private fun guideUserBehavior() {
-        val currentGame = rootService.currentGame
 
-        // Condition 1: In the first round
-        if (currentGame.isFirstRound) {
-            updateInstruction(InstructionType.FIRST_ROUND_BEFORE_REVEAL)
-        }
 
-        // Condition 7: During the last round, show a reminder via status bar:
-        if (currentGame.isLastRound && state == StateOfUI.TURN_START) {
-            updateInstruction(InstructionType.LAST_ROUND)
-        }
-    }
 
 
 
@@ -202,134 +180,8 @@ class GameScene(private val rootService: RootService) : BoardGameScene(1600, 900
     } 
 
 
-
-
-
-
-
-    override fun refreshAfterStartNewGame() {
-
-        state = StateOfUI.TURN_START
-
-        guideUserBehavior()
-
-    }
-
-    override fun refreshAfterFirstReveal() {
-
-        guideUserBehavior()
-
-        updateInstruction(InstructionType.FIRST_ROUND_REVEALED_ONE)
-    }
-
-
-    override fun refreshAfterReveal() {
-
-        guideUserBehavior()
-    }
-
-    override fun refreshAfterDrawCard() {
-
-        guideUserBehavior()
-
-        updateInstruction(InstructionType.AFTER_DRAW)
-    }
-
-    override fun refreshAfterDrawDiscardedCard() {
-
-
-        guideUserBehavior()
-
-        updateInstruction(InstructionType.AFTER_DRAW_DISCARDED)
-    }
-
-    override fun refreshAfterSwap() {
-
-        guideUserBehavior()
-    }
-
-    override fun refreshAfterDiscard() {
-
-        updateInstruction(InstructionType.AFTER_DISCARD)
-
-
-        guideUserBehavior()
-    }
-
-    override fun refreshAfterNextTurn() {
-
-        // before the delay animation, show a reminder via status bar:
-        updateInstruction(InstructionType.ROTATING_SEAT)
-
-        // before refresh for the next turn, play a delay animation
-        this.playAnimation(
-            DelayAnimation(duration = DELAY_BTW_TURNS).apply {
-                onFinished = {
-
-                    // clear the status bar before next turn begins:
-                    updateInstruction(InstructionType.TURN_START)
-
-
-                    setUIState(StateOfUI.TURN_START) // 这里是必要的，从bottom中改变状态可能不及时
-                    // super.refreshAfterNextTurn()
-
-
-                    guideUserBehavior()
-                }
-            }
-        )
-
-
-    }
-
-    override fun refreshOnLastRound() {
-
-        guideUserBehavior()
-    }
-
-
-
-
-    override fun refreshBeforeGameEnd() {
-
-        guideUserBehavior()
-
-        // before the delay animation, show a reminder via status bar:
-        updateInstruction(InstructionType.BEFORE_REVEAL_ALL)
-
-        this.playAnimation(
-            DelayAnimation(duration = DELAY_BEFORE_REVEAL_ALL).apply {
-                onFinished = {
-
-                    revealAllCards()
-                    removeIdenticalRow()
-
-                    // refreshPlayers()
-                    // refreshMiddle()
-
-                    updateInstruction(InstructionType.AFTER_REVEAL_ALL)
-
-                    playAnimation(
-                        DelayAnimation(duration = 5000).apply {
-                            onFinished = {
-
-                                // refreshPlayers()
-                                // refreshMiddle()
-
-                                rootService.gameService.endGame()
-                            }
-                        }
-                    )
-                }
-            }
-        )
-    }
-
-
-
-
+    //------------------------------------------------------------------------------------------------------------------
     init {
-
         val image : BufferedImage = ImageIO.read(CardImageLoader::class.java.getResource("/game_background.jpg"))
         this.background = ImageVisual(image)
 
@@ -341,8 +193,86 @@ class GameScene(private val rootService: RootService) : BoardGameScene(1600, 900
             paneMiddleCards,
             instructionLabel
         )
+    }
+
+    override fun refreshAfterStartNewGame() {
+        state = StateOfUI.TURN_START
+        updateInstruction(InstructionType.FIRST_ROUND_BEFORE_REVEAL)
+    }
+
+    override fun refreshAfterFirstReveal() {
+        updateInstruction(InstructionType.FIRST_ROUND_REVEALED_ONE)
+    }
 
 
+    override fun refreshAfterReveal() {}
+
+    override fun refreshAfterDrawCard() {
+        updateInstruction(InstructionType.AFTER_DRAW)
+    }
+
+    override fun refreshAfterDrawDiscardedCard() {
+        updateInstruction(InstructionType.AFTER_DRAW_DISCARDED)
+    }
+
+    override fun refreshAfterSwap() {}
+
+    override fun refreshAfterDiscard() {
+        updateInstruction(InstructionType.AFTER_DISCARD)
+    }
+
+    override fun refreshAfterNextTurn() {
+        // before the delay animation, show a reminder via instruction bar:
+        updateInstruction(InstructionType.ROTATING_SEAT)
+
+        // before refresh for the next turn, play a delay animation
+        this.playAnimation(
+            DelayAnimation(duration = DELAY_BTW_TURNS).apply {
+                onFinished = {
+                    // normal TURN_START instruction:
+                    updateInstruction(InstructionType.TURN_START)
+
+                    // special TURN_START instruction for the first round:
+                    if (rootService.currentGame.isFirstRound) {
+                        updateInstruction(InstructionType.FIRST_ROUND_BEFORE_REVEAL)
+                    }
+
+                    // special TURN_START instruction for the last round:
+                    if (rootService.currentGame.isLastRound) {
+                        updateInstruction(InstructionType.LAST_ROUND)
+                    }
+                }
+            }
+        )
+
+
+    }
+
+    override fun refreshOnLastRound() {}
+
+    override fun refreshBeforeGameEnd() {
+        // before the delay animation, show a reminder via instruction bar:
+        updateInstruction(InstructionType.BEFORE_REVEAL_ALL)
+
+        this.playAnimation(
+            DelayAnimation(duration = DELAY_BEFORE_REVEAL_ALL).apply {
+                onFinished = {
+
+                    revealAllCards()
+                    removeIdenticalRow()
+
+                    updateInstruction(InstructionType.AFTER_REVEAL_ALL)
+
+                    playAnimation(
+                        DelayAnimation(duration = 5000).apply {
+                            onFinished = {
+                                rootService.gameService.endGame()
+                            }
+                        }
+                    )
+                }
+            }
+        )
     }
 }
 

@@ -126,7 +126,7 @@ class GameService(private val rootService: RootService): AbstractRefreshingServi
 
         // 3. Checks whether all cards of the current player are revealed, if so, call last round.
         //    This includes: I. all six cards are revealed  II. one row is removed, another row is revealed
-        //    When both rows are removed, the condition for if is also true, but will be handled in 2.
+        //    When both rows removed, the condition for if is also true, but will be handled in 2.
         if ((currentPlayer.topRow + currentPlayer.bottomRow).all { it == null || it.isRevealed }) {
             callLastRound()
             // no need to quit nextRound when the last round starts:
