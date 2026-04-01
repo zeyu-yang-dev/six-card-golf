@@ -4,12 +4,9 @@ import io.github.zeyu.sixcardgolf.service.Refreshable
 import io.github.zeyu.sixcardgolf.service.RootService
 
 import tools.aqua.bgw.components.uicomponents.*
-import tools.aqua.bgw.core.Alignment
 import tools.aqua.bgw.core.MenuScene
 import tools.aqua.bgw.util.Font
-import tools.aqua.bgw.visual.ColorVisual
 import tools.aqua.bgw.visual.ImageVisual
-import java.awt.Color
 import java.awt.image.BufferedImage
 import javax.imageio.ImageIO
 
@@ -26,6 +23,26 @@ class ResultMenuScene(
     private val playerLabels: MutableList<Label> = mutableListOf()
     private val titleLabels: MutableList<Label> = mutableListOf()
 
+    val restartButton = Button(
+        width = RMS_REPLAY_BTN_WIDTH,
+        height = RMS_REPLAY_BTN_HEIGHT,
+        posX = (MENU_SCENE_WIDTH - RMS_REPLAY_BTN_WIDTH) / 2,
+        posY = RMS_REPLAY_BTN_POS_Y,
+        text = "REPLAY",
+        font = START_BTN_FONT,
+        visual = START_BTN_COLOR_VISUAL.apply { style = BTN_ROUND_STYLE }
+    )
+
+    val exitButton = Button(
+        width = RMS_EXIT_BTN_WIDTH,
+        height = RMS_EXIT_BTN_HEIGHT,
+        posX = (MENU_SCENE_WIDTH - RMS_EXIT_BTN_WIDTH) / 2,
+        posY = RMS_REPLAY_BTN_POS_Y + RMS_REPLAY_BTN_HEIGHT + DIS_BTW_REPLAY_EXIT_BTN,
+        text = "EXIT",
+        font = EXIT_BTN_FONT,
+        visual = EXIT_BTN_COLOR_VISUAL.apply { style = BTN_ROUND_STYLE }
+    )
+    //------------------------------------------------------------------------------------------------------------------
     private fun createPlayerLabel(row: Int): Label {
         val label = Label(
             width = RMS_PLAYER_LABEL_WIDTH,
@@ -70,7 +87,6 @@ class ResultMenuScene(
         }
     }
 
-
     private fun refreshTitleLabels() {
 
         val numOfPlayers = rootService.currentGame.players.size
@@ -81,51 +97,8 @@ class ResultMenuScene(
         // Display the titles for every player
         for (i in 0..(numOfPlayers - 2)) titleLabels[i].isVisible = true
     }
-
-
-
-
-
-
     //------------------------------------------------------------------------------------------------------------------
-    private val placeLabelOffset = 10
-    private val allComponentsOffsetY = 40
-
-
-    //------------------------------------------------------------------------------------------------------------------
-    //------------------------------------------------------------------------------------------------------------------
-    private val buttonsPosOffsetY = 70
-
-    val restartButton = Button(
-        width = 200, height = 75,
-        posX = 150, posY = 542.5 + 100 + buttonsPosOffsetY,
-        text = "REPLAY",
-        font = Font(size = 30, color = Color.BLACK, fontWeight = Font.FontWeight.NORMAL),
-        visual = ColorVisual(131, 184, 24).apply {
-            style = "-fx-background-radius: $BUTTON_BACKGROUND_RADIUS;"
-        }
-    ).apply {
-        componentStyle = "-fx-background-radius: $BUTTON_BACKGROUND_RADIUS;"
-    }
-
-    val exitButton = Button(
-        width = 150, height = 56.25,
-        posX = 175, posY = 542.5 + 200 + buttonsPosOffsetY,
-        text = "EXIT",
-        font = Font(size = 22.5, color = Color.BLACK, fontWeight = Font.FontWeight.NORMAL),
-        visual = ColorVisual(197, 0, 45).apply {
-            style = "-fx-background-radius: $BUTTON_BACKGROUND_RADIUS;"
-        }
-    ).apply {
-        componentStyle = "-fx-background-radius: $BUTTON_BACKGROUND_RADIUS;"
-    }
-    //------------------------------------------------------------------------------------------------------------------
-
-
-
-
     init {
-
         val image : BufferedImage = ImageIO.read(javaClass.getResource("/result_background.png"))
         this.background = ImageVisual(image)
         opacity = 1.0
@@ -142,10 +115,14 @@ class ResultMenuScene(
             addComponents(titleLabels[row])
         }
 
+        // Add buttons:
+        addComponents(
+            restartButton,
+            exitButton
+        )
     }
 
     override fun refreshAfterGameEnd() {
-
         refreshPlayerLabels()
         refreshTitleLabels()
     }
