@@ -193,6 +193,28 @@ class GameService(private val rootService: RootService): AbstractRefreshingServi
         onAllRefreshables { refreshAfterGameEnd() }
     }
 
+    /**
+     * Return a list of players ordered by their final ranking.
+     */
+    fun orderPlayers(): List<Player> {
+
+        val orderedPlayers: MutableList<Player> = mutableListOf()
+
+        val currentGame = rootService.currentGame
+        val players = currentGame.players
+        val winner = currentGame.winningPlayer
+
+        if (winner != null) {
+            orderedPlayers.add(winner)
+            val otherOrderedPlayers = players.filter { it != winner }.sortedBy { it.deckScore }
+            orderedPlayers.addAll(otherOrderedPlayers)
+        } else {
+            orderedPlayers.addAll(players.sortedBy { it.deckScore } )
+        }
+
+        return orderedPlayers
+    }
+
     //------------------------------------------------------------------------------------------------------------------
 
     /**

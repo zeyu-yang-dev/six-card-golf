@@ -10,7 +10,6 @@ import tools.aqua.bgw.util.Font
 import tools.aqua.bgw.visual.ColorVisual
 import tools.aqua.bgw.visual.ImageVisual
 import tools.aqua.bgw.components.uicomponents.Button
-import java.awt.Color
 
 import java.awt.image.BufferedImage
 import javax.imageio.ImageIO
@@ -122,15 +121,14 @@ class MainMenuScene(
         font = CHECK_BOX_FONT
     )
     //------------------------------------------------------------------------------------------------------------------
-
     private val startButton = Button(
         width = CHECK_BOX_BG_WIDTH,
         height = CHECK_BOX_BG_HEIGHT,
         posX = (MENU_SCENE_WIDTH - CHECK_BOX_BG_WIDTH) / 2,
         posY = START_BTN_POS_Y,
         text = "START",
-        font = Font(size = 30, color = Color.BLACK, fontWeight = Font.FontWeight.NORMAL),
-        visual = ColorVisual(131, 184, 24).apply { style = BTN_ROUND_STYLE }
+        font = START_BTN_FONT,
+        visual = START_BTN_COLOR_VISUAL.apply { style = BTN_ROUND_STYLE }
     ).apply {
         onMouseClicked = {
 
@@ -153,8 +151,8 @@ class MainMenuScene(
         posX = (MENU_SCENE_WIDTH - MMS_EXIT_BTN_WIDTH) / 2,
         posY = MMS_EXIT_BTN_POS_Y,
         text = "EXIT",
-        font = Font(size = 22.5, color = Color.BLACK, fontWeight = Font.FontWeight.NORMAL),
-        visual = ColorVisual(197, 0, 45).apply { style = BTN_ROUND_STYLE }
+        font = EXIT_BTN_FONT,
+        visual = EXIT_BTN_COLOR_VISUAL.apply { style = BTN_ROUND_STYLE }
     )
     //------------------------------------------------------------------------------------------------------------------
 

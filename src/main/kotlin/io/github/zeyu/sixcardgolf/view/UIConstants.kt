@@ -54,7 +54,8 @@ val PINK_INSTRUCTION_FONT = Font(size = 15, color = Color.PINK, fontWeight = Fon
 val GREEN_INSTRUCTION_FONT = Font(size = 15, color = Color.GREEN, fontWeight = Font.FontWeight.SEMI_BOLD)
 val RED_INSTRUCTION_FONT = Font(size = 15, color = Color.RED, fontWeight = Font.FontWeight.SEMI_BOLD)
 
-const val DELAY_BTW_TURNS = 2000
+// TODO: Change the delay back
+const val DELAY_BTW_TURNS = 200 // 2000
 const val DELAY_BEFORE_REVEAL_ALL = 3000
 
 // GameScene and PaneMiddleCards:
@@ -87,6 +88,10 @@ const val REMOVE_BTN_POS_Y = ADD_BTN_POS_Y + ADD_BTN_HEIGHT + DIS_BTW_ADD_REMOVE
 
 val ADD_BTN_FONT = Font(size = 20, color = Color.BLACK, fontWeight = Font.FontWeight.NORMAL)
 val CHECK_BOX_FONT = Font(size = 20, color = Color.BLACK, fontWeight = Font.FontWeight.NORMAL)
+val START_BTN_FONT = Font(size = 30, color = Color.BLACK, fontWeight = Font.FontWeight.NORMAL)
+val EXIT_BTN_FONT = Font(size = 22.5, color = Color.BLACK, fontWeight = Font.FontWeight.NORMAL)
+val START_BTN_COLOR_VISUAL = ColorVisual(131, 184, 24)
+val EXIT_BTN_COLOR_VISUAL = ColorVisual(197, 0, 45)
 
 const val DIS_BTW_BTN_CB = 32.5
 const val CHECK_BOX_BG_WIDTH = 200
@@ -99,6 +104,35 @@ const val CHECK_BOX_POS_X = (MENU_SCENE_WIDTH - CHECK_BOX_BG_WIDTH) / 2 + 25
 
 const val START_BTN_POS_Y = CHECK_BOX_BG_POS_Y + CHECK_BOX_BG_HEIGHT + DIS_BTW_BTN_CB // 650
 
+const val DIS_BTW_START_EXIT_BTN = 17.5
 const val MMS_EXIT_BTN_WIDTH = 150
 const val MMS_EXIT_BTN_HEIGHT = 56.25
-const val MMS_EXIT_BTN_POS_Y = START_BTN_POS_Y + CHECK_BOX_BG_HEIGHT + 17.5
+const val MMS_EXIT_BTN_POS_Y = START_BTN_POS_Y + CHECK_BOX_BG_HEIGHT + DIS_BTW_START_EXIT_BTN
+
+//----------------------------------------------------------------------------------------------------------------------
+
+// ResultMenuScene:
+const val RMS_PLAYER_LABEL_WIDTH = 500
+const val RMS_PLAYER_LABEL_HEIGHT = 100
+const val RMS_PLAYER_LABEL_POS_X = (MENU_SCENE_WIDTH - RMS_PLAYER_LABEL_WIDTH) / 2
+const val RMS_PLAYER_LABEL_POS_Y = 180
+const val RMS_PLAYER_LABEL_SPACER = 50
+// val RMS_PLAYER_LABEL_BG_VISUAL = ColorVisual(50, 50, 50, 90)
+val RMS_PLAYER_LABEL_BG_VISUAL = ColorVisual.TRANSPARENT
+
+const val RMS_TITLE_LABEL_WIDTH = RMS_PLAYER_LABEL_WIDTH
+const val RMS_TITLE_LABEL_HEIGHT = 50
+const val RMS_TITLE_LABEL_POS_X = (MENU_SCENE_WIDTH - RMS_TITLE_LABEL_WIDTH) / 2
+const val RMS_TITLE_LABEL_POS_Y = RMS_PLAYER_LABEL_POS_Y + RMS_PLAYER_LABEL_HEIGHT
+val RMS_TITLE_LABEL_TEXT = listOf("2nd Place:", "3rd Place:", "4th Place:")
+val RMS_TITLE_LABEL_COLORS = listOf(Color.ORANGE, Color.BLUE, Color.MAGENTA)
+// val RMS_TITLE_LABEL_BG_VISUAL = ColorVisual(200, 50, 50, 90)
+val RMS_TITLE_LABEL_BG_VISUAL = ColorVisual.TRANSPARENT
+
+const val RMS_REPLAY_BTN_WIDTH = CHECK_BOX_BG_WIDTH
+const val RMS_REPLAY_BTN_HEIGHT = CHECK_BOX_BG_HEIGHT
+const val RMS_REPLAY_BTN_POS_Y = 750
+
+const val DIS_BTW_REPLAY_EXIT_BTN = DIS_BTW_START_EXIT_BTN
+const val RMS_EXIT_BTN_WIDTH = MMS_EXIT_BTN_WIDTH
+const val RMS_EXIT_BTN_HEIGHT = MMS_EXIT_BTN_HEIGHT
