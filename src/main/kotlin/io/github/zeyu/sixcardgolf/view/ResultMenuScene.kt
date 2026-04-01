@@ -1,7 +1,6 @@
 package io.github.zeyu.sixcardgolf.view
 
 import io.github.zeyu.sixcardgolf.entity.Player
-import io.github.zeyu.sixcardgolf.service.CardImageLoader
 import io.github.zeyu.sixcardgolf.service.Refreshable
 import io.github.zeyu.sixcardgolf.service.RootService
 import tools.aqua.bgw.components.uicomponents.*
@@ -17,7 +16,12 @@ import javax.imageio.ImageIO
 /**
  * The End Menu.
  */
-class ResultMenuScene(private val rootService: RootService) : MenuScene(width = 500, height = 900), Refreshable {
+class ResultMenuScene(
+    private val rootService: RootService
+) : MenuScene(
+    width = MENU_SCENE_WIDTH,
+    height = MENU_SCENE_HEIGHT
+), Refreshable {
 
     private fun placePlayers(): List<Player> {
 
@@ -147,9 +151,8 @@ class ResultMenuScene(private val rootService: RootService) : MenuScene(width = 
 
     init {
 
-        val image : BufferedImage = ImageIO.read(CardImageLoader::class.java.getResource("/result_background.png"))
+        val image : BufferedImage = ImageIO.read(javaClass.getResource("/result_background.png"))
         this.background = ImageVisual(image)
-
         opacity = 1.0
 
     }
@@ -160,6 +163,7 @@ class ResultMenuScene(private val rootService: RootService) : MenuScene(width = 
         // The List to store label-components to display [Player.toString]
         val playerLabels: MutableList<Label> = mutableListOf()
 
+        // TODO: 最好不要使用添加和移除组件的方式，使用隐藏的方式更稳妥
         when(orderedPlayers.size) {
 
             2 -> {

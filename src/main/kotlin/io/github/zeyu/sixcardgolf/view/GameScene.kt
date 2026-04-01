@@ -1,7 +1,6 @@
 package io.github.zeyu.sixcardgolf.view
 
 import io.github.zeyu.sixcardgolf.service.RootService
-import io.github.zeyu.sixcardgolf.service.CardImageLoader
 import io.github.zeyu.sixcardgolf.service.Refreshable
 import io.github.zeyu.sixcardgolf.view.panes.*
 
@@ -16,7 +15,12 @@ import javax.imageio.ImageIO
 /**
  * The game scene for the six card golf game, which inherits from [BoardGameScene].
  */
-class GameScene(private val rootService: RootService) : BoardGameScene(1600, 900), Refreshable {
+class GameScene(
+    private val rootService: RootService
+) : BoardGameScene(
+    width = SCREEN_WIDTH,
+    height = SCREEN_HEIGHT
+), Refreshable {
 
     val panePlayerLeft = PanePlayerLeft(rootService, this)
     val panePlayerRight = PanePlayerRight(rootService, this)
@@ -109,7 +113,7 @@ class GameScene(private val rootService: RootService) : BoardGameScene(1600, 900
     }
     //------------------------------------------------------------------------------------------------------------------
     init {
-        val image : BufferedImage = ImageIO.read(CardImageLoader::class.java.getResource("/game_background.jpg"))
+        val image : BufferedImage = ImageIO.read(javaClass.getResource("/game_background.jpg"))
         this.background = ImageVisual(image)
 
         addComponents(
