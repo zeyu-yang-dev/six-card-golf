@@ -70,9 +70,16 @@ class ResultMenuScene(
         }
     }
 
-    // TODO
+
     private fun refreshTitleLabels() {
 
+        val numOfPlayers = rootService.currentGame.players.size
+
+        // Hide all title labels
+        titleLabels.forEach { it.isVisible = false }
+
+        // Display the titles for every player
+        for (i in 0..(numOfPlayers - 2)) titleLabels[i].isVisible = true
     }
 
 
@@ -84,61 +91,7 @@ class ResultMenuScene(
     private val placeLabelOffset = 10
     private val allComponentsOffsetY = 40
 
-    // private val firstPlaceLabel = Label(
-    //     width = 500, height = 50,
-    //     posX = 0, posY = 50 + placeLabelOffset + allComponentsOffsetY,
-    //     text = "Winner:",
-    //     font = Font(size = 25, color = Color.ORANGE, fontWeight = Font.FontWeight.SEMI_BOLD)
-    // )
 
-    // private val firstPlacePlayer = Label(
-    //     width = 500, height = 100,
-    //     posX = 0, posY = 100 + allComponentsOffsetY,
-    //     text = "",
-    //     font = Font(size = 17)
-    // )
-    //------------------------------------------------------------------------------------------------------------------
-    private val secondPlaceLabel = Label(
-        width = 500, height = 50,
-        posX = 0, posY = 200 + placeLabelOffset + allComponentsOffsetY,
-        text = "2nd Place:",
-        font = Font(size = 25, color = Color.MAGENTA, fontWeight = Font.FontWeight.SEMI_BOLD)
-    )
-
-    // private val secondPlacePlayer = Label(
-    //     width = 500, height = 100,
-    //     posX = 0, posY = 250 + allComponentsOffsetY,
-    //     text = "",
-    //     font = Font(size = 17)
-    // )
-    //------------------------------------------------------------------------------------------------------------------
-    private val thirdPlaceLabel = Label(
-        width = 500, height = 50,
-        posX = 0, posY = 350 + placeLabelOffset + allComponentsOffsetY,
-        text = "3rd Place:",
-        font = Font(size = 25, color = Color.BLUE, fontWeight = Font.FontWeight.SEMI_BOLD)
-    )
-
-    // private val thirdPlacePlayer = Label(
-    //     width = 500, height = 100,
-    //     posX = 0, posY = 400 + allComponentsOffsetY,
-    //     text = "",
-    //     font = Font(size = 17)
-    // )
-    //------------------------------------------------------------------------------------------------------------------
-    private val fourthPlaceLabel = Label(
-        width = 500, height = 50,
-        posX = 0, posY = 500 + placeLabelOffset + allComponentsOffsetY,
-        text = "4th Place:",
-        font = Font(size = 25, color = Color.YELLOW, fontWeight = Font.FontWeight.SEMI_BOLD)
-    )
-
-    // private val fourthPlacePlayer = Label(
-    //     width = 500, height = 100,
-    //     posX = 0, posY = 550 + allComponentsOffsetY,
-    //     text = "",
-    //     font = Font(size = 17)
-    // )
     //------------------------------------------------------------------------------------------------------------------
     //------------------------------------------------------------------------------------------------------------------
     private val buttonsPosOffsetY = 70
@@ -193,66 +146,8 @@ class ResultMenuScene(
 
     override fun refreshAfterGameEnd() {
 
-        val orderedPlayers = rootService.gameService.orderPlayers()
-
-        // The List to store label-components to display [Player.toString]
-        val playerLabels: MutableList<Label> = mutableListOf()
-
-        // // TODO: 最好不要使用添加和移除组件的方式，使用隐藏的方式更稳妥
-        // when(orderedPlayers.size) {
-        //
-        //     2 -> {
-        //         addComponents(
-        //
-        //             firstPlacePlayer,
-        //             secondPlaceLabel, secondPlacePlayer,
-        //
-        //             restartButton, exitButton
-        //         )
-        //
-        //         playerLabels.add(firstPlacePlayer)
-        //         playerLabels.add(secondPlacePlayer)
-        //     }
-        //
-        //     3 -> {
-        //         addComponents(
-        //
-        //             firstPlacePlayer,
-        //             secondPlaceLabel, secondPlacePlayer,
-        //             thirdPlaceLabel, thirdPlacePlayer,
-        //
-        //             restartButton, exitButton
-        //         )
-        //
-        //         playerLabels.add(firstPlacePlayer)
-        //         playerLabels.add(secondPlacePlayer)
-        //         playerLabels.add(thirdPlacePlayer)
-        //     }
-        //
-        //     4 -> {
-        //         addComponents(
-        //
-        //             firstPlacePlayer,
-        //             secondPlaceLabel, secondPlacePlayer,
-        //             thirdPlaceLabel, thirdPlacePlayer,
-        //             fourthPlaceLabel, fourthPlacePlayer,
-        //
-        //             restartButton, exitButton
-        //         )
-        //
-        //         playerLabels.add(firstPlacePlayer)
-        //         playerLabels.add(secondPlacePlayer)
-        //         playerLabels.add(thirdPlacePlayer)
-        //         playerLabels.add(fourthPlacePlayer)
-        //
-        //
-        //     }
-        // }
-
-
-
-
+        refreshPlayerLabels()
+        refreshTitleLabels()
     }
-
 }
 

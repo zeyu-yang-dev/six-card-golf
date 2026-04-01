@@ -54,7 +54,7 @@ val PINK_INSTRUCTION_FONT = Font(size = 15, color = Color.PINK, fontWeight = Fon
 val GREEN_INSTRUCTION_FONT = Font(size = 15, color = Color.GREEN, fontWeight = Font.FontWeight.SEMI_BOLD)
 val RED_INSTRUCTION_FONT = Font(size = 15, color = Color.RED, fontWeight = Font.FontWeight.SEMI_BOLD)
 
-const val DELAY_BTW_TURNS = 500 // 2000
+const val DELAY_BTW_TURNS = 200 // 2000
 const val DELAY_BEFORE_REVEAL_ALL = 3000
 
 // GameScene and PaneMiddleCards:
