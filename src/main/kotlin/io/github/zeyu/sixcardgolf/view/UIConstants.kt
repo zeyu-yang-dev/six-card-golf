@@ -54,7 +54,7 @@ val PINK_INSTRUCTION_FONT = Font(size = 15, color = Color.PINK, fontWeight = Fon
 val GREEN_INSTRUCTION_FONT = Font(size = 15, color = Color.GREEN, fontWeight = Font.FontWeight.SEMI_BOLD)
 val RED_INSTRUCTION_FONT = Font(size = 15, color = Color.RED, fontWeight = Font.FontWeight.SEMI_BOLD)
 
-const val DELAY_BTW_TURNS = 2000
+const val DELAY_BTW_TURNS = 500 // 2000
 const val DELAY_BEFORE_REVEAL_ALL = 3000
 
 // GameScene and PaneMiddleCards:
@@ -102,3 +102,21 @@ const val START_BTN_POS_Y = CHECK_BOX_BG_POS_Y + CHECK_BOX_BG_HEIGHT + DIS_BTW_B
 const val MMS_EXIT_BTN_WIDTH = 150
 const val MMS_EXIT_BTN_HEIGHT = 56.25
 const val MMS_EXIT_BTN_POS_Y = START_BTN_POS_Y + CHECK_BOX_BG_HEIGHT + 17.5
+
+//----------------------------------------------------------------------------------------------------------------------
+
+// ResultMenuScene:
+const val RMS_PLAYER_LABEL_WIDTH = 500
+const val RMS_PLAYER_LABEL_HEIGHT = 100
+const val RMS_PLAYER_LABEL_POS_X = (MENU_SCENE_WIDTH - RMS_PLAYER_LABEL_WIDTH) / 2
+const val RMS_PLAYER_LABEL_POS_Y = 180
+const val RMS_PLAYER_LABEL_SPACER = 50
+val RMS_PLAYER_LABEL_BG_VISUAL = ColorVisual(50, 50, 50, 90)
+
+const val RMS_TITLE_LABEL_WIDTH = RMS_PLAYER_LABEL_WIDTH
+const val RMS_TITLE_LABEL_HEIGHT = 50
+const val RMS_TITLE_LABEL_POS_X = (MENU_SCENE_WIDTH - RMS_TITLE_LABEL_WIDTH) / 2
+const val RMS_TITLE_LABEL_POS_Y = RMS_PLAYER_LABEL_POS_Y + RMS_PLAYER_LABEL_HEIGHT
+val RMS_TITLE_LABEL_TEXT = listOf("2nd Place:", "3rd Place:", "4th Place:")
+val RMS_TITLE_LABEL_COLORS = listOf(Color.MAGENTA, Color.BLUE, Color.YELLOW)
+val RMS_TITLE_LABEL_BG_VISUAL = ColorVisual(200, 50, 50, 90)
