@@ -45,10 +45,10 @@ abstract class PanePlayer(
     //------------------------------------------------------------------------------------------------------------------
     /**
      * Relative positioning parameters for cardViews and labels
-     * overridden in PanePlayerLeft
+     * overridden in PanePlayerLeftOld
      */
-    protected open val cardViewStartX = 0
-    protected open val labelStartX = CARD_WIDTH * 3 + HORIZ_DIS_BTW_CARDS * 2 + DIS_BTW_LABEL_AND_CARD
+    protected open val cardViewStartX: Double = 0.0
+    protected open val labelStartX: Double = CARD_WIDTH * 3 + HORIZ_DIS_BTW_CARDS * 2 + DIS_BTW_LABEL_AND_CARD
 
     /**
      * Defines which player this pane should display.
@@ -155,10 +155,6 @@ abstract class PanePlayer(
         addAll(labels)
     }
 
-    //------------------------------------------------------------------------------------------------------------------
-    init {
-        addPaneComponents()
-    }
     //------------------------------------------------------------------------------------------------------------------
     override fun refreshAfterStartNewGame() = refreshThisPane()
     override fun refreshAfterFirstReveal() = refreshThisPane()

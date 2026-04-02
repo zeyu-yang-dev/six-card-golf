@@ -71,7 +71,7 @@ class SCGApplication : BoardGameApplication("Six Card Golf"), Refreshable {
         this.showMenuScene(mainMenuScene)
     }
 
-
+    // TODO: MOVE TO GameScene
     override fun refreshAfterStartNewGame() {
 
         gameScene.panePlayerLeft.isVisible = true

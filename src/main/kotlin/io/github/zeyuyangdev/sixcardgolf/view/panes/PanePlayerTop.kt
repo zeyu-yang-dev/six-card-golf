@@ -14,6 +14,10 @@ class PanePlayerTop(
     PPL_WIDTH,
     PPL_HEIGHT
 ) {
+    init {
+        addPaneComponents()
+    }
+
     override fun getPlayerOffset(numOfPlayers: Int): Int {
         // This pane is shown, when there are 2, 3 or 4 players.
         // If there are 2 or 3 players, this pane shows the next player.

@@ -14,6 +14,10 @@ class PanePlayerRight(
     PPL_WIDTH,
     PPL_HEIGHT
 ) {
+    init {
+        addPaneComponents()
+    }
+
     override fun getPlayerOffset(numOfPlayers: Int): Int {
         // This pane is only shown, when there are 4 players.
         // In this case, this pane always shows the deck of the next player.
