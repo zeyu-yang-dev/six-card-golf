@@ -20,10 +20,10 @@ import java.awt.Color
 abstract class PanePlayer(
     protected val rootService: RootService,
     protected val gameScene: GameScene,
-    posX: Int,
-    posY: Int,
-    width: Int,
-    height: Int
+    posX: Number,
+    posY: Number,
+    width: Number,
+    height: Number
 ) : Pane<ComponentView>(
     posX,
     posY,
