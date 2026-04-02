@@ -104,10 +104,12 @@ abstract class PanePlayer(
             cardViews[i].apply {
                 val card = cards[i]
                 card?.let {
-                    frontVisual = ImageVisual(cardImageLoader.frontImageFor(card.cardSuit, card.cardValue))
-                    if (card.isRevealed) showFront() else showBack()
+                    frontVisual = ImageVisual(cardImageLoader.frontImageFor(it.cardSuit, it.cardValue))
+                    if (it.isRevealed) showFront() else showBack()
                     isVisible = true
-                } ?: run { isVisible = false }
+                } ?: run {
+                    isVisible = false
+                }
             }
         }
     }
