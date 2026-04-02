@@ -1,4 +1,4 @@
-package io.github.zeyu.sixcardgolf.view
+package io.github.zeyuyangdev.sixcardgolf.view
 
 import tools.aqua.bgw.util.Font
 import tools.aqua.bgw.visual.ColorVisual

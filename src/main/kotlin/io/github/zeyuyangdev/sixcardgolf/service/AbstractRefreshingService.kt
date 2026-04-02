@@ -1,4 +1,4 @@
-package io.github.zeyu.sixcardgolf.service
+package io.github.zeyuyangdev.sixcardgolf.service
 
 /**
  * Abstract service class that handles multiples [Refreshable]s

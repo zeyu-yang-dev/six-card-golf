@@ -1,9 +1,9 @@
-package io.github.zeyu.sixcardgolf.view.panes
+package io.github.zeyuyangdev.sixcardgolf.view.panes
 
-import io.github.zeyu.sixcardgolf.entity.*
-import io.github.zeyu.sixcardgolf.service.*
-import io.github.zeyu.sixcardgolf.view.*
-import io.github.zeyu.sixcardgolf.view.GameScene.StateOfUI
+import io.github.zeyuyangdev.sixcardgolf.entity.*
+import io.github.zeyuyangdev.sixcardgolf.service.*
+import io.github.zeyuyangdev.sixcardgolf.view.*
+import io.github.zeyuyangdev.sixcardgolf.view.GameScene.StateOfUI
 
 import tools.aqua.bgw.animation.DelayAnimation
 import tools.aqua.bgw.components.ComponentView

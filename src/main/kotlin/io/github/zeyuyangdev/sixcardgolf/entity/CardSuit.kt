@@ -1,4 +1,4 @@
-package io.github.zeyu.sixcardgolf.entity
+package io.github.zeyuyangdev.sixcardgolf.entity
 
 /**
  * Enum to distinguish between the four possible suits in a french-suited card game:

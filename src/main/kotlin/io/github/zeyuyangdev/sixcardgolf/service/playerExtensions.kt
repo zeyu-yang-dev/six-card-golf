@@ -1,7 +1,7 @@
-package io.github.zeyu.sixcardgolf.service
+package io.github.zeyuyangdev.sixcardgolf.service
 
-import io.github.zeyu.sixcardgolf.entity.CardValue
-import io.github.zeyu.sixcardgolf.entity.Player
+import io.github.zeyuyangdev.sixcardgolf.entity.CardValue
+import io.github.zeyuyangdev.sixcardgolf.entity.Player
 
 
 
