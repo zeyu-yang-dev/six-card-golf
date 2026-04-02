@@ -1,4 +1,4 @@
-package io.github.zeyu.sixcardgolf.service
+package io.github.zeyuyangdev.sixcardgolf.service
 
 /**
  * This interface provides a mechanism for the service layer classes to communicate

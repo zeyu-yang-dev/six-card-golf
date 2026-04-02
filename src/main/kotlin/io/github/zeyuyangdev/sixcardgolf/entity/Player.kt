@@ -1,6 +1,6 @@
-package io.github.zeyu.sixcardgolf.entity
+package io.github.zeyuyangdev.sixcardgolf.entity
 
-import io.github.zeyu.sixcardgolf.service.computedDeckScore
+import io.github.zeyuyangdev.sixcardgolf.service.computedDeckScore
 
 
 /**

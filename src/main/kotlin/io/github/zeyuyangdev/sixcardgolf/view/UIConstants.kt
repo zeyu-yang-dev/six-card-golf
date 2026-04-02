@@ -1,4 +1,4 @@
-package io.github.zeyu.sixcardgolf.view
+package io.github.zeyuyangdev.sixcardgolf.view
 
 import tools.aqua.bgw.util.Font
 import tools.aqua.bgw.visual.ColorVisual
@@ -14,7 +14,7 @@ const val MENU_SCENE_HEIGHT = SCREEN_HEIGHT
 //----------------------------------------------------------------------------------------------------------------------
 
 // Constants for player panes:
-// PPL stands for PanePlayerLeft, etc.
+// PPL stands for PanePlayerLeftOld, etc.
 const val CARDS_SCALE = 0.65
 const val CARD_WIDTH = 130 * CARDS_SCALE
 const val CARD_HEIGHT = 200 * CARDS_SCALE

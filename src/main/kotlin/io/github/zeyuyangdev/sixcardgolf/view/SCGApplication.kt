@@ -1,7 +1,7 @@
-package io.github.zeyu.sixcardgolf.view
+package io.github.zeyuyangdev.sixcardgolf.view
 
-import io.github.zeyu.sixcardgolf.service.Refreshable
-import io.github.zeyu.sixcardgolf.service.RootService
+import io.github.zeyuyangdev.sixcardgolf.service.Refreshable
+import io.github.zeyuyangdev.sixcardgolf.service.RootService
 import tools.aqua.bgw.core.BoardGameApplication
 import tools.aqua.bgw.event.KeyCode
 
@@ -71,7 +71,7 @@ class SCGApplication : BoardGameApplication("Six Card Golf"), Refreshable {
         this.showMenuScene(mainMenuScene)
     }
 
-
+    // TODO: MOVE TO GameScene
     override fun refreshAfterStartNewGame() {
 
         gameScene.panePlayerLeft.isVisible = true

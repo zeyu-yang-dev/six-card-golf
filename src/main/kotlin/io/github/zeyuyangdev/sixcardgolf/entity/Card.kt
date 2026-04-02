@@ -1,4 +1,4 @@
-package io.github.zeyu.sixcardgolf.entity
+package io.github.zeyuyangdev.sixcardgolf.entity
 
 /**
  * Represents a playing card with a suit and a value.

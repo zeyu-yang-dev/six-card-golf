@@ -1,8 +1,8 @@
-package io.github.zeyu.sixcardgolf.view
+package io.github.zeyuyangdev.sixcardgolf.view
 
-import io.github.zeyu.sixcardgolf.service.RootService
-import io.github.zeyu.sixcardgolf.service.Refreshable
-import io.github.zeyu.sixcardgolf.view.panes.*
+import io.github.zeyuyangdev.sixcardgolf.service.RootService
+import io.github.zeyuyangdev.sixcardgolf.service.Refreshable
+import io.github.zeyuyangdev.sixcardgolf.view.panes.*
 
 import tools.aqua.bgw.animation.DelayAnimation
 import tools.aqua.bgw.core.BoardGameScene

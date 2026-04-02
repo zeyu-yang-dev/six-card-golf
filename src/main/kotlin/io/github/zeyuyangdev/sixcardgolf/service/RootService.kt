@@ -1,6 +1,6 @@
-package io.github.zeyu.sixcardgolf.service
+package io.github.zeyuyangdev.sixcardgolf.service
 
-import io.github.zeyu.sixcardgolf.entity.SixCardGolf // this class represents the game status
+import io.github.zeyuyangdev.sixcardgolf.entity.SixCardGolf // this class represents the game status
 
 /**
  * Main class of the service layer for theSixCardGolf game.

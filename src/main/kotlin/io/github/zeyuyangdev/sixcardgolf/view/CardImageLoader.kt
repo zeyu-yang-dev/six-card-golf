@@ -1,7 +1,7 @@
-package io.github.zeyu.sixcardgolf.view
+package io.github.zeyuyangdev.sixcardgolf.view
 
-import io.github.zeyu.sixcardgolf.entity.CardSuit
-import io.github.zeyu.sixcardgolf.entity.CardValue
+import io.github.zeyuyangdev.sixcardgolf.entity.CardSuit
+import io.github.zeyuyangdev.sixcardgolf.entity.CardValue
 import java.awt.image.BufferedImage
 import javax.imageio.ImageIO
 

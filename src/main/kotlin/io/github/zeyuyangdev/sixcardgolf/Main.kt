@@ -1,6 +1,6 @@
-package io.github.zeyu.sixcardgolf
+package io.github.zeyuyangdev.sixcardgolf
 
-import io.github.zeyu.sixcardgolf.view.SCGApplication
+import io.github.zeyuyangdev.sixcardgolf.view.SCGApplication
 
 /**
  * This is the entrance of the game.

@@ -1,6 +1,6 @@
-package io.github.zeyu.sixcardgolf.service
+package io.github.zeyuyangdev.sixcardgolf.service
 
-import io.github.zeyu.sixcardgolf.entity.*
+import io.github.zeyuyangdev.sixcardgolf.entity.*
 
 /**
  * Service layer class that provides the logic for actions not directly related to a single player.
