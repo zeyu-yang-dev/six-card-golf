@@ -5,7 +5,6 @@ import io.github.zeyuyangdev.sixcardgolf.service.RootService
 import tools.aqua.bgw.core.BoardGameApplication
 import tools.aqua.bgw.event.KeyCode
 
-
 /**
  * The view controller class, which inherits from [BoardGameApplication].
  * This class implements the Refreshable interface.
@@ -28,22 +27,16 @@ class SCGApplication : BoardGameApplication("Six Card Golf"), Refreshable {
     // 2. In-Game Scene:
     private val gameScene = GameScene(rootService).apply {
         onKeyPressed = { event ->
-            if (event.keyCode in listOf(KeyCode.M, KeyCode.ENTER)) {
-                rootService.gameService.showMiracle()
+            if (event.keyCode in listOf(KeyCode.ENTER)) {
+                rootService.debugGameService.triggerRowRemoval()
             }
         }
     }
 
     // 3. End-Game Scene:
     private val resultMenuScene = ResultMenuScene(rootService).apply {
-
-        restartButton.onMouseClicked = {
-            showMenuScene(mainMenuScene)
-        }
-
-        exitButton.onMouseClicked = {
-            exit()
-        }
+        restartButton.onMouseClicked = { showMenuScene(mainMenuScene) }
+        exitButton.onMouseClicked = { exit() }
     }
 
     init {
@@ -51,11 +44,9 @@ class SCGApplication : BoardGameApplication("Six Card Golf"), Refreshable {
         // all scenes and the application itself need to react to changes done in the service layer
         rootService.addRefreshables(
             this,
-
             mainMenuScene,
             gameScene,
             resultMenuScene,
-
             gameScene.panePlayerLeft,
             gameScene.panePlayerRight,
             gameScene.panePlayerTop,
@@ -63,10 +54,7 @@ class SCGApplication : BoardGameApplication("Six Card Golf"), Refreshable {
             gameScene.paneMiddleCards
         )
 
-        // This is just done so that the blurred background when showing the new game menu
-        // has content and looks nicer
-        // rootService.gameService.startNewGame(listOf("Martin", "Erich", "Paul", "Detlef"))
-
+        // This is just done so that the blurred background when showing the menu has content and looks nicer
         this.showGameScene(gameScene)
         this.showMenuScene(mainMenuScene)
     }
@@ -94,6 +82,5 @@ class SCGApplication : BoardGameApplication("Six Card Golf"), Refreshable {
     override fun refreshAfterGameEnd() {
         this.showMenuScene(resultMenuScene)
     }
-
 }
 
