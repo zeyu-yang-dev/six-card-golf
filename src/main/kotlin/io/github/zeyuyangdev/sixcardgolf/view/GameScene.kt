@@ -111,6 +111,25 @@ class GameScene(
             }
         }
     }
+
+    /**
+     * Updates the visibility of player panes according to the number of players.
+     */
+    private fun updateVisibilityOfPanes() {
+        panePlayerLeft.isVisible = true
+        panePlayerRight.isVisible = true
+
+        // If there are 2 players, hide the player panes on the left and right sides:
+        if(rootService.currentGame.players.size == 2) {
+            panePlayerLeft.isVisible = false
+            panePlayerRight.isVisible = false
+        }
+
+        // If there are 3 players, hide the player pane on the right side:
+        if(rootService.currentGame.players.size == 3) {
+            panePlayerRight.isVisible = false
+        }
+    }
     //------------------------------------------------------------------------------------------------------------------
     init {
         val image : BufferedImage = ImageIO.read(javaClass.getResource("/game_background.jpg"))
@@ -129,6 +148,7 @@ class GameScene(
     override fun refreshAfterStartNewGame() {
         state = StateOfUI.TURN_START
         updateInstruction(InstructionType.FIRST_ROUND_BEFORE_REVEAL)
+        updateVisibilityOfPanes()
     }
 
     override fun refreshAfterFirstReveal() {
