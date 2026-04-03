@@ -11,18 +11,12 @@ class RootService {
     val gameService = GameService(this)
     val playerActionService = PlayerActionService(this)
     val cardService = CardService(this)
+    val debugGameService = DebugGameService(this)
 
-    /**
-     * The currently active game.
-     */
+    // The currently active game.
     lateinit var currentGame : SixCardGolf
 
-
-
-    //-------------------------------------------------------------------------
-
-
-
+    //------------------------------------------------------------------------------------------------------------------
     /**
      * Adds the provided [newRefreshable] to all services connected
      * to this root service
@@ -40,5 +34,4 @@ class RootService {
     fun addRefreshables(vararg newRefreshables: Refreshable) {
         newRefreshables.forEach { addRefreshable(it) }
     }
-
 }
