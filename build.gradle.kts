@@ -3,7 +3,7 @@ plugins {
     application
 }
 
-group = "io.github.zeyu.sixcardgolf"
+group = "io.github.zeyuyangdev.sixcardgolf"
 version = "1.0-SNAPSHOT"
 
 repositories {
@@ -23,10 +23,29 @@ kotlin {
 }
 
 application {
+    mainClass.set("io.github.zeyuyangdev.sixcardgolf.MainKt")
+
     applicationDefaultJvmArgs = listOf(
         "--add-opens", "java.desktop/sun.awt=ALL-UNNAMED",
         "--add-opens", "java.desktop/java.awt.peer=ALL-UNNAMED",
         "--add-opens", "java.desktop/sun.lwawt=ALL-UNNAMED",
         "--add-opens", "java.desktop/sun.lwawt.macosx=ALL-UNNAMED"
     )
+}
+
+tasks.jar {
+    // specify the entry point of the application
+    manifest {
+        attributes["Main-Class"] = "io.github.zeyuyangdev.sixcardgolf.MainKt"
+    }
+
+    // avoid duplicate resources
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+
+    // fat jar
+    from({
+        configurations.runtimeClasspath.get().map { file ->
+            if (file.isDirectory) file else zipTree(file)
+        }
+    })
 }
