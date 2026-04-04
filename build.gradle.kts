@@ -32,3 +32,20 @@ application {
         "--add-opens", "java.desktop/sun.lwawt.macosx=ALL-UNNAMED"
     )
 }
+
+tasks.jar {
+    // specify the entry point of the application
+    manifest {
+        attributes["Main-Class"] = "io.github.zeyuyangdev.sixcardgolf.MainKt"
+    }
+
+    // avoid duplicate resources
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+
+    // fat jar
+    from({
+        configurations.runtimeClasspath.get().map { file ->
+            if (file.isDirectory) file else zipTree(file)
+        }
+    })
+}
