@@ -3,7 +3,7 @@ plugins {
     application
 }
 
-group = "io.github.zeyu.sixcardgolf"
+group = "io.github.zeyuyangdev.sixcardgolf"
 version = "1.0-SNAPSHOT"
 
 repositories {
@@ -23,6 +23,8 @@ kotlin {
 }
 
 application {
+    mainClass.set("io.github.zeyuyangdev.sixcardgolf.MainKt")
+
     applicationDefaultJvmArgs = listOf(
         "--add-opens", "java.desktop/sun.awt=ALL-UNNAMED",
         "--add-opens", "java.desktop/java.awt.peer=ALL-UNNAMED",
