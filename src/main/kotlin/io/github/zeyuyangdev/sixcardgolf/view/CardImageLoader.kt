@@ -2,6 +2,7 @@ package io.github.zeyuyangdev.sixcardgolf.view
 
 import io.github.zeyuyangdev.sixcardgolf.entity.CardSuit
 import io.github.zeyuyangdev.sixcardgolf.entity.CardValue
+import tools.aqua.bgw.visual.ImageVisual
 import java.awt.image.BufferedImage
 import javax.imageio.ImageIO
 
@@ -38,7 +39,8 @@ class CardImageLoader {
     /**
      * Provides the back side image of the card deck
      */
-    val backImage: BufferedImage get() = getImageByCoordinates(2, 4)
+    // val backImage: BufferedImage get() = getImageByCoordinates(2, 4)
+    val backImage: BufferedImage get() = ImageIO.read(javaClass.getResource("/card_back.png"))
 
     /**
      * retrieves from the full raster image [image] the corresponding sub-image
