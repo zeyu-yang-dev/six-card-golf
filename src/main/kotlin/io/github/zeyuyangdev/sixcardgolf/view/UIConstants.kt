@@ -55,7 +55,7 @@ val GREEN_INSTRUCTION_FONT = Font(size = 15, color = Color.GREEN, fontWeight = F
 val RED_INSTRUCTION_FONT = Font(size = 15, color = Color.RED, fontWeight = Font.FontWeight.SEMI_BOLD)
 
 // TODO: Change the delay back
-const val DELAY_BTW_TURNS = 200 // 2000
+const val DELAY_BTW_TURNS = 2000 // 2000
 const val DELAY_BEFORE_REVEAL_ALL = 3000
 
 // GameScene and PaneMiddleCards:
