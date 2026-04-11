@@ -29,13 +29,14 @@ class GameScene(
     val paneMiddleCards = PaneMiddleCards(rootService, this)
 
     private val instructionLabel: Label = Label(
-        posX = PMC_POS_X - 17.75,
-        posY = PMC_POS_Y - 40,
-        width = MIDDLE_LABEL_WIDTH,
-        height = MIDDLE_LABEL_HEIGHT,
+        width = INSTRUCTION_LABEL_WIDTH,
+        height = INSTRUCTION_LABEL_HEIGHT,
+        posX = INSTRUCTION_LABEL_POS_X,
+        posY = INSTRUCTION_LABEL_POS_Y,
         text = "This is an instruction bar.",
         font = DEFAULT_INSTRUCTION_FONT,
-        alignment = Alignment.CENTER
+        alignment = Alignment.CENTER,
+        visual = MIDDLE_LABEL_BG_VISUAL
     )
 
     //------------------------------------------------------------------------------------------------------------------
@@ -82,7 +83,7 @@ class GameScene(
                 instructionLabel.font = RED_INSTRUCTION_FONT
             }
             InstructionType.AFTER_DRAW -> {
-                instructionLabel.text = "Choose a card to swap or discard hand."
+                instructionLabel.text = "Choose a card to swap, or discard the drawn card."
                 instructionLabel.font = DEFAULT_INSTRUCTION_FONT
             }
             InstructionType.AFTER_DRAW_DISCARDED -> {

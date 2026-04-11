@@ -91,7 +91,7 @@ abstract class PanePlayer(
             width = PLAYER_LABEL_WIDTH,
             height = PLAYER_LABEL_HEIGHT,
             text = listOf("Player Name:", "", "Visible Score:", "").getOrElse(row) { "" },
-            font = Font(size = 25, color = Color.WHITE, fontWeight = Font.FontWeight.SEMI_BOLD),
+            font = PLAYER_LABEL_FONT,
             alignment = Alignment.CENTER_LEFT
         )
     }
@@ -120,7 +120,7 @@ abstract class PanePlayer(
 
         // Select the right color for the player displayed in this pane.
         val font = Font(
-            size = 25,
+            size = PLAYER_LABEL_FONT_SIZE,
             color = PLAYER_COLORS[players.indexOf(player)],
             fontWeight = Font.FontWeight.SEMI_BOLD
         )
