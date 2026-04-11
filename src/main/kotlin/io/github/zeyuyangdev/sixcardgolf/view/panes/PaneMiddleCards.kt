@@ -60,13 +60,14 @@ class PaneMiddleCards(
     private val cardViews: List<CardView> = listOf(drawStackCardView, discardStackCardView)
 
     private val stacksLabel: Label = Label(
-        posX = 12.25,
-        posY = 117,
-        width = MIDDLE_LABEL_WIDTH,
-        height = MIDDLE_LABEL_HEIGHT,
-        text = "   Hand             Draw          Discard",
-        font = Font(size = 15, color = Color.WHITE, fontWeight = Font.FontWeight.SEMI_BOLD),
-        alignment = Alignment.CENTER_LEFT
+        width = STACKS_LABEL_WIDTH,
+        height = STACKS_LABEL_HEIGHT,
+        posX = STACKS_LABEL_POS_X,
+        posY = STACKS_LABEL_POS_Y,
+        text = STACKS_LABEL_TEXT,
+        font = STACKS_LABEL_FONT,
+        alignment = Alignment.CENTER_LEFT,
+        visual = MIDDLE_LABEL_BG_VISUAL
     )
 
     private fun createCardView(col: Int): CardView {
