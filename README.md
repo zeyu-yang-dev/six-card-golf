@@ -1,5 +1,13 @@
 # Six Card Golf
 
+<p align="center">
+  <a href="#introduction">Introduction</a> •
+  <a href="#screenshots">Screenshots</a> •
+  <a href="#architecture">Architecture</a> •
+  <a href="#game-rules">Game Rules</a> •
+  <a href="#how-to-run">How to Run</a>
+</p>
+
 ## Introduction
 
 This project is a Kotlin implementation of the classic card game *Six Card Golf* (see [Game Rules](#game-rules)).
