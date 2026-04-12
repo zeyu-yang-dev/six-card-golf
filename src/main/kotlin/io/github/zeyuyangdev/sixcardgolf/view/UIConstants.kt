@@ -56,7 +56,7 @@ val PLAYER_COLORS = listOf(Color.CYAN, Color.YELLOW, Color.LIGHT_GRAY, Color.MAG
 val PLAYER_PANE_BG_VISUAL = ColorVisual.TRANSPARENT
 
 // TODO: Change the delay back
-const val DELAY_BTW_TURNS = 200 // 2000
+const val DELAY_BTW_TURNS = 2000 // 2000
 const val DELAY_BEFORE_REVEAL_ALL = 3000
 
 // GameScene:
