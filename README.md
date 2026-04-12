@@ -61,6 +61,81 @@ This project follows a layered architecture that separates UI, game logic, and d
 
 
 
+---
+### Game Start
+
+- A standard deck of 52 cards is used as the initial draw stack.
+- Each player receives **6 cards** from the draw stack, arranged in a **2×3 grid**.
+- The top card of the draw stack goes to the **discard stack**.
+- At the first round, each player **must reveal two of their cards**.
+
+Below is an example of the initial game setup:
+
+![Initial Setup](screenshots/initial_setup.png)
+
+---
+### Score Calculation
+
+The score of each player is calculated based on their revealed cards.  
+At the end of the game, all cards are revealed and scored as follows:
+
+| Card Value   | Points     |
+|--------------|------------|
+| Ace          | 1          |
+| 2            | -2         |
+| 3–10         | Card value |
+| Jack / Queen | 10         |
+| King         | 0          |
+
+#### Special Rules
+- If two cards **in the same column** have the **same value**, they count as **0 points**.
+- If all three cards **in a row** have the **same value**, they are removed and placed on the discard stack.
+
+
+
+---
+### Gameplay
+
+At the start of a turn, the player must choose **one** of the following actions:
+
+#### 1. Reveal a card
+- The player flips one of their face-down cards face up.
+
+#### 2. Draw from the draw stack
+- The player draws the top card from the draw stack.
+- Then the player chooses to:
+  - **Swap** it with one of their cards (face up or face down), or  
+  - **Discard** it  
+- If the player discards the card, they must reveal one of their face-down cards.
+
+#### 3. Draw from the discard stack
+- The player takes the top card of the discard stack.
+- The player must **swap** it with one of their cards.
+
+
+
+---
+### The Last Round
+
+The game enters **the last round** when a player has:
+- **revealed all their cards**, or
+- **removed all their cards** (see [Special Rules](#special-rules)).
+
+All other players then take one final turn.
+
+
+
+---
+### Winning
+
+- After the last round, all cards are revealed automatically.
+- The player with the **lowest total score** wins.
+- Special case: If a player has removed **both rows** before the final reveal, they are declared the winner.
+
+
+
+
+
 ## How to Run
 
 
