@@ -5,7 +5,7 @@
 This project is a Kotlin implementation of the classic card game *Six Card Golf* (see [Game Rules](#game-rules)).
 
 The UI is built using the [BoardGameWork (BGW)](https://tudo-aqua.github.io/bgw/), 
-a framework for developing 2D board game applications.
+a lightweight framework for developing 2D board game applications.
 
 This game supports local hotseat gameplay for 2–4 players and provides in-game guidance to help players understand available actions at each step.
 
@@ -15,6 +15,24 @@ The UI is structured into modular components, enabling clean composition and reu
 
 
 ## Screenshots
+
+Below are some screenshots of the game in action:
+
+### Main Menu
+
+![Main Menu](screenshots/01_main_menu.png)
+
+### Gameplay – Start of Turn
+
+![Start of Turn](screenshots/02_turn_start.png)
+
+### Gameplay – After Drawing a Card
+
+![After Draw](screenshots/03_has_drawn.png)
+
+### Result Screen
+
+![Result](screenshots/04_result_menu.png)
 
 
 
