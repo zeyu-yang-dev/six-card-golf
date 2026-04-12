@@ -1,16 +1,17 @@
 # Six Card Golf
 
 <p align="center">
-  <a href="#introduction">Introduction</a> •
-  <a href="#screenshots">Screenshots</a> •
-  <a href="#architecture">Architecture</a> •
-  <a href="#game-rules">Game Rules</a> •
-  <a href="#how-to-run">How to Run</a>
+  <a href="#-introduction">Introduction</a> •
+  <a href="#-screenshots">Screenshots</a> •
+  <a href="#-architecture">Architecture</a> •
+  <a href="#-game-rules">Game Rules</a> •
+  <a href="#-how-to-run">How to Run</a>
 </p>
 
-## Introduction
 
-This project is a Kotlin implementation of the classic card game *Six Card Golf* (see [Game Rules](#game-rules)).
+## 🎴 Introduction
+
+This project is a Kotlin implementation of the classic card game *Six Card Golf* (see [Game Rules](#-game-rules)).
 
 The UI is built using the [BoardGameWork (BGW)](https://tudo-aqua.github.io/bgw/), 
 a lightweight framework for developing 2D board game applications.
@@ -22,7 +23,7 @@ emphasizing maintainability and modular structure.
 The UI is structured into modular components, enabling clean composition and reuse.
 
 
-## Screenshots
+## 📸 Screenshots
 
 Below are some screenshots of the game in action:
 
@@ -44,7 +45,7 @@ Below are some screenshots of the game in action:
 
 
 
-## Architecture
+## 🧱 Architecture
 
 This project follows a layered architecture that separates UI, game logic, and domain model:
 
@@ -65,7 +66,7 @@ This project follows a layered architecture that separates UI, game logic, and d
 
 
 
-## Game Rules
+## 📜 Game Rules
 
 
 
@@ -143,28 +144,32 @@ All other players then take one final turn.
 
 
 
-## How to Run
+## 🚀 How to Run
+
+
+
+There are two options to run the game:
 
 > Requires **Java 17 or higher**.
-
-There are two ways to run the game:
 
 ### Option 1: Run via JAR (Recommended)
 
 1. Go to the **Releases** page of this repository.
 2. Download the latest `.jar` file.
-3. Run the game by double-clicking the JAR file.
+3. Run the game by double-clicking the JAR file.  
+   If double-click does not work, run the downloaded JAR from the terminal:
 
-> If double-click does not work, run the downloaded JAR from the terminal:  
-> `java -jar six-card-golf-<version>.jar`
+```
+java -jar six-card-golf-<version>.jar
+```
 
 ---
-
 ### Option 2: Run from Source Code
 
 1. Clone the repository, or download it as a ZIP.
 2. Open the project in your IDE.
-3. Run the main class:
+3. Run the main class:  
+
 ```
 io.github.zeyuyangdev.sixcardgolf.MainKt
 ```
