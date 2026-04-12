@@ -61,7 +61,6 @@ This project follows a layered architecture that separates UI, game logic, and d
 
 
 
----
 ### Game Start
 
 - A standard deck of 52 cards is used as the initial draw stack.
@@ -72,6 +71,8 @@ This project follows a layered architecture that separates UI, game logic, and d
 Below is an example of the initial game setup:
 
 ![Initial Setup](screenshots/initial_setup.png)
+
+
 
 ---
 ### Score Calculation
@@ -134,9 +135,35 @@ All other players then take one final turn.
 
 
 
-
-
 ## How to Run
+
+> Requires **Java 17 or higher**.
+
+There are two ways to run the game:
+
+### Option 1: Run via JAR (Recommended)
+
+1. Go to the **Releases** page of this repository.
+2. Download the latest `.jar` file.
+3. Run the game by double-clicking the JAR file.
+
+> If double-click does not work, run the downloaded JAR from the terminal:  
+> `java -jar six-card-golf-<version>.jar`
+
+---
+
+### Option 2: Run from Source Code
+
+1. Clone the repository, or download it as a ZIP.
+2. Open the project in your IDE.
+3. Run the main class:
+```
+io.github.zeyuyangdev.sixcardgolf.MainKt
+```
+
+
+
+
 
 
 
