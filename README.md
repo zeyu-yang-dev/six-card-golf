@@ -140,7 +140,7 @@ All other players then take one final turn.
 
 
 ---
-### Winning
+### End of the Game
 
 - After the last round, all cards are revealed automatically.
 - The player with the **lowest total score** wins.
