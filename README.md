@@ -69,7 +69,7 @@ This project follows a layered architecture that separates UI, game logic, and d
 ## 📜 Game Rules
 
 ### Objective
-The goal of this game is to have the **lowest** score (see [Scoring](#scoring)) at the end of the game.
+The goal of this game is to have the **lowest score** (see [Scoring](#scoring)) when the game ends.
 
 
 
