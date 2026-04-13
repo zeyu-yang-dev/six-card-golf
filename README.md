@@ -68,8 +68,12 @@ This project follows a layered architecture that separates UI, game logic, and d
 
 ## 📜 Game Rules
 
+### Objective
+The goal of this game is to have the **lowest** score (see [Scoring](#scoring)) at the end of the game.
 
 
+
+---
 ### Game Start
 
 - A standard deck of 52 cards is used as the initial draw stack.
@@ -84,7 +88,7 @@ Below is an example of the initial game setup:
 
 
 ---
-### Score Calculation
+### Scoring
 
 The score of each player is calculated based on their revealed cards.  
 At the end of the game, all cards are revealed and scored as follows:
