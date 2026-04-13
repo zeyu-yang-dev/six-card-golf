@@ -19,7 +19,7 @@ a lightweight framework for developing 2D board game applications.
 This game supports local hotseat gameplay for 2–4 players and provides in-game guidance to help players understand available actions at each step.
 
 It is designed with a clear separation between UI, game logic, and domain model, 
-emphasizing maintainability and modular structure. 
+emphasizing maintainability and a modular architecture (see [Architecture](#-architecture)). 
 The UI is structured into modular components, enabling clean composition and reuse.
 
 
